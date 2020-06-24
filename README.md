@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/giantswarm/awscnfm.svg?style=shield)](https://circleci.com/gh/giantswarm/awscnfm)
-[![GoDoc](https://godoc.org/github.com/giantswarm/awscnfm?status.svg)](http://godoc.org/github.com/giantswarm/awscnfm)
+[![GoDoc](https://godoc.org/github.com/giantswarm/awscnfm?status.svg)](https://pkg.go.dev/github.com/giantswarm/awscnfm?tab=overview)
 
 # awscnfm
 

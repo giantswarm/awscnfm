@@ -8,6 +8,8 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/pkg/action/ac001"
 )
 
 type runner struct {
@@ -34,6 +36,7 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	fmt.Printf("Explained!\n")
+	fmt.Println(description)
+	fmt.Println(ac001.Explain())
 	return nil
 }
