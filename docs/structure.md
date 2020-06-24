@@ -15,7 +15,7 @@ below `ac001` would provide subcommands to execute or explain the action itself.
 
 ```
 ├── cmd
-│   ├── cl001
+│   └── cl001
 │       └── ac001
 │           ├── execute
 │           └── explain
