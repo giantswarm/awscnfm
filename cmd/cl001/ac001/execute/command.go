@@ -1,4 +1,4 @@
-package version
+package execute
 
 import (
 	"io"
@@ -10,17 +10,14 @@ import (
 )
 
 const (
-	name        = "version"
-	description = "Prints version information."
+	name        = "execute"
+	description = "Execute action 001 for cluster 001."
 )
 
 type Config struct {
 	Logger micrologger.Logger
 	Stderr io.Writer
 	Stdout io.Writer
-
-	GitCommit string
-	Source    string
 }
 
 func New(config Config) (*cobra.Command, error) {
@@ -34,13 +31,6 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	if config.GitCommit == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.GitCommit must not be empty", config)
-	}
-	if config.Source == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Source must not be empty", config)
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -48,9 +38,6 @@ func New(config Config) (*cobra.Command, error) {
 		logger: config.Logger,
 		stderr: config.Stderr,
 		stdout: config.Stdout,
-
-		gitCommit: config.GitCommit,
-		source:    config.Source,
 	}
 
 	c := &cobra.Command{

@@ -3,49 +3,27 @@
 
 # awscnfm
 
+Conformance test utility for AWS.
 
 
-### Structure
 
-The tool should be structured so that it can execute any action against our
-Tenant Clusters. There might be many cluster definitions for which have many
-actions each. The command line tool layout could semantically look like below.
+### Docs
 
-```
-awscnfm cluster 001 action 001 execute
-awscnfm cluster 001 action 001 explain
-awscnfm cluster 001 action 001 ...
-```
+* [Completion](/docs/completion.md)
+* [Structure](/docs/structure.md)
+
+
+
+### Setup
+
+As of now you need to start your own Tenant Cluster so that you can execute the
+implemented conformance tests against it. Cluster creation can be another action
+supported in the test suite at a later point in time.
 
 
 
 ### Release Versions
 
 The code used for testing conformity is aligned with every Giant Swarm release
-version. When publishing a `v11.4.0` Giant Swarm release we would tag
-`conformance` with the same version. That way we keep the release and test
-lifecycles synchronized.
-
-
-
-### Execute Tests
-
-```
-awscnfm cluster 001 action 001 execute
-```
-
-
-
-### Explain Tests
-
-```
-awscnfm cluster 001 action 001 explain
-```
-
-
-
-### Tool Version
-
-```
-awscnfm version
-```
+version. When publishing a `v11.4.0` Giant Swarm release we tag `awscnfm` with
+the same version. That way we keep the release and test lifecycles synchronized.

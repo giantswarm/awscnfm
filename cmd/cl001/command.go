@@ -1,4 +1,4 @@
-package version
+package cl001
 
 import (
 	"io"
@@ -7,20 +7,19 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac001"
 )
 
 const (
-	name        = "version"
-	description = "Prints version information."
+	name        = "cl001"
+	description = "Conformance tests for cluster 001."
 )
 
 type Config struct {
 	Logger micrologger.Logger
 	Stderr io.Writer
 	Stdout io.Writer
-
-	GitCommit string
-	Source    string
 }
 
 func New(config Config) (*cobra.Command, error) {
@@ -34,11 +33,20 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	if config.GitCommit == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.GitCommit must not be empty", config)
-	}
-	if config.Source == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Source must not be empty", config)
+	var err error
+
+	var ac001Cmd *cobra.Command
+	{
+		c := ac001.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac001Cmd, err = ac001.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
 	}
 
 	f := &flag{}
@@ -48,9 +56,6 @@ func New(config Config) (*cobra.Command, error) {
 		logger: config.Logger,
 		stderr: config.Stderr,
 		stdout: config.Stdout,
-
-		gitCommit: config.GitCommit,
-		source:    config.Source,
 	}
 
 	c := &cobra.Command{
@@ -61,6 +66,8 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	f.Init(c)
+
+	c.AddCommand(ac001Cmd)
 
 	return c, nil
 }
