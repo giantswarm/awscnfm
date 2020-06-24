@@ -1,33 +1,51 @@
-<!--
+[![CircleCI](https://circleci.com/gh/giantswarm/awscnfm.svg?style=shield)](https://circleci.com/gh/giantswarm/awscnfm)
+[![GoDoc](https://godoc.org/github.com/giantswarm/awscnfm?status.svg)](http://godoc.org/github.com/giantswarm/awscnfm)
 
-    TODO:
+# awscnfm
 
-    - Add the project to the CircleCI:
-      https://circleci.com/setup-project/gh/giantswarm/REPOSITORY_NAME
 
-    - Import RELEASE_TOKEN variable from template repository for the builds:
-      https://circleci.com/gh/giantswarm/REPOSITORY_NAME/edit#env-vars
 
-    - Change the badge (with style=shield):
-      https://circleci.com/gh/giantswarm/REPOSITORY_NAME/edit#badges
-      If this is a private repository token with scope `status` will be needed.
+### Structure
 
-    - Run `devctl replace -i "REPOSITORY_NAME" "$(basename $(git rev-parse --show-toplevel))" *.md`
-      and commit your changes.
+The tool should be structured so that it can execute any action against our
+Tenant Clusters. There might be many cluster definitions for which have many
+actions each. The command line tool layout could semantically look like below.
 
-    - If the repository is public consider adding godoc badge. This should be
-      the first badge separated with a single space.
-      [![GoDoc](https://godoc.org/github.com/giantswarm/REPOSITORY_NAME?status.svg)](http://godoc.org/github.com/giantswarm/REPOSITORY_NAME)
+```
+awscnfm cluster 001 action 001 execute
+awscnfm cluster 001 action 001 explain
+awscnfm cluster 001 action 001 ...
+```
 
--->
-[![CircleCI](https://circleci.com/gh/giantswarm/template.svg?style=shield&circle-token=cbabd7d13186f190fca813db4f0c732b026f5f6c)](https://circleci.com/gh/giantswarm/template)
 
-# REPOSITORY_NAME
 
-This is a template repository containing some basic files every repository
-needs.
+### Release Versions
 
-To use it just hit `Use this template` button or [this
-link][generate].
+The code used for testing conformity is aligned with every Giant Swarm release
+version. When publishing a `v11.4.0` Giant Swarm release we would tag
+`conformance` with the same version. That way we keep the release and test
+lifecycles synchronized.
 
-[generate]: https://github.com/giantswarm/template/generate
+
+
+### Execute Tests
+
+```
+awscnfm cluster 001 action 001 execute
+```
+
+
+
+### Explain Tests
+
+```
+awscnfm cluster 001 action 001 explain
+```
+
+
+
+### Tool Version
+
+```
+awscnfm version
+```
