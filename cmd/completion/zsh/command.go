@@ -1,4 +1,4 @@
-package version
+package zsh
 
 import (
 	"io"
@@ -10,22 +10,23 @@ import (
 )
 
 const (
-	name        = "version"
-	description = "Prints version information."
+	name        = "zsh"
+	description = "Generate zsh completion."
 )
 
 type Config struct {
-	Logger micrologger.Logger
-	Stderr io.Writer
-	Stdout io.Writer
-
-	GitCommit string
-	Source    string
+	Logger  micrologger.Logger
+	MainCmd *cobra.Command
+	Stderr  io.Writer
+	Stdout  io.Writer
 }
 
 func New(config Config) (*cobra.Command, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
+	}
+	if config.MainCmd == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.MainCmd must not be empty", config)
 	}
 	if config.Stderr == nil {
 		config.Stderr = os.Stderr
@@ -34,23 +35,14 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	if config.GitCommit == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.GitCommit must not be empty", config)
-	}
-	if config.Source == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Source must not be empty", config)
-	}
-
 	f := &flag{}
 
 	r := &runner{
-		flag:   f,
-		logger: config.Logger,
-		stderr: config.Stderr,
-		stdout: config.Stdout,
-
-		gitCommit: config.GitCommit,
-		source:    config.Source,
+		flag:    f,
+		mainCmd: config.MainCmd,
+		logger:  config.Logger,
+		stderr:  config.Stderr,
+		stdout:  config.Stdout,
 	}
 
 	c := &cobra.Command{

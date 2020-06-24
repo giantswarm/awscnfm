@@ -1,4 +1,4 @@
-package version
+package completion
 
 import (
 	"io"
@@ -7,20 +7,20 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/cmd/completion/zsh"
 )
 
 const (
-	name        = "version"
-	description = "Prints version information."
+	name        = "completion"
+	description = "Generate shell completions for zsh."
 )
 
 type Config struct {
-	Logger micrologger.Logger
-	Stderr io.Writer
-	Stdout io.Writer
-
-	GitCommit string
-	Source    string
+	Logger  micrologger.Logger
+	MainCmd *cobra.Command
+	Stderr  io.Writer
+	Stdout  io.Writer
 }
 
 func New(config Config) (*cobra.Command, error) {
@@ -34,11 +34,21 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	if config.GitCommit == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.GitCommit must not be empty", config)
-	}
-	if config.Source == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Source must not be empty", config)
+	var err error
+
+	var zshCmd *cobra.Command
+	{
+		c := zsh.Config{
+			Logger:  config.Logger,
+			MainCmd: config.MainCmd,
+			Stderr:  config.Stderr,
+			Stdout:  config.Stdout,
+		}
+
+		zshCmd, err = zsh.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
 	}
 
 	f := &flag{}
@@ -48,9 +58,6 @@ func New(config Config) (*cobra.Command, error) {
 		logger: config.Logger,
 		stderr: config.Stderr,
 		stdout: config.Stdout,
-
-		gitCommit: config.GitCommit,
-		source:    config.Source,
 	}
 
 	c := &cobra.Command{
@@ -61,6 +68,8 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	f.Init(c)
+
+	c.AddCommand(zshCmd)
 
 	return c, nil
 }

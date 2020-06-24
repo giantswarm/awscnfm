@@ -8,6 +8,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/cmd/cl001"
+	"github.com/giantswarm/awscnfm/cmd/completion"
 	"github.com/giantswarm/awscnfm/cmd/version"
 	"github.com/giantswarm/awscnfm/pkg/project"
 )
@@ -38,14 +40,53 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	if config.GitCommit == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.GitCommit must not be empty", config)
+	f := &flag{}
+
+	r := &runner{
+		flag:   f,
+		logger: config.Logger,
+		stderr: config.Stderr,
+		stdout: config.Stdout,
 	}
-	if config.Source == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Source must not be empty", config)
+
+	m := &cobra.Command{
+		Use:          name,
+		Short:        description,
+		Long:         description,
+		RunE:         r.Run,
+		SilenceUsage: true,
 	}
 
 	var err error
+
+	var cl001Cmd *cobra.Command
+	{
+		c := cl001.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		cl001Cmd, err = cl001.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var completionCmd *cobra.Command
+	{
+		c := completion.Config{
+			Logger:  config.Logger,
+			MainCmd: m,
+			Stderr:  config.Stderr,
+			Stdout:  config.Stdout,
+		}
+
+		completionCmd, err = completion.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 
 	var versionCmd *cobra.Command
 	{
@@ -64,26 +105,11 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
-	f := &flag{}
+	f.Init(m)
 
-	r := &runner{
-		flag:   f,
-		logger: config.Logger,
-		stderr: config.Stderr,
-		stdout: config.Stdout,
-	}
+	m.AddCommand(cl001Cmd)
+	m.AddCommand(completionCmd)
+	m.AddCommand(versionCmd)
 
-	c := &cobra.Command{
-		Use:          name,
-		Short:        description,
-		Long:         description,
-		RunE:         r.Run,
-		SilenceUsage: true,
-	}
-
-	f.Init(c)
-
-	c.AddCommand(versionCmd)
-
-	return c, nil
+	return m, nil
 }
