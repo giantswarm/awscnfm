@@ -8,7 +8,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/pkg/action/ac001"
+	"github.com/giantswarm/awscnfm/pkg/action/ac002"
 	"github.com/giantswarm/awscnfm/pkg/client"
 	"github.com/giantswarm/awscnfm/pkg/env"
 )
@@ -54,7 +54,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	err = ac001.Execute(ctx, clients)
+	err = ac002.Execute(ctx, clients)
 	if err != nil {
 		return microerror.Mask(err)
 	}

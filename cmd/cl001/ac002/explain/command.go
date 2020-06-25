@@ -11,7 +11,7 @@ import (
 
 const (
 	name        = "explain"
-	description = "Explain action 001 for cluster 001."
+	description = "Explain action 002 for cluster 001."
 )
 
 type Config struct {
