@@ -10,6 +10,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/pkg/action"
 	"github.com/giantswarm/awscnfm/pkg/action/ac001"
 )
 
@@ -37,7 +38,20 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	fmt.Println(strings.TrimSpace(ac001.Explain()))
+	var err error
+
+	var e action.Explainer
+	{
+		c := ac001.ExplainerConfig{}
+
+		e, err = ac001.NewExplainer(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	fmt.Println(strings.TrimSpace(e.Explain()))
 	fmt.Println()
+
 	return nil
 }
