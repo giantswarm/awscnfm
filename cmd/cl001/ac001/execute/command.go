@@ -7,8 +7,6 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-
-	"github.com/giantswarm/awscnfm/pkg/client"
 )
 
 const (
@@ -17,16 +15,12 @@ const (
 )
 
 type Config struct {
-	Client *client.Client
 	Logger micrologger.Logger
 	Stderr io.Writer
 	Stdout io.Writer
 }
 
 func New(config Config) (*cobra.Command, error) {
-	if config.Client == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Client must not be empty", config)
-	}
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
@@ -40,7 +34,6 @@ func New(config Config) (*cobra.Command, error) {
 	f := &flag{}
 
 	r := &runner{
-		client: config.Client,
 		flag:   f,
 		logger: config.Logger,
 		stderr: config.Stderr,
