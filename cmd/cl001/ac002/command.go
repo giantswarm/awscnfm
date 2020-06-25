@@ -1,4 +1,4 @@
-package ac001
+package ac002
 
 import (
 	"io"
@@ -8,13 +8,13 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac001/execute"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac001/explain"
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac002/execute"
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac002/explain"
 )
 
 const (
-	name        = "ac001"
-	description = "Action 001 for cluster 001."
+	name        = "ac002"
+	description = "Action 002 for cluster 001."
 )
 
 type Config struct {

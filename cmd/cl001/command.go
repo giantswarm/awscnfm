@@ -9,8 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac001"
-	"github.com/giantswarm/awscnfm/pkg/client"
-	"github.com/giantswarm/awscnfm/pkg/env"
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac002"
 )
 
 const (
@@ -37,31 +36,29 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var clients *client.Client
-	{
-		c := client.Config{
-			Logger: config.Logger,
-
-			KubeConfig:    env.KubeConfig(),
-			TenantCluster: env.TenantCluster(),
-		}
-
-		clients, err = client.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	var ac001Cmd *cobra.Command
 	{
 		c := ac001.Config{
-			Client: clients,
 			Logger: config.Logger,
 			Stderr: config.Stderr,
 			Stdout: config.Stdout,
 		}
 
 		ac001Cmd, err = ac001.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac002Cmd *cobra.Command
+	{
+		c := ac002.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac002Cmd, err = ac002.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -86,6 +83,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(ac001Cmd)
+	c.AddCommand(ac002Cmd)
 
 	return c, nil
 }

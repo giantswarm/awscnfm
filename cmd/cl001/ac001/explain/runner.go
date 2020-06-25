@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -36,7 +37,7 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	fmt.Println(description)
-	fmt.Println(ac001.Explain())
+	fmt.Println(strings.TrimSpace(ac001.Explain()))
+	fmt.Println()
 	return nil
 }

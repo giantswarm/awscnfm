@@ -1,16 +1,16 @@
-package execute
+package explain
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/pkg/action/ac001"
-	"github.com/giantswarm/awscnfm/pkg/client"
-	"github.com/giantswarm/awscnfm/pkg/env"
+	"github.com/giantswarm/awscnfm/pkg/action/ac002"
 )
 
 type runner struct {
@@ -37,27 +37,7 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	var err error
-
-	var clients *client.Client
-	{
-		c := client.Config{
-			Logger: r.logger,
-
-			KubeConfig:    env.KubeConfig(),
-			TenantCluster: env.TenantCluster(),
-		}
-
-		clients, err = client.New(c)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-	}
-
-	err = ac001.Execute(ctx, clients)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
+	fmt.Println(strings.TrimSpace(ac002.Explain()))
+	fmt.Println()
 	return nil
 }
