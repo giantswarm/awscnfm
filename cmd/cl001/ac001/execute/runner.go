@@ -2,15 +2,18 @@ package execute
 
 import (
 	"context"
-	"fmt"
 	"io"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/pkg/action/ac001"
+	"github.com/giantswarm/awscnfm/pkg/client"
 )
 
 type runner struct {
+	client *client.Client
 	flag   *flag
 	logger micrologger.Logger
 	stdout io.Writer
@@ -34,6 +37,10 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	fmt.Printf("Executed!\n")
+	err := ac001.Execute(ctx, r.client)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
 	return nil
 }

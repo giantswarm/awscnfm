@@ -10,6 +10,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac001/execute"
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac001/explain"
+	"github.com/giantswarm/awscnfm/pkg/client"
 )
 
 const (
@@ -18,6 +19,7 @@ const (
 )
 
 type Config struct {
+	Client *client.Client
 	Logger micrologger.Logger
 	Stderr io.Writer
 	Stdout io.Writer
@@ -39,6 +41,7 @@ func New(config Config) (*cobra.Command, error) {
 	var executeCmd *cobra.Command
 	{
 		c := execute.Config{
+			Client: config.Client,
 			Logger: config.Logger,
 			Stderr: config.Stderr,
 			Stdout: config.Stdout,
