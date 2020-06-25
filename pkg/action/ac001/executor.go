@@ -88,14 +88,9 @@ func (e *Executor) Execute(ctx context.Context) error {
 			return microerror.Mask(err)
 		}
 
-		if len(list.Items) == 0 {
-			return microerror.Mask(notFoundError)
+		for _, cr := range list.Items {
+			desiredNodesReady += cr.Spec.Replicas
 		}
-		if len(list.Items) > 1 {
-			return microerror.Mask(tooManyCRsError)
-		}
-
-		desiredNodesReady = list.Items[0].Spec.Replicas
 	}
 
 	if currentNodesReady != desiredNodesReady {

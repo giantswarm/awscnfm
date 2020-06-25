@@ -64,7 +64,7 @@ func (e *Executor) Execute(ctx context.Context) error {
 
 	var currentNodesReady int
 	for _, node := range list.Items {
-		_, ok := node.Labels[label.MasterNodeRole]
+		_, ok := node.Labels[label.WorkerNodeRole]
 		if !ok {
 			continue
 		}
@@ -78,7 +78,7 @@ func (e *Executor) Execute(ctx context.Context) error {
 
 	var desiredNodesReady int
 	{
-		var list infrastructurev1alpha2.G8sControlPlaneList
+		var list infrastructurev1alpha2.AWSMachineDeploymentList
 		err := e.clients.ControlPlane.CtrlClient().List(
 			ctx,
 			&list,
@@ -88,19 +88,14 @@ func (e *Executor) Execute(ctx context.Context) error {
 			return microerror.Mask(err)
 		}
 
-		if len(list.Items) == 0 {
-			return microerror.Mask(notFoundError)
+		for _, cr := range list.Items {
+			desiredNodesReady += cr.Spec.NodePool.Scaling.Min
 		}
-		if len(list.Items) > 1 {
-			return microerror.Mask(tooManyCRsError)
-		}
-
-		desiredNodesReady = list.Items[0].Spec.Replicas
 	}
 
 	if currentNodesReady != desiredNodesReady {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The Tenant Cluster defines %d master nodes but it has only %d/%d healthy master nodes running.",
+			"The Tenant Cluster defines %d worker nodes but it has only %d/%d healthy worker nodes running.",
 			desiredNodesReady,
 			currentNodesReady,
 			desiredNodesReady,
