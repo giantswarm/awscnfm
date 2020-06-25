@@ -1,6 +1,18 @@
 package ac002
 
-func Explain() string {
+type ExplainerConfig struct {
+}
+
+type Explainer struct {
+}
+
+func NewExplainer(config ExplainerConfig) (*Explainer, error) {
+	e := &Explainer{}
+
+	return e, nil
+}
+
+func (e *Explainer) Explain() string {
 	return `
 Check if the desired amount of Tenant Cluster worker nodes are up and ready.
 

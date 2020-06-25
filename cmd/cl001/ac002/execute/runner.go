@@ -8,8 +8,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/pkg/action"
 	"github.com/giantswarm/awscnfm/pkg/action/ac002"
-	"github.com/giantswarm/awscnfm/pkg/client"
 	"github.com/giantswarm/awscnfm/pkg/env"
 )
 
@@ -39,22 +39,37 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
 
-	var clients *client.Client
+	var clients *action.Clients
 	{
-		c := client.Config{
+		c := action.Config{
 			Logger: r.logger,
 
 			KubeConfig:    env.KubeConfig(),
 			TenantCluster: env.TenantCluster(),
 		}
 
-		clients, err = client.New(c)
+		clients, err = action.NewClients(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}
 	}
 
-	err = ac002.Execute(ctx, clients)
+	var e action.Executor
+	{
+		c := ac002.ExecutorConfig{
+			Clients: clients,
+			Logger:  r.logger,
+
+			TenantCluster: env.TenantCluster(),
+		}
+
+		e, err = ac002.NewExecutor(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	err = e.Execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}

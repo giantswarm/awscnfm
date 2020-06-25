@@ -10,6 +10,7 @@ Conformance test utility for AWS.
 ### Docs
 
 * [Completion](/docs/completion.md)
+* [Environment](/docs/environment.md)
 * [Structure](/docs/structure.md)
 
 

@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"io/ioutil"
+	"os"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -14,7 +17,13 @@ import (
 func main() {
 	err := mainE(context.Background())
 	if err != nil {
-		panic(microerror.JSON(err))
+		mErr, ok := microerror.Cause(err).(*microerror.Error)
+		if ok && mErr.Desc != "" {
+			fmt.Println(mErr.Desc)
+			os.Exit(1)
+		} else {
+			panic(microerror.JSON(err))
+		}
 	}
 }
 
@@ -23,7 +32,9 @@ func mainE(ctx context.Context) error {
 
 	var logger micrologger.Logger
 	{
-		c := micrologger.Config{}
+		c := micrologger.Config{
+			IOWriter: ioutil.Discard,
+		}
 
 		logger, err = micrologger.New(c)
 		if err != nil {

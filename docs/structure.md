@@ -35,12 +35,18 @@ $ awscnfm cl001 ac002 ...
 ### Execute Tests
 
 Executing tests is silent by design. The command does not print anything and
-silently exits with status code 0. In case the test failed an error is produced
-and printed.
+silently exits with status code 0. In case the test failed an error is printed
+and the command exits with status code 1.
 
 ```
 $ awscnfm cl001 ac001 execute
 ```
+
+```
+$ awscnfm cl001 ac001 execute
+The Tenant Cluster defines 3 master nodes but it only has 2/3 healthy master nodes running.
+```
+
 
 
 

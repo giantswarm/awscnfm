@@ -50,11 +50,15 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	m := &cobra.Command{
-		Use:          name,
-		Short:        description,
-		Long:         description,
-		RunE:         r.Run,
-		SilenceUsage: true,
+		Use:   name,
+		Short: description,
+		Long:  description,
+		RunE:  r.Run,
+		// We slience errors because we do not want to see spf13/cobra printing.
+		// The errors returned by the commands will be propagated to the main.go
+		// anyway, where we have custom error printing for the tool.
+		SilenceErrors: true,
+		SilenceUsage:  true,
 	}
 
 	var err error

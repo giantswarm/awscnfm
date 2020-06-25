@@ -1,4 +1,4 @@
-package client
+package action
 
 import (
 	"context"
@@ -28,12 +28,12 @@ type Config struct {
 	TenantCluster string
 }
 
-type Client struct {
+type Clients struct {
 	ControlPlane  k8sclient.Interface
 	TenantCluster k8sclient.Interface
 }
 
-func New(config Config) (*Client, error) {
+func NewClients(config Config) (*Clients, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
@@ -146,7 +146,7 @@ func New(config Config) (*Client, error) {
 		}
 	}
 
-	c := &Client{
+	c := &Clients{
 		ControlPlane:  cpClient,
 		TenantCluster: tcClient,
 	}
