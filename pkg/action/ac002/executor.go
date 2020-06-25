@@ -100,7 +100,7 @@ func (e *Executor) Execute(ctx context.Context) error {
 
 	if currentNodesReady != desiredNodesReady {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The Tenant Cluster defines %d master nodes but it only has %d/%d healthy master nodes running.",
+			"The Tenant Cluster defines %d master nodes but it has only %d/%d healthy master nodes running.",
 			desiredNodesReady,
 			currentNodesReady,
 			desiredNodesReady,

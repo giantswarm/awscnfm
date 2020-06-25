@@ -44,7 +44,7 @@ $ awscnfm cl001 ac001 execute
 
 ```
 $ awscnfm cl001 ac001 execute
-The Tenant Cluster defines 3 master nodes but it only has 2/3 healthy master nodes running.
+The Tenant Cluster defines 3 master nodes but it has only 2/3 healthy master nodes running.
 ```
 
 
