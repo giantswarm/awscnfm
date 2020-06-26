@@ -10,11 +10,10 @@ import (
 )
 
 type runner struct {
-	flag    *flag
-	logger  micrologger.Logger
-	mainCmd *cobra.Command
-	stdout  io.Writer
-	stderr  io.Writer
+	flag   *flag
+	logger micrologger.Logger
+	stdout io.Writer
+	stderr io.Writer
 }
 
 func (r *runner) Run(cmd *cobra.Command, args []string) error {
