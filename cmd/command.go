@@ -10,6 +10,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/cmd/cl001"
 	"github.com/giantswarm/awscnfm/cmd/completion"
+	"github.com/giantswarm/awscnfm/cmd/gen"
 	"github.com/giantswarm/awscnfm/cmd/version"
 	"github.com/giantswarm/awscnfm/pkg/project"
 )
@@ -92,6 +93,20 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var genCmd *cobra.Command
+	{
+		c := gen.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		genCmd, err = gen.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	var versionCmd *cobra.Command
 	{
 		c := version.Config{
@@ -113,6 +128,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	m.AddCommand(cl001Cmd)
 	m.AddCommand(completionCmd)
+	m.AddCommand(genCmd)
 	m.AddCommand(versionCmd)
 
 	return m, nil
