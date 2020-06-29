@@ -1,6 +1,6 @@
 package template
 
-var ExecuteGo = `
+var CommandGo = `
 package {{ .Action }}
 
 import (

@@ -1,6 +1,6 @@
 package execute
 
-var ExecuteGo = `
+var CommandGo = `
 package execute
 
 import (

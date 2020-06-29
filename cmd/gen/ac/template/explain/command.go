@@ -1,6 +1,6 @@
 package explain
 
-var ExecuteGo = `
+var CommandGo = `
 package explain
 
 import (
