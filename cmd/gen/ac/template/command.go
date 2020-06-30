@@ -4,8 +4,7 @@ import "github.com/giantswarm/awscnfm/pkg/key"
 
 var CommandBase = key.GeneratedWithPrefix("command.go")
 
-var CommandContent = `
-package {{ .Action }}
+var CommandContent = `package {{ .Action }}
 
 import (
 	"io"

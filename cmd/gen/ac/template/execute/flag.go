@@ -8,8 +8,7 @@ import (
 
 var FlagBase = filepath.Join("execute", key.GeneratedWithPrefix("flag.go"))
 
-var FlagContent = `
-package execute
+var FlagContent = `package execute
 
 import "github.com/spf13/cobra"
 

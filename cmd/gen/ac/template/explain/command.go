@@ -8,8 +8,7 @@ import (
 
 var CommandBase = filepath.Join("explain", key.GeneratedWithPrefix("command.go"))
 
-var CommandContent = `
-package explain
+var CommandContent = `package explain
 
 import (
 	"io"

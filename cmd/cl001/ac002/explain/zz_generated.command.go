@@ -1,4 +1,4 @@
-package ac002
+package explain
 
 import (
 	"io"
@@ -7,14 +7,11 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac002/execute"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac002/explain"
 )
 
 const (
-	name        = "ac002"
-	description = "Action 002 for cluster 001."
+	name        = "explain"
+	description = "Explain action ac002 for cluster cl001."
 )
 
 type Config struct {
@@ -34,36 +31,6 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	var err error
-
-	var executeCmd *cobra.Command
-	{
-		c := execute.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		executeCmd, err = execute.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var explainCmd *cobra.Command
-	{
-		c := explain.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		explainCmd, err = explain.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -81,9 +48,6 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	f.Init(c)
-
-	c.AddCommand(executeCmd)
-	c.AddCommand(explainCmd)
 
 	return c, nil
 }

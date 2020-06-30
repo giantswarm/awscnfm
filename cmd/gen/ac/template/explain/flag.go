@@ -8,8 +8,7 @@ import (
 
 var FlagBase = filepath.Join("explain", key.GeneratedWithPrefix("flag.go"))
 
-var FlagContent = `
-package explain
+var FlagContent = `package explain
 
 import "github.com/spf13/cobra"
 

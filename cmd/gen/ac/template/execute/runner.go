@@ -8,8 +8,7 @@ import (
 
 var RunnerBase = filepath.Join("execute", key.GeneratedWithPrefix("runner.go"))
 
-var RunnerContent = `
-package execute
+var RunnerContent = `package execute
 
 import (
 	"context"

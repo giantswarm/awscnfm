@@ -4,8 +4,7 @@ import "github.com/giantswarm/awscnfm/pkg/key"
 
 var ErrorBase = key.GeneratedWithPrefix("error.go")
 
-var ErrorContent = `
-package {{ .Action }}
+var ErrorContent = `package {{ .Action }}
 
 import "github.com/giantswarm/microerror"
 

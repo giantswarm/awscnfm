@@ -8,8 +8,7 @@ import (
 
 var ErrorBase = filepath.Join("explain", key.GeneratedWithPrefix("error.go"))
 
-var ErrorContent = `
-package explain
+var ErrorContent = `package explain
 
 import "github.com/giantswarm/microerror"
 

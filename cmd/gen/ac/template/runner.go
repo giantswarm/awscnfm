@@ -4,8 +4,7 @@ import "github.com/giantswarm/awscnfm/pkg/key"
 
 var RunnerBase = key.GeneratedWithPrefix("runner.go")
 
-var RunnerContent = `
-package {{ .Action }}
+var RunnerContent = `package {{ .Action }}
 
 import (
 	"context"
