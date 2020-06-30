@@ -1,4 +1,4 @@
-package explain
+package execute
 
 import (
 	"io"
@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	name        = "explain"
-	description = "Explain action 001 for cluster 001."
+	name        = "execute"
+	description = "Execute action ac001 for cluster cl001."
 )
 
 type Config struct {
