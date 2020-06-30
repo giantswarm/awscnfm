@@ -1,6 +1,14 @@
 package execute
 
-var ErrorGo = `
+import (
+	"path/filepath"
+
+	"github.com/giantswarm/awscnfm/pkg/key"
+)
+
+var ErrorBase = filepath.Join("execute", key.GeneratedWithPrefix("error.go"))
+
+var ErrorContent = `
 package execute
 
 import "github.com/giantswarm/microerror"

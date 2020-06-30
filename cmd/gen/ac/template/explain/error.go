@@ -1,6 +1,14 @@
 package explain
 
-var ErrorGo = `
+import (
+	"path/filepath"
+
+	"github.com/giantswarm/awscnfm/pkg/key"
+)
+
+var ErrorBase = filepath.Join("explain", key.GeneratedWithPrefix("error.go"))
+
+var ErrorContent = `
 package explain
 
 import "github.com/giantswarm/microerror"

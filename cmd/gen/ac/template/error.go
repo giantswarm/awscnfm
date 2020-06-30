@@ -1,6 +1,10 @@
 package template
 
-var ErrorGo = `
+import "github.com/giantswarm/awscnfm/pkg/key"
+
+var ErrorBase = key.GeneratedWithPrefix("error.go")
+
+var ErrorContent = `
 package {{ .Action }}
 
 import "github.com/giantswarm/microerror"

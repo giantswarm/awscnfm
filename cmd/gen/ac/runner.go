@@ -3,8 +3,12 @@ package ac
 import (
 	"bytes"
 	"context"
-	"html/template"
+	"fmt"
 	"io"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"text/template"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -41,8 +45,6 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	var err error
-
 	data := struct {
 		Action  string
 		Cluster string
@@ -51,36 +53,55 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		Cluster: r.flag.Cluster,
 	}
 
-	templates := map[string]string{
-		"command.go":         actemplate.CommandGo,
-		"error.go":           actemplate.ErrorGo,
-		"flag.go":            actemplate.FlagGo,
-		"runner.go":          actemplate.RunnerGo,
-		"execute/command.go": actemplateexecute.CommandGo,
-		"execute/error.go":   actemplateexecute.ErrorGo,
-		"execute/flag.go":    actemplateexecute.FlagGo,
-		"execute/runner.go":  actemplateexecute.RunnerGo,
-		"explain/command.go": actemplateexplain.CommandGo,
-		"explain/error.go":   actemplateexplain.ErrorGo,
-		"explain/flag.go":    actemplateexplain.FlagGo,
-		"explain/runner.go":  actemplateexplain.RunnerGo,
+	// templates is a predefined list of lists for debugging reasons. When
+	// defining map[string]string for the key-value pairs the order of items
+	// changes since go maps are not deterministic.
+	templates := [][]string{
+		{actemplateexecute.CommandBase, actemplateexecute.CommandContent},
+		{actemplateexecute.ErrorBase, actemplateexecute.ErrorContent},
+		{actemplateexecute.FlagBase, actemplateexecute.FlagContent},
+		{actemplateexecute.RunnerBase, actemplateexecute.RunnerContent},
+
+		{actemplateexplain.CommandBase, actemplateexplain.CommandContent},
+		{actemplateexplain.ErrorBase, actemplateexplain.ErrorContent},
+		{actemplateexplain.FlagBase, actemplateexplain.FlagContent},
+		{actemplateexplain.RunnerBase, actemplateexplain.RunnerContent},
+
+		{actemplate.CommandBase, actemplate.CommandContent},
+		{actemplate.ErrorBase, actemplate.ErrorContent},
+		{actemplate.FlagBase, actemplate.FlagContent},
+		{actemplate.RunnerBase, actemplate.RunnerContent},
 	}
 
-	for p, k := range templates {
-		main := template.New(p)
+	for _, l := range templates {
+		base := l[0]
+		cont := l[1]
 
-		main, err = main.Parse(t)
+		path, err := filepath.Abs(filepath.Join(fmt.Sprintf("cmd/%s/%s", data.Cluster, data.Action), base))
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		var b bytes.Buffer
-		err = main.ExecuteTemplate(&b, "main", data)
+		t, err := template.New(path).Parse(cont)
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		return b.String()
+		var buff bytes.Buffer
+		err = t.ExecuteTemplate(&buff, path, data)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+
+		err = os.MkdirAll(filepath.Dir(path), os.ModePerm)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+
+		err = ioutil.WriteFile(path, buff.Bytes(), 0644)
+		if err != nil {
+			return microerror.Mask(err)
+		}
 	}
 
 	return nil

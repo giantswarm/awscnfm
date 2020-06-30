@@ -1,6 +1,14 @@
 package explain
 
-var RunnerGo = `
+import (
+	"path/filepath"
+
+	"github.com/giantswarm/awscnfm/pkg/key"
+)
+
+var RunnerBase = filepath.Join("explain", key.GeneratedWithPrefix("runner.go"))
+
+var RunnerContent = `
 package explain
 
 import (

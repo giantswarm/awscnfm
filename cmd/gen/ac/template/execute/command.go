@@ -1,6 +1,14 @@
 package execute
 
-var CommandGo = `
+import (
+	"path/filepath"
+
+	"github.com/giantswarm/awscnfm/pkg/key"
+)
+
+var CommandBase = filepath.Join("execute", key.GeneratedWithPrefix("command.go"))
+
+var CommandContent = `
 package execute
 
 import (
