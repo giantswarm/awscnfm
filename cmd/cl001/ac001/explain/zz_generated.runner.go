@@ -50,7 +50,12 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	fmt.Println(strings.TrimSpace(e.Explain()))
+	s, err := e.Explain(ctx)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	fmt.Println(strings.TrimSpace(s))
 	fmt.Println()
 
 	return nil

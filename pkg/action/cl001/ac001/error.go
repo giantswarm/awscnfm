@@ -22,3 +22,5 @@ var invalidConfigError = &microerror.Error{
 func IsInvalidConfig(err error) bool {
 	return microerror.Cause(err) == invalidConfigError
 }
+
+// people add custom errors to error.go

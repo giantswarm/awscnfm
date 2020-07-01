@@ -1,6 +1,9 @@
 package key
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 const (
 	// GeneratePrefix is a file name prefix we add to generated files by
@@ -15,4 +18,8 @@ func APIEndpoint(id string, base string) string {
 
 func GeneratedWithPrefix(s string) string {
 	return fmt.Sprintf("%s%s", GeneratePrefix, s)
+}
+
+func HasGeneratedPrefix(s string) bool {
+	return strings.HasPrefix(s, GeneratePrefix)
 }
