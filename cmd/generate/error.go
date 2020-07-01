@@ -1,4 +1,4 @@
-package gen
+package generate
 
 import "github.com/giantswarm/microerror"
 

@@ -1,4 +1,4 @@
-package ac
+package action
 
 import (
 	"io"
@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	name        = "ac"
+	name        = "action"
 	description = "Generate a new action sub command."
 )
 

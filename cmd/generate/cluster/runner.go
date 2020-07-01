@@ -1,4 +1,4 @@
-package cl
+package cluster
 
 import (
 	"context"

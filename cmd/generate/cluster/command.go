@@ -1,4 +1,4 @@
-package cl
+package cluster
 
 import (
 	"io"
@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	name        = "cl"
+	name        = "cluster"
 	description = "Generate a new cluster sub command."
 )
 
