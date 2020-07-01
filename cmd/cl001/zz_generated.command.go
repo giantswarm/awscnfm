@@ -14,7 +14,7 @@ import (
 
 const (
 	name        = "cl001"
-	description = "Conformance tests for cluster 001."
+	description = "Conformance tests for cluster cl001."
 )
 
 type Config struct {
