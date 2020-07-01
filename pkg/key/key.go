@@ -21,5 +21,5 @@ func GeneratedWithPrefix(s string) string {
 }
 
 func HasGeneratedPrefix(s string) bool {
-	return strings.HasPrefix(s, GeneratePrefix)
+	return strings.Contains(s, GeneratePrefix)
 }

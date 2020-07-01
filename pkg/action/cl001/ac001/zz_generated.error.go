@@ -1,12 +1,4 @@
-package action
-
-import (
-	"github.com/giantswarm/awscnfm/pkg/key"
-)
-
-var ErrorBase = key.GeneratedWithPrefix("error.go")
-
-var ErrorContent = `package {{ .Action }}
+package ac001
 
 import "github.com/giantswarm/microerror"
 
@@ -27,4 +19,3 @@ var invalidFlagsError = &microerror.Error{
 func IsInvalidFlags(err error) bool {
 	return microerror.Cause(err) == invalidFlagsError
 }
-`

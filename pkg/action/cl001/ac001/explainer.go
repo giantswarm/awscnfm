@@ -1,20 +1,10 @@
 package ac001
 
-import "context"
+import (
+	"context"
+)
 
-type ExplainerConfig struct {
-}
-
-type Explainer struct {
-}
-
-func NewExplainer(config ExplainerConfig) (*Explainer, error) {
-	e := &Explainer{}
-
-	return e, nil
-}
-
-func (e *Explainer) Explain(ctx context.Context) (string, error) {
+func (e *Explainer) explain(ctx context.Context) (string, error) {
 	return `
 Check if the desired amount of Tenant Cluster master nodes are up and ready.
 

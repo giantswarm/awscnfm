@@ -1,12 +1,4 @@
-package action
-
-import (
-	"github.com/giantswarm/awscnfm/pkg/key"
-)
-
-var ExplainerBase = key.GeneratedWithPrefix("explainer.go")
-
-var ExplainerContent = `package {{ .Action }}
+package ac001
 
 import (
 	"context"
@@ -34,4 +26,3 @@ func (e *Explainer) Explain(ctx context.Context) (string, error) {
 
 	return s, nil
 }
-`
