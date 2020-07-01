@@ -13,10 +13,9 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-
-{{ range $a := .Actions -}}
+{{ range $a := .Actions }}
 	"github.com/giantswarm/awscnfm/cmd/{{ $.Cluster }}/{{ $a }}"
-{{ end -}}
+{{- end }}
 )
 
 const (
@@ -42,8 +41,7 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
-
-{{ range $a := .Actions -}}
+{{ range $a := .Actions }}
 	var {{ $a }}Cmd *cobra.Command
 	{
 		c := {{ $a }}.Config{
@@ -57,8 +55,7 @@ func New(config Config) (*cobra.Command, error) {
 			return nil, microerror.Mask(err)
 		}
 	}
-
-{{ end -}}
+{{ end }}
 	f := &flag{}
 
 	r := &runner{
@@ -76,10 +73,10 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	f.Init(c)
-
-{{ range $a := .Actions -}}
+{{ range $a := .Actions }}
 	c.AddCommand({{ $a }}Cmd)
-{{ end }}
+{{- end }}
+
 	return c, nil
 }
 `
