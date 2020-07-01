@@ -6,51 +6,13 @@ import (
 
 	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/microerror"
-	"github.com/giantswarm/micrologger"
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/giantswarm/awscnfm/pkg/action"
 	"github.com/giantswarm/awscnfm/pkg/label"
 )
 
-type ExecutorConfig struct {
-	Clients *action.Clients
-	Logger  micrologger.Logger
-
-	TenantCluster string
-}
-
-type Executor struct {
-	clients *action.Clients
-	logger  micrologger.Logger
-
-	tenantCluster string
-}
-
-func NewExecutor(config ExecutorConfig) (*Executor, error) {
-	if config.Clients == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Clients must not be empty", config)
-	}
-	if config.Logger == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
-	}
-
-	if config.TenantCluster == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
-	}
-
-	e := &Executor{
-		clients: config.Clients,
-		logger:  config.Logger,
-
-		tenantCluster: config.TenantCluster,
-	}
-
-	return e, nil
-}
-
-func (e *Executor) Execute(ctx context.Context) error {
+func (e *Executor) execute(ctx context.Context) error {
 	var list corev1.NodeList
 	{
 		err := e.clients.TenantCluster.CtrlClient().List(
