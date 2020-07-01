@@ -1,7 +1,14 @@
 package explain
 
-var ExecuteGo = `
-package explain
+import (
+	"path/filepath"
+
+	"github.com/giantswarm/awscnfm/pkg/key"
+)
+
+var CommandBase = filepath.Join("explain", key.GeneratedWithPrefix("command.go"))
+
+var CommandContent = `package explain
 
 import (
 	"io"

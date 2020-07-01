@@ -1,7 +1,10 @@
 package template
 
-var FlagGo = `
-package {{ .Action }}
+import "github.com/giantswarm/awscnfm/pkg/key"
+
+var FlagBase = key.GeneratedWithPrefix("flag.go")
+
+var FlagContent = `package {{ .Action }}
 
 import "github.com/spf13/cobra"
 

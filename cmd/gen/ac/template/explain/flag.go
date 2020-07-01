@@ -1,7 +1,14 @@
 package explain
 
-var FlagGo = `
-package explain
+import (
+	"path/filepath"
+
+	"github.com/giantswarm/awscnfm/pkg/key"
+)
+
+var FlagBase = filepath.Join("explain", key.GeneratedWithPrefix("flag.go"))
+
+var FlagContent = `package explain
 
 import "github.com/spf13/cobra"
 
