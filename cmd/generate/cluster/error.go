@@ -1,4 +1,4 @@
-package ac
+package cluster
 
 import "github.com/giantswarm/microerror"
 
@@ -11,11 +11,11 @@ func IsInvalidConfig(err error) bool {
 	return microerror.Cause(err) == invalidConfigError
 }
 
-var invalidFlagError = &microerror.Error{
-	Kind: "invalidFlagError",
+var invalidFlagsError = &microerror.Error{
+	Kind: "invalidFlagsError",
 }
 
-// IsInvalidFlag asserts invalidFlagsError.
-func IsInvalidFlag(err error) bool {
-	return microerror.Cause(err) == invalidFlagError
+// IsInvalidFlags asserts invalidFlagsError.
+func IsInvalidFlags(err error) bool {
+	return microerror.Cause(err) == invalidFlagsError
 }

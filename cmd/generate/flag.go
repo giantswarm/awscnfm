@@ -1,4 +1,4 @@
-package cl
+package generate
 
 import "github.com/spf13/cobra"
 

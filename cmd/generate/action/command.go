@@ -1,4 +1,4 @@
-package cl
+package action
 
 import (
 	"io"
@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	name        = "cl"
-	description = "Generate a new cluster sub command."
+	name        = "action"
+	description = "Generate a new action sub command."
 )
 
 type Config struct {

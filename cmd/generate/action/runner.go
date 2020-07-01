@@ -1,4 +1,4 @@
-package ac
+package action
 
 import (
 	"bytes"
@@ -14,9 +14,9 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	actemplate "github.com/giantswarm/awscnfm/cmd/gen/ac/template"
-	actemplateexecute "github.com/giantswarm/awscnfm/cmd/gen/ac/template/execute"
-	actemplateexplain "github.com/giantswarm/awscnfm/cmd/gen/ac/template/explain"
+	actiontemplate "github.com/giantswarm/awscnfm/cmd/generate/action/template"
+	actiontemplateexecute "github.com/giantswarm/awscnfm/cmd/generate/action/template/execute"
+	actiontemplateexplain "github.com/giantswarm/awscnfm/cmd/generate/action/template/explain"
 )
 
 type runner struct {
@@ -57,20 +57,20 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	// defining map[string]string for the key-value pairs the order of items
 	// changes since go maps are not deterministic.
 	templates := [][]string{
-		{actemplateexecute.CommandBase, actemplateexecute.CommandContent},
-		{actemplateexecute.ErrorBase, actemplateexecute.ErrorContent},
-		{actemplateexecute.FlagBase, actemplateexecute.FlagContent},
-		{actemplateexecute.RunnerBase, actemplateexecute.RunnerContent},
+		{actiontemplateexecute.CommandBase, actiontemplateexecute.CommandContent},
+		{actiontemplateexecute.ErrorBase, actiontemplateexecute.ErrorContent},
+		{actiontemplateexecute.FlagBase, actiontemplateexecute.FlagContent},
+		{actiontemplateexecute.RunnerBase, actiontemplateexecute.RunnerContent},
 
-		{actemplateexplain.CommandBase, actemplateexplain.CommandContent},
-		{actemplateexplain.ErrorBase, actemplateexplain.ErrorContent},
-		{actemplateexplain.FlagBase, actemplateexplain.FlagContent},
-		{actemplateexplain.RunnerBase, actemplateexplain.RunnerContent},
+		{actiontemplateexplain.CommandBase, actiontemplateexplain.CommandContent},
+		{actiontemplateexplain.ErrorBase, actiontemplateexplain.ErrorContent},
+		{actiontemplateexplain.FlagBase, actiontemplateexplain.FlagContent},
+		{actiontemplateexplain.RunnerBase, actiontemplateexplain.RunnerContent},
 
-		{actemplate.CommandBase, actemplate.CommandContent},
-		{actemplate.ErrorBase, actemplate.ErrorContent},
-		{actemplate.FlagBase, actemplate.FlagContent},
-		{actemplate.RunnerBase, actemplate.RunnerContent},
+		{actiontemplate.CommandBase, actiontemplate.CommandContent},
+		{actiontemplate.ErrorBase, actiontemplate.ErrorContent},
+		{actiontemplate.FlagBase, actiontemplate.FlagContent},
+		{actiontemplate.RunnerBase, actiontemplate.RunnerContent},
 	}
 
 	for _, l := range templates {

@@ -1,4 +1,4 @@
-package gen
+package cluster
 
 import (
 	"io"
@@ -7,14 +7,11 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-
-	"github.com/giantswarm/awscnfm/cmd/gen/ac"
-	"github.com/giantswarm/awscnfm/cmd/gen/cl"
 )
 
 const (
-	name        = "gen"
-	description = "Generate sub commands for clusters and actions."
+	name        = "cluster"
+	description = "Generate a new cluster sub command."
 )
 
 type Config struct {
@@ -34,36 +31,6 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	var err error
-
-	var acCmd *cobra.Command
-	{
-		c := ac.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		acCmd, err = ac.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var clCmd *cobra.Command
-	{
-		c := cl.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		clCmd, err = cl.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -81,9 +48,6 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	f.Init(c)
-
-	c.AddCommand(acCmd)
-	c.AddCommand(clCmd)
 
 	return c, nil
 }
