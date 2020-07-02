@@ -1,4 +1,4 @@
-package template
+package cmd
 
 import "github.com/giantswarm/awscnfm/pkg/key"
 

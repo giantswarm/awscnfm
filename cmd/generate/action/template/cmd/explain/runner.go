@@ -1,18 +1,27 @@
-package template
+package explain
 
-import "github.com/giantswarm/awscnfm/pkg/key"
+import (
+	"path/filepath"
 
-var RunnerBase = key.GeneratedWithPrefix("runner.go")
+	"github.com/giantswarm/awscnfm/pkg/key"
+)
 
-var RunnerContent = `package {{ .Action }}
+var RunnerBase = filepath.Join("explain", key.GeneratedWithPrefix("runner.go"))
+
+var RunnerContent = `package explain
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/pkg/action"
+	"github.com/giantswarm/awscnfm/pkg/action/{{ .Cluster }}/{{ .Action }}"
 )
 
 type runner struct {
@@ -39,10 +48,25 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	err := cmd.Help()
+	var err error
+
+	var e action.Explainer
+	{
+		c := {{ .Action }}.ExplainerConfig{}
+
+		e, err = {{ .Action }}.NewExplainer(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	s, err := e.Explain(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
+
+	fmt.Println(strings.TrimSpace(s))
+	fmt.Println()
 
 	return nil
 }

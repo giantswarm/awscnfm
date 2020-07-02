@@ -9,5 +9,5 @@ type Executor interface {
 }
 
 type Explainer interface {
-	Explain() string
+	Explain(ctx context.Context) (string, error)
 }
