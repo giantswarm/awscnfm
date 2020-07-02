@@ -144,7 +144,7 @@ func write(data actiontemplate.Data, templates [][]string, dirfmt string) error 
 				regenerate = true
 			}
 
-			// This means that r.g. custom business logic in explainer.go is
+			// This means that e.g. custom business logic in explainer.go is
 			// only bootstrapped, but not regenerated once the file exists,
 			// because this means whoever generated the action subcommand in the
 			// first place got the chance to add their custom code in there
