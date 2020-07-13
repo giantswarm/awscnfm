@@ -1,4 +1,4 @@
-package ac002
+package ac003
 
 import (
 	"context"
@@ -26,7 +26,7 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	var currentNodesReady int
 	for _, node := range list.Items {
-		_, ok := node.Labels[label.MasterNodeRole]
+		_, ok := node.Labels[label.WorkerNodeRole]
 		if !ok {
 			continue
 		}
@@ -40,7 +40,7 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	var desiredNodesReady int
 	{
-		var list infrastructurev1alpha2.G8sControlPlaneList
+		var list infrastructurev1alpha2.AWSMachineDeploymentList
 		err := e.clients.ControlPlane.CtrlClient().List(
 			ctx,
 			&list,
@@ -51,13 +51,13 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 
 		for _, cr := range list.Items {
-			desiredNodesReady += cr.Spec.Replicas
+			desiredNodesReady += cr.Spec.NodePool.Scaling.Min
 		}
 	}
 
 	if currentNodesReady != desiredNodesReady {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The Tenant Cluster defines %d master nodes but it has only %d/%d healthy master nodes running.",
+			"The Tenant Cluster defines %d worker nodes but it has only %d/%d healthy worker nodes running.",
 			desiredNodesReady,
 			currentNodesReady,
 			desiredNodesReady,
