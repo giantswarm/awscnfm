@@ -1,4 +1,4 @@
-package cl001
+package ac003
 
 import (
 	"io"
@@ -8,14 +8,13 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac001"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac002"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac003"
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac003/execute"
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac003/explain"
 )
 
 const (
-	name        = "cl001"
-	description = "Conformance tests for cluster cl001."
+	name        = "ac003"
+	description = "Action ac003 for cluster 001."
 )
 
 type Config struct {
@@ -37,43 +36,29 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var ac001Cmd *cobra.Command
+	var executeCmd *cobra.Command
 	{
-		c := ac001.Config{
+		c := execute.Config{
 			Logger: config.Logger,
 			Stderr: config.Stderr,
 			Stdout: config.Stdout,
 		}
 
-		ac001Cmd, err = ac001.New(c)
+		executeCmd, err = execute.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	}
 
-	var ac002Cmd *cobra.Command
+	var explainCmd *cobra.Command
 	{
-		c := ac002.Config{
+		c := explain.Config{
 			Logger: config.Logger,
 			Stderr: config.Stderr,
 			Stdout: config.Stdout,
 		}
 
-		ac002Cmd, err = ac002.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var ac003Cmd *cobra.Command
-	{
-		c := ac003.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		ac003Cmd, err = ac003.New(c)
+		explainCmd, err = explain.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -97,9 +82,8 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(ac001Cmd)
-	c.AddCommand(ac002Cmd)
-	c.AddCommand(ac003Cmd)
+	c.AddCommand(executeCmd)
+	c.AddCommand(explainCmd)
 
 	return c, nil
 }
