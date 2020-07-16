@@ -81,10 +81,9 @@ func New(config Config) (*cobra.Command, error) {
 	var completionCmd *cobra.Command
 	{
 		c := completion.Config{
-			Logger:  config.Logger,
-			MainCmd: m,
-			Stderr:  config.Stderr,
-			Stdout:  config.Stdout,
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
 		}
 
 		completionCmd, err = completion.New(c)

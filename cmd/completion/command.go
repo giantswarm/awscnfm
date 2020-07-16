@@ -7,20 +7,42 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-
-	"github.com/giantswarm/awscnfm/cmd/completion/zsh"
 )
 
 const (
-	name        = "completion"
-	description = "Generate shell completions for zsh."
+	name             = "completion [bash|zsh|fish|powershell]"
+	shortDescription = "Generate completion script."
+	longDescription  = `To load completions:
+	
+	# Bash:
+	
+	$ source <(awscnfm completion bash)
+	
+	# To load completions for each session, execute once:
+	# Linux:
+	  $ awscnfm completion bash > /etc/bash_completion.d/awscnfm
+	# MacOS:
+	  $ awscnfm completion bash > /usr/local/etc/bash_completion.d/awscnfm
+	
+	# Zsh:
+	
+	$ source <(awscnfm completion zsh)
+	
+	# To load completions for each session, execute once:
+	$ awscnfm completion zsh > "${fpath[1]}/_awscnfm"
+	
+	# Fish:
+	
+	$ awscnfm completion fish | source
+	
+	# To load completions for each session, execute once:
+	$ awscnfm completion fish > ~/.config/fish/completions/awscnfm.fish`
 )
 
 type Config struct {
-	Logger  micrologger.Logger
-	MainCmd *cobra.Command
-	Stderr  io.Writer
-	Stdout  io.Writer
+	Logger micrologger.Logger
+	Stderr io.Writer
+	Stdout io.Writer
 }
 
 func New(config Config) (*cobra.Command, error) {
@@ -34,42 +56,21 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	var err error
-
-	var zshCmd *cobra.Command
-	{
-		c := zsh.Config{
-			Logger:  config.Logger,
-			MainCmd: config.MainCmd,
-			Stderr:  config.Stderr,
-			Stdout:  config.Stdout,
-		}
-
-		zshCmd, err = zsh.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	f := &flag{}
-
 	r := &runner{
-		flag:   f,
 		logger: config.Logger,
 		stderr: config.Stderr,
 		stdout: config.Stdout,
 	}
 
 	c := &cobra.Command{
-		Use:   name,
-		Short: description,
-		Long:  description,
-		RunE:  r.Run,
+		Use:                   name,
+		Short:                 shortDescription,
+		Long:                  longDescription,
+		DisableFlagsInUseLine: true,
+		ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
+		Args:                  cobra.ExactValidArgs(1),
+		RunE:                  r.Run,
 	}
-
-	f.Init(c)
-
-	c.AddCommand(zshCmd)
 
 	return c, nil
 }
