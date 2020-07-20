@@ -12,6 +12,13 @@ const (
 	GeneratePrefix = "zz_generated."
 )
 
+const (
+	// Release is the latest release version we use as base for conformance
+	// testing. This version changes with each new release so that we stay
+	// synchronized with the latest AWS release we publish.
+	Release = "12.0.0"
+)
+
 func APIEndpoint(id string, base string) string {
 	return fmt.Sprintf("api.%s.k8s.%s", id, base)
 }
