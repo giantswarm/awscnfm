@@ -62,6 +62,16 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		if err != nil {
 			return microerror.Mask(err)
 		}
+
+		err = clients.InitControlPlane(ctx)
+		if err != nil {
+			return microerror.Mask(err)
+		}{{ if ne .Action "ac001" }}
+
+		err = clients.InitTenantCluster(ctx)
+		if err != nil {
+			return microerror.Mask(err)
+		}{{ end }}
 	}
 
 	var e action.Executor

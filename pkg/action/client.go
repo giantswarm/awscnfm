@@ -31,6 +31,11 @@ type Config struct {
 type Clients struct {
 	ControlPlane  k8sclient.Interface
 	TenantCluster k8sclient.Interface
+
+	logger micrologger.Logger
+
+	kubeConfig    string
+	tenantCluster string
 }
 
 func NewClients(config Config) (*Clients, error) {
@@ -45,8 +50,20 @@ func NewClients(config Config) (*Clients, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
 	}
 
-	ctx := context.Background()
+	c := &Clients{
+		ControlPlane:  nil,
+		TenantCluster: nil,
 
+		logger: config.Logger,
+
+		kubeConfig:    config.KubeConfig,
+		tenantCluster: config.TenantCluster,
+	}
+
+	return c, nil
+}
+
+func (c *Clients) InitControlPlane(ctx context.Context) error {
 	var err error
 
 	var cpClient *k8sclient.Clients
@@ -57,37 +74,45 @@ func NewClients(config Config) (*Clients, error) {
 				infrastructurev1alpha2.AddToScheme,
 				releasev1alpha1.AddToScheme,
 			},
-			Logger: config.Logger,
+			Logger: c.logger,
 
-			KubeConfigPath: config.KubeConfig,
+			KubeConfigPath: c.kubeConfig,
 		}
 
 		cpClient, err = k8sclient.NewClients(c)
 		if err != nil {
-			return nil, microerror.Mask(err)
+			return microerror.Mask(err)
 		}
 	}
+
+	c.ControlPlane = cpClient
+
+	return nil
+}
+
+func (c *Clients) InitTenantCluster(ctx context.Context) error {
+	var err error
 
 	var tcClient *k8sclient.Clients
 	{
 		var cr infrastructurev1alpha2.AWSCluster
 		{
 			var list infrastructurev1alpha2.AWSClusterList
-			err := cpClient.CtrlClient().List(
+			err := c.ControlPlane.CtrlClient().List(
 				ctx,
 				&list,
 				client.InNamespace(cr.GetNamespace()),
-				client.MatchingLabels{label.Cluster: config.TenantCluster},
+				client.MatchingLabels{label.Cluster: c.tenantCluster},
 			)
 			if err != nil {
-				return nil, microerror.Mask(err)
+				return microerror.Mask(err)
 			}
 
 			if len(list.Items) == 0 {
-				return nil, microerror.Mask(notFoundError)
+				return microerror.Mask(notFoundError)
 			}
 			if len(list.Items) > 1 {
-				return nil, microerror.Mask(tooManyCRsError)
+				return microerror.Mask(tooManyCRsError)
 			}
 
 			cr = list.Items[0]
@@ -96,13 +121,13 @@ func NewClients(config Config) (*Clients, error) {
 		var certsSearcher *certs.Searcher
 		{
 			c := certs.Config{
-				K8sClient: cpClient.K8sClient(),
-				Logger:    config.Logger,
+				K8sClient: c.ControlPlane.K8sClient(),
+				Logger:    c.logger,
 			}
 
 			certsSearcher, err = certs.NewSearcher(c)
 			if err != nil {
-				return nil, microerror.Mask(err)
+				return microerror.Mask(err)
 			}
 		}
 
@@ -110,14 +135,14 @@ func NewClients(config Config) (*Clients, error) {
 		{
 			c := tenantcluster.Config{
 				CertsSearcher: certsSearcher,
-				Logger:        config.Logger,
+				Logger:        c.logger,
 
 				CertID: certs.ClusterOperatorAPICert,
 			}
 
 			tenantCluster, err = tenantcluster.New(c)
 			if err != nil {
-				return nil, microerror.Mask(err)
+				return microerror.Mask(err)
 			}
 		}
 
@@ -125,31 +150,28 @@ func NewClients(config Config) (*Clients, error) {
 		{
 			restConfig, err = tenantCluster.NewRestConfig(
 				ctx,
-				config.TenantCluster,
-				key.APIEndpoint(config.TenantCluster, cr.Spec.Cluster.DNS.Domain),
+				c.tenantCluster,
+				key.APIEndpoint(c.tenantCluster, cr.Spec.Cluster.DNS.Domain),
 			)
 			if err != nil {
-				return nil, microerror.Mask(err)
+				return microerror.Mask(err)
 			}
 		}
 
 		{
 			c := k8sclient.ClientsConfig{
-				Logger:     config.Logger,
+				Logger:     c.logger,
 				RestConfig: rest.CopyConfig(restConfig),
 			}
 
 			tcClient, err = k8sclient.NewClients(c)
 			if err != nil {
-				return nil, microerror.Mask(err)
+				return microerror.Mask(err)
 			}
 		}
 	}
 
-	c := &Clients{
-		ControlPlane:  cpClient,
-		TenantCluster: tcClient,
-	}
+	c.TenantCluster = tcClient
 
-	return c, nil
+	return nil
 }
