@@ -23,10 +23,22 @@ func APIEndpoint(id string, base string) string {
 	return fmt.Sprintf("api.%s.k8s.%s", id, base)
 }
 
+func DomainFromHost(h string) string {
+	h = strings.Replace(h, "https://", "", 1)
+	h = strings.Replace(h, "g8s.", "", 1)
+	h = strings.Replace(h, ":443", "", 1)
+	return h
+}
+
 func GeneratedWithPrefix(s string) string {
 	return fmt.Sprintf("%s%s", GeneratePrefix, s)
 }
 
 func HasGeneratedPrefix(s string) bool {
 	return strings.Contains(s, GeneratePrefix)
+}
+
+func RegionFromHost(h string) string {
+	h = strings.Split(DomainFromHost(h), ".")[1]
+	return h
 }
