@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 	"text/template"
 
 	"github.com/giantswarm/microerror"
@@ -16,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 
 	clustertemplate "github.com/giantswarm/awscnfm/cmd/generate/cluster/template"
+	"github.com/giantswarm/awscnfm/pkg/action"
 )
 
 type runner struct {
@@ -42,27 +42,13 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
+	var err error
+
 	var actions []string
 	{
-		path, err := filepath.Abs(fmt.Sprintf("cmd/%s", r.flag.Cluster))
+		actions, err = action.All(r.flag.Cluster)
 		if err != nil {
 			return microerror.Mask(err)
-		}
-
-		files, err := ioutil.ReadDir(path)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		for _, file := range files {
-			if !file.IsDir() {
-				continue
-			}
-			if !strings.HasPrefix(file.Name(), "ac") {
-				continue
-			}
-
-			actions = append(actions, file.Name())
 		}
 	}
 
