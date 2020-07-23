@@ -28,10 +28,9 @@ func (e *Executor) execute(ctx context.Context) error {
 	var crs v1alpha2.ClusterCRs
 	{
 		c := v1alpha2.ClusterCRsConfig{
-			ClusterID:         "cl001",
 			Domain:            key.DomainFromHost(e.clients.ControlPlane.RESTConfig().Host),
-			Description:       "awscnfm cluster cl001",
-			Owner:             "giantswarm",
+			Description:       explainerCommand,
+			Owner:             key.Organization,
 			Region:            key.RegionFromHost(e.clients.ControlPlane.RESTConfig().Host),
 			ReleaseComponents: releaseComponents,
 			ReleaseVersion:    key.Release,
