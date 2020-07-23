@@ -14,7 +14,8 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
-{{ if eq .Action "ac001" }}const (
+{{ if eq .Action "ac001" -}}
+const (
 	// explainerCommand is for internal documentation purposes only so that
 	// commands can self describe and explain themselves better. This
 	// information might be used in different creative ways.
