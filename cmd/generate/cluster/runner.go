@@ -109,7 +109,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			return microerror.Mask(err)
 		}
 
-		err = ioutil.WriteFile(path, buff.Bytes(), 0644)
+		err = ioutil.WriteFile(path, buff.Bytes(), 0644) // nolint:gosec
 		if err != nil {
 			return microerror.Mask(err)
 		}

@@ -155,7 +155,7 @@ func write(data actiontemplate.Data, templates [][]string, dirfmt string) error 
 		}
 
 		if write {
-			err = ioutil.WriteFile(path, buff.Bytes(), 0644)
+			err = ioutil.WriteFile(path, buff.Bytes(), 0644) // nolint:gosec
 			if err != nil {
 				return microerror.Mask(err)
 			}
