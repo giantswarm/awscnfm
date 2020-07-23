@@ -18,7 +18,7 @@ import (
 	// explainerCommand is for internal documentation purposes only so that
 	// commands can self describe and explain themselves better. This
 	// information might be used in different creative ways.
-	explainerCommand = "awscnfm {{ .Cluster }} {{ .Action }} explain" // nolint:deadcode,varcheck
+	explainerCommand = "awscnfm {{ .Cluster }} {{ .Action }} explain"
 )
 
 {{ end -}}

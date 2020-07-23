@@ -10,7 +10,7 @@ const (
 	// explainerCommand is for internal documentation purposes only so that
 	// commands can self describe and explain themselves better. This
 	// information might be used in different creative ways.
-	explainerCommand = "awscnfm cl001 ac001 explain" // nolint:deadcode,varcheck
+	explainerCommand = "awscnfm cl001 ac001 explain"
 )
 
 type ExplainerConfig struct {
