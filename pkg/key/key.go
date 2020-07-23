@@ -13,6 +13,9 @@ const (
 )
 
 const (
+	// Organization is the Giant Swarm specific organization we create our
+	// conformance test clusters in.
+	Organization = "giantswarm"
 	// Release is the latest release version we use as base for conformance
 	// testing. This version changes with each new release so that we stay
 	// synchronized with the latest AWS release we publish.
