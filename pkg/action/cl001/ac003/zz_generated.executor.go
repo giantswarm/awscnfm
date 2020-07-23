@@ -9,13 +9,6 @@ import (
 	"github.com/giantswarm/awscnfm/pkg/action"
 )
 
-const (
-	// executorCommand is for internal documentation purposes only so that
-	// commands can self describe and explain themselves better. This
-	// information might be used in different creative ways.
-	executorCommand = "awscnfm cl001 ac003 execute"
-)
-
 type ExecutorConfig struct {
 	Clients *action.Clients
 	Logger  micrologger.Logger
