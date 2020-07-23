@@ -52,7 +52,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var err error
 
 	var actions []string
-	if r.flag.Action == "all" {
+	if r.flag.Action == allActions {
 		actions, err = action.All(r.flag.Cluster)
 		if err != nil {
 			return microerror.Mask(err)

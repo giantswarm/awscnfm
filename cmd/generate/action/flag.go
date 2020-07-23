@@ -8,6 +8,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	allActions = "add"
+)
+
 type flag struct {
 	Action  string
 	Cluster string
@@ -22,10 +26,10 @@ func (f *flag) Validate() error {
 	if f.Action == "" {
 		return microerror.Maskf(invalidFlagError, "-a/--action must not be empty")
 	}
-	if f.Action != "all" && !strings.HasPrefix(f.Action, "ac") {
+	if f.Action != allActions && !strings.HasPrefix(f.Action, "ac") {
 		return microerror.Maskf(invalidFlagError, "-a/--action must have ac prefix, e.g. ac013, got %#q", f.Action)
 	}
-	if f.Action != "all" && !regexp.MustCompile(`[0-9]{3}$`).MatchString(f.Action) {
+	if f.Action != allActions && !regexp.MustCompile(`[0-9]{3}$`).MatchString(f.Action) {
 		return microerror.Maskf(invalidFlagError, "-a/--action must have numbered suffix, e.g. ac013, got %#q", f.Action)
 	}
 
