@@ -7,7 +7,7 @@ import (
 	"os/user"
 	"path/filepath"
 
-	yaml "gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 )
 
 func Cluster(scope string, cluster string) string {
