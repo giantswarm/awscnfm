@@ -55,7 +55,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			Logger: r.logger,
 
 			KubeConfig:    env.KubeConfig(),
-			TenantCluster: env.TenantCluster(),
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
 		}
 
 		clients, err = action.NewClients(c)
@@ -80,7 +80,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			Clients: clients,
 			Logger:  r.logger,
 
-			TenantCluster: env.TenantCluster(),
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
 		}
 
 		e, err = {{ .Action }}.NewExecutor(c)

@@ -54,10 +54,12 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 }
 
 func (e *Executor) Execute(ctx context.Context) error {
-	err := e.execute(ctx)
+	crs, err := e.execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
+
+	config.SetCluster("{{ .Cluster }}", crs.Cluster.GetName())
 
 	return nil
 }
