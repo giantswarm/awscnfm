@@ -6,8 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"gopkg.in/yaml.v3"
-
+	"github.com/ghodss/yaml"
 	"github.com/giantswarm/microerror"
 )
 

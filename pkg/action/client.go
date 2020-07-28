@@ -46,9 +46,6 @@ func NewClients(config Config) (*Clients, error) {
 	if config.KubeConfig == "" {
 		return nil, microerror.Maskf(invalidConfigError, "%T.KubeConfig must not be empty", config)
 	}
-	if config.TenantCluster == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
-	}
 
 	c := &Clients{
 		ControlPlane:  nil,

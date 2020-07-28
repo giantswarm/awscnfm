@@ -10,6 +10,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/pkg/action"
 	"github.com/giantswarm/awscnfm/pkg/action/cl001/ac004"
+	"github.com/giantswarm/awscnfm/pkg/config"
 	"github.com/giantswarm/awscnfm/pkg/env"
 )
 
@@ -45,7 +46,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			Logger: r.logger,
 
 			KubeConfig:    env.KubeConfig(),
-			TenantCluster: env.TenantCluster(),
+			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
 		}
 
 		clients, err = action.NewClients(c)
@@ -70,7 +71,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			Clients: clients,
 			Logger:  r.logger,
 
-			TenantCluster: env.TenantCluster(),
+			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
 		}
 
 		e, err = ac004.NewExecutor(c)
