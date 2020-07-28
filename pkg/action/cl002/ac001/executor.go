@@ -2,11 +2,14 @@ package ac001
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/giantswarm/microerror"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
+	fmt.Println(e.clients.ControlPlane.RESTConfig().Host)
+	fmt.Println("FOOOO")
 	crs, npCrs, err := newCRs(e.clients.ControlPlane.RESTConfig().Host)
 	if err != nil {
 		return microerror.Mask(err)

@@ -4,9 +4,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/giantswarm/awscnfm/pkg/env"
 	"github.com/giantswarm/microerror"
 	"gopkg.in/yaml.v2"
+
+	"github.com/giantswarm/awscnfm/pkg/env"
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
