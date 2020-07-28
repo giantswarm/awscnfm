@@ -79,9 +79,9 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	{
 		c := {{ .Action }}.ExecutorConfig{
 			Clients: clients,
-			Logger:  r.logger,
+			Logger:  r.logger,{{ if ne .Action "ac001" }}
 
-			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),{{ end }}
 		}
 
 		e, err = {{ .Action }}.NewExecutor(c)

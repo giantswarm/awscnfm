@@ -20,16 +20,16 @@ import (
 
 type ExecutorConfig struct {
 	Clients *action.Clients
-	Logger  micrologger.Logger
+	Logger  micrologger.Logger{{ if ne .Action "ac001" }}
 
-	TenantCluster string
+	TenantCluster string{{ end }}
 }
 
 type Executor struct {
 	clients *action.Clients
-	logger  micrologger.Logger
+	logger  micrologger.Logger{{ if ne .Action "ac001" }}
 
-	tenantCluster string
+	tenantCluster string{{ end }}
 }
 
 func NewExecutor(config ExecutorConfig) (*Executor, error) {
@@ -38,17 +38,17 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 	}
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
-	}
+	}{{ if ne .Action "ac001" }}
 
 	if config.TenantCluster == "" {
 		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
-	}
+	}{{ end }}
 
 	e := &Executor{
 		clients: config.Clients,
-		logger:  config.Logger,
+		logger:  config.Logger,{{ if ne .Action "ac001" }}
 
-		tenantCluster: config.TenantCluster,
+		tenantCluster: config.TenantCluster,{{ end }}
 	}
 
 	return e, nil

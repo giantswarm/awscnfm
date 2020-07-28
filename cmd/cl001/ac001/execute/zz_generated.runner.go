@@ -65,8 +65,6 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		c := ac001.ExecutorConfig{
 			Clients: clients,
 			Logger:  r.logger,
-
-			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
 		}
 
 		e, err = ac001.NewExecutor(c)
