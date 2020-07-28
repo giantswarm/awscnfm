@@ -14,7 +14,8 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 
-	"github.com/giantswarm/awscnfm/pkg/action"
+	"github.com/giantswarm/awscnfm/pkg/action"{{ if eq .Action "ac001" }}
+	"github.com/giantswarm/awscnfm/pkg/config"{{ end }}
 )
 
 type ExecutorConfig struct {
@@ -54,12 +55,12 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 }
 
 func (e *Executor) Execute(ctx context.Context) error {
-	crs, err := e.execute(ctx)
+	{{ if eq .Action "ac001" }}crs, err := e.execute(ctx){{ else }}err := e.execute(ctx){{ end }}
 	if err != nil {
 		return microerror.Mask(err)
-	}
+	}{{ if eq .Action "ac001" }}
 
-	config.SetCluster("{{ .Cluster }}", crs.Cluster.GetName())
+	config.SetCluster("{{ .Cluster }}", crs.Cluster.GetName()){{ end }}
 
 	return nil
 }

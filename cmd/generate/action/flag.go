@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	allActions = "add"
+	allActions = "all"
 )
 
 type flag struct {

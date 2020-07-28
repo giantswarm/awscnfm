@@ -20,6 +20,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/pkg/action"
 	"github.com/giantswarm/awscnfm/pkg/action/{{ .Cluster }}/{{ .Action }}"
+	"github.com/giantswarm/awscnfm/pkg/config"
 	"github.com/giantswarm/awscnfm/pkg/env"
 )
 
