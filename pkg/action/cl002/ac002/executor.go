@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/giantswarm/awscnfm/pkg/label"
 	"github.com/giantswarm/microerror"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/giantswarm/awscnfm/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
