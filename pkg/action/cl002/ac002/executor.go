@@ -101,7 +101,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		executionFailedError.Desc = color.Errorf(
 			"The tenant cluster defines 5 pods with host network on a worker node but it has currently %d pods with host network running.\nFound pods:\n%v",
 			currentWorkerPodsHostNetwork,
-			strings.Join(masterPods, ","),
+			strings.Join(workerPods, ","),
 		)
 
 		return microerror.Mask(executionFailedError)
