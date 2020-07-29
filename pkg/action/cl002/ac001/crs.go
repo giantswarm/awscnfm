@@ -28,6 +28,7 @@ func newCRs(host string) (v1alpha2.ClusterCRs, v1alpha2.NodePoolCRs, error) {
 	var crs v1alpha2.ClusterCRs
 	{
 		c := v1alpha2.ClusterCRsConfig{
+			Credential:        key.Credential,
 			Domain:            key.DomainFromHost(host),
 			Description:       explainerCommand,
 			Owner:             key.Organization,
