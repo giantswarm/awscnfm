@@ -1,4 +1,4 @@
-package ac001
+package ac002
 
 import (
 	"context"
@@ -31,9 +31,15 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
+	if config.TenantCluster == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
+	}
+
 	e := &Executor{
 		clients: config.Clients,
 		logger:  config.Logger,
+
+		tenantCluster: config.TenantCluster,
 	}
 
 	return e, nil

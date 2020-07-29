@@ -53,7 +53,6 @@ func RegionFromHost(h string) string {
 }
 
 func AZsFromRegion(r string) ([]string, error) {
-	fmt.Println(r)
 	region, err := regions.LookupByCode(r)
 	if err != nil {
 		return nil, microerror.Mask(err)

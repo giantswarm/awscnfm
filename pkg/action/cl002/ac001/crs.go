@@ -1,8 +1,6 @@
 package ac001
 
 import (
-	"fmt"
-
 	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/microerror"
 
@@ -46,7 +44,6 @@ func newCRs(host string) (v1alpha2.ClusterCRs, v1alpha2.NodePoolCRs, error) {
 
 	var azs []string
 	{
-		fmt.Println(host)
 		azs, err = key.AZsFromRegion(key.RegionFromHost(host))
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, v1alpha2.NodePoolCRs{}, microerror.Mask(err)
