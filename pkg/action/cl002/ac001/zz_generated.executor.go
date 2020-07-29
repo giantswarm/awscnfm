@@ -12,15 +12,11 @@ import (
 type ExecutorConfig struct {
 	Clients *action.Clients
 	Logger  micrologger.Logger
-
-	TenantCluster string
 }
 
 type Executor struct {
 	clients *action.Clients
 	logger  micrologger.Logger
-
-	tenantCluster string
 }
 
 func NewExecutor(config ExecutorConfig) (*Executor, error) {
