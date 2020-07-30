@@ -58,20 +58,14 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		if err != nil {
 			return microerror.Mask(err)
 		}
-
-		err = clients.InitTenantCluster(ctx)
-		if err != nil {
-			return microerror.Mask(err)
-		}
 	}
 
 	var e action.Executor
 	{
 		c := ac000.ExecutorConfig{
 			Clients: clients,
+			Command: cmd,
 			Logger:  r.logger,
-
-			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
 		}
 
 		e, err = ac000.NewExecutor(c)

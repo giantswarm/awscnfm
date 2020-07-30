@@ -67,7 +67,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		err = clients.InitControlPlane(ctx)
 		if err != nil {
 			return microerror.Mask(err)
-		}{{ if ne .Action "ac001" }}
+		}{{ if and (ne .Action "ac000") (ne .Action "ac001") }}
 
 		err = clients.InitTenantCluster(ctx)
 		if err != nil {
@@ -79,7 +79,8 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	{
 		c := {{ .Action }}.ExecutorConfig{
 			Clients: clients,
-			Logger:  r.logger,{{ if ne .Action "ac001" }}
+			Command: cmd,
+			Logger:  r.logger,{{ if and (ne .Action "ac000") (ne .Action "ac001") }}
 
 			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),{{ end }}
 		}
