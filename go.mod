@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/ghodss/yaml v1.0.0
-	github.com/giantswarm/apiextensions v0.4.18
+	github.com/giantswarm/apiextensions v0.4.19
 	github.com/giantswarm/certs/v2 v2.0.0
 	github.com/giantswarm/k8sclient/v3 v3.1.2
 	github.com/giantswarm/microerror v0.2.1
