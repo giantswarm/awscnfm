@@ -3,8 +3,9 @@ package ac000
 import (
 	"time"
 
-	"github.com/giantswarm/awscnfm/pkg/plan"
 	"github.com/giantswarm/backoff"
+
+	"github.com/giantswarm/awscnfm/pkg/plan"
 )
 
 // Plan describes in which order and with which tolerance to execute actions of
