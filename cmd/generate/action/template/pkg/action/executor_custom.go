@@ -7,7 +7,7 @@ var ExecutorCustomContent = `package {{ .Action }}
 import (
 	"context"{{ if eq .Action "ac001" }}
 
-	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"{{ end -}}
+	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"{{ end }}
 )
 
 {{ if eq .Action "ac001" }}func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, error) {
