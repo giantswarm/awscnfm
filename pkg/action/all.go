@@ -3,6 +3,7 @@ package action
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -12,6 +13,16 @@ import (
 func All(cluster string) ([]string, error) {
 	var actions []string
 	{
+		_, err := os.Stat(fmt.Sprintf("cmd/%s", cluster))
+		if os.IsNotExist(err) {
+			err = os.Mkdir(fmt.Sprintf("cmd/%s", cluster), os.ModePerm)
+			if err != nil {
+				return nil, microerror.Mask(err)
+			}
+		} else {
+			return nil, microerror.Mask(err)
+		}
+
 		path, err := filepath.Abs(fmt.Sprintf("cmd/%s", cluster))
 		if err != nil {
 			return nil, microerror.Mask(err)
