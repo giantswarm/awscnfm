@@ -37,9 +37,7 @@ func Format(parts [][]string) string {
 	for _, p := range parts {
 		var rowParts []string
 
-		for _, rp := range p {
-			rowParts = append(rowParts, rp)
-		}
+		rowParts = append(rowParts, p...)
 
 		row := strings.Join(rowParts, " | ")
 		rows = append(rows, row)
