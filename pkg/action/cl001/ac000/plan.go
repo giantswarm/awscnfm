@@ -10,7 +10,7 @@ import (
 
 // Plan describes in which order and with which tolerance to execute actions of
 // this cluster scope.
-var Plan = []plan.Plan{
+var Plan = []plan.Step{
 	{
 		Action:  "ac001",
 		Backoff: backoff.NewConstant(24*time.Minute, 3*time.Minute),

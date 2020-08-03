@@ -1,8 +1,10 @@
 package plan
 
-import "github.com/giantswarm/backoff"
+import (
+	"github.com/giantswarm/backoff"
+)
 
-type Plan struct {
+type Step struct {
 	// Action is the action/command name, e.g. ac013.
 	Action string
 	// Backoff is the tolerance within the associated action must be

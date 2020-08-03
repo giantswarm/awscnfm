@@ -2,12 +2,32 @@ package ac000
 
 import (
 	"context"
-	"fmt"
+
+	"github.com/giantswarm/microerror"
+
+	"github.com/giantswarm/awscnfm/pkg/plan"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
-	for _, c := range e.command.Parent().Parent().Commands() {
-		fmt.Printf("%#v\n", c.Name())
+	var err error
+
+	var planExecutor *plan.Executor
+	{
+		c := plan.ExecutorConfig{
+			Commands: e.command.Parent().Parent().Commands(),
+			Logger:   e.logger,
+			Plan:     Plan,
+		}
+
+		planExecutor, err = plan.NewExecutor(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	err = planExecutor.Execute(ctx)
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
 	return nil
