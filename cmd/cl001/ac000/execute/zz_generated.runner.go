@@ -2,7 +2,6 @@ package execute
 
 import (
 	"context"
-	"fmt"
 	"io"
 
 	"github.com/giantswarm/microerror"
@@ -40,8 +39,6 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
-
-	fmt.Printf("1\n")
 
 	var clients *action.Clients
 	{
