@@ -28,7 +28,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac004",
-		Backoff: backoff.NewConstant(10*time.Second, 2*time.Second),
-		Comment: "not yet implemented",
+		Backoff: backoff.NewConstant(90*time.Minute, 9*time.Minute),
+		Comment: "delete cluster",
 	},
 }
