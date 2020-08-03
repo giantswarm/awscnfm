@@ -60,7 +60,7 @@ func (e *Executor) Execute(ctx context.Context) error {
 			return nil
 		}
 
-		err = backoff.Retry(o, p.Backoff)
+		err = backoff.Retry(o, p.Backoff.Wrapped())
 		if err != nil {
 			return microerror.Mask(err)
 		}
