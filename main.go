@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/giantswarm/microerror"
@@ -32,7 +33,7 @@ func mainE(ctx context.Context) error {
 	var logger micrologger.Logger
 	{
 		c := micrologger.Config{
-			//IOWriter: ioutil.Discard,
+			IOWriter: ioutil.Discard,
 		}
 
 		logger, err = micrologger.New(c)
