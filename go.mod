@@ -3,10 +3,12 @@ module github.com/giantswarm/awscnfm
 go 1.14
 
 require (
+	github.com/fatih/color v1.7.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/giantswarm/apiextensions v0.4.20
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v2 v2.0.0
+	github.com/giantswarm/columnize v2.0.2+incompatible
 	github.com/giantswarm/k8sclient/v3 v3.1.2
 	github.com/giantswarm/microerror v0.2.1
 	github.com/giantswarm/micrologger v0.3.1
