@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/ghodss/yaml v1.0.0
-	github.com/giantswarm/apiextensions v0.4.19
+	github.com/giantswarm/apiextensions v0.4.20
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v2 v2.0.0
 	github.com/giantswarm/k8sclient/v3 v3.1.2
@@ -16,6 +16,6 @@ require (
 	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7
 	k8s.io/api v0.17.8
 	k8s.io/client-go v0.17.8
-	sigs.k8s.io/cluster-api v0.3.7
-	sigs.k8s.io/controller-runtime v0.5.8
+	sigs.k8s.io/cluster-api v0.3.8
+	sigs.k8s.io/controller-runtime v0.5.9
 )
