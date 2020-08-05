@@ -11,21 +11,26 @@ import (
 var Plan = []plan.Step{
 	{
 		Action:  "ac001",
-		Backoff: plan.NewBackoff(24*time.Minute, 3*time.Minute),
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 		Comment: "create cluster",
 	},
 	{
 		Action:  "ac002",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "check master count",
+		Backoff: plan.NewBackoff(24*time.Minute, 3*time.Minute),
+		Comment: "check cluster access",
 	},
 	{
 		Action:  "ac003",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "check worker count",
+		Comment: "check master count",
 	},
 	{
 		Action:  "ac004",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Comment: "check worker count",
+	},
+	{
+		Action:  "ac005",
 		Backoff: plan.NewBackoff(90*time.Minute, 9*time.Minute),
 		Comment: "delete cluster",
 	},
