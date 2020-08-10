@@ -3,6 +3,7 @@ package action
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -18,7 +19,9 @@ func All(cluster string) ([]string, error) {
 		}
 
 		files, err := ioutil.ReadDir(path)
-		if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		} else if err != nil {
 			return nil, microerror.Mask(err)
 		}
 
