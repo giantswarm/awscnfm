@@ -48,6 +48,13 @@ Changes to be committed:
 
 ```
 
+In some cases it might be useful to re-generate all actions, which you can do
+like shown below.
+
+```
+awscnfm generate action -c cl001 -a all
+```
+
 
 
 ### Business Logic
