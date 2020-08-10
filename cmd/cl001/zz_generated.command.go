@@ -7,6 +7,7 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac000"
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac001"
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac002"
@@ -155,6 +156,7 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	f.Init(c)
+
 	c.AddCommand(ac000Cmd)
 	c.AddCommand(ac001Cmd)
 	c.AddCommand(ac002Cmd)
