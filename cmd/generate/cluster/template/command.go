@@ -12,11 +12,12 @@ import (
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
-	"github.com/spf13/cobra"
-{{- range $a := .Actions }}
+	"github.com/spf13/cobra"{{ if not .Actions }}
+){{ else }}
+{{ range $a := .Actions }}
 	"github.com/giantswarm/awscnfm/cmd/{{ $.Cluster }}/{{ $a }}"
 {{- end }}
-)
+){{ end }}
 
 const (
 	name        = "{{ .Cluster }}"
@@ -72,10 +73,12 @@ func New(config Config) (*cobra.Command, error) {
 		RunE:  r.Run,
 	}
 
-	f.Init(c)
-{{- range $a := .Actions }}
+	f.Init(c){{ if not .Actions }}
+{{- else }}
+{{ range $a := .Actions }}
 	c.AddCommand({{ $a }}Cmd)
-{{- end }}
+{{- end -}}
+{{ end }}
 
 	return c, nil
 }
