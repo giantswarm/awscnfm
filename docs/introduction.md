@@ -26,7 +26,8 @@ cluster scope might want to test a HA Masters cluster. A cluster scope defines a
 list of actions you can execute against a tenant cluster aligning with the
 defininition of the cluster scope. Note that you cannot expect an action of one
 cluster scope to successfully run against a tenant cluster of another cluster
-scope.
+scope. Note that most code for a cluster scope is generated. You can find more
+information about this in our docs explaining [how code generation works].
 
 ```
 $ awscnfm cl001
@@ -64,6 +65,8 @@ convention `ac001` is the action creating a cluster based on a custom
 definition. By convention, every action implements the same two interfaces
 according to their intentional use case. These two interfaces are the `Executer`
 and the `Explainer`. One executes the business logic, the other explains it.
+Note that most code for an action is generated. You can find more information
+about this in our docs explaining [how code generation works].
 
 ```
 awscnfm cl001 ac005
