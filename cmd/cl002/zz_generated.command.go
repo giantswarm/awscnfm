@@ -7,6 +7,7 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
 	"github.com/giantswarm/awscnfm/cmd/cl002/ac000"
 	"github.com/giantswarm/awscnfm/cmd/cl002/ac001"
 	"github.com/giantswarm/awscnfm/cmd/cl002/ac002"
