@@ -6,6 +6,7 @@ import (
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac000"
@@ -17,7 +18,8 @@ import (
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac006"
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac007"
 	"github.com/giantswarm/awscnfm/cmd/cl001/ac008"
-)
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac009"
+
 
 const (
 	name        = "cl001"
@@ -169,6 +171,20 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var ac009Cmd *cobra.Command
+	{
+		c := ac009.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac009Cmd, err = ac009.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -185,6 +201,7 @@ func New(config Config) (*cobra.Command, error) {
 		RunE:  r.Run,
 	}
 
+
 	f.Init(c)
 
 	c.AddCommand(ac000Cmd)
@@ -196,6 +213,7 @@ func New(config Config) (*cobra.Command, error) {
 	c.AddCommand(ac006Cmd)
 	c.AddCommand(ac007Cmd)
 	c.AddCommand(ac008Cmd)
+	c.AddCommand(ac009Cmd)
 
 	return c, nil
 }
