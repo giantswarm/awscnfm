@@ -22,7 +22,7 @@ const (
 	// Release is the latest release version we use as base for conformance
 	// testing. This version changes with each new release so that we stay
 	// synchronized with the latest AWS release we publish.
-	Release = "11.5.0"
+	Release = "12.1.0"
 )
 
 func APIEndpoint(id string, base string) string {
