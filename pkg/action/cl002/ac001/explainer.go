@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/giantswarm/microerror"
 	"github.com/ghodss/yaml"
+	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/awscnfm/pkg/env"
 )
