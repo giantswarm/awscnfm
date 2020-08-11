@@ -2,27 +2,68 @@ package ac004
 
 import (
 	"context"
+	"fmt"
 
+	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/microerror"
-	"k8s.io/apimachinery/pkg/api/errors"
-	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
+	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/giantswarm/awscnfm/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
+	var list corev1.NodeList
 	{
-		err := e.clients.ControlPlane.CtrlClient().DeleteAllOf(
+		err := e.clients.TenantCluster.CtrlClient().List(
 			ctx,
-			&apiv1alpha2.Cluster{},
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			&list,
 		)
-		if errors.IsNotFound(err) {
-			// fall through
-		} else if err != nil {
+		if err != nil {
 			return microerror.Mask(err)
 		}
+	}
+
+	var currentNodesReady int
+	for _, node := range list.Items {
+		_, ok := node.Labels[label.WorkerNodeRole]
+		if !ok {
+			continue
+		}
+
+		for _, c := range node.Status.Conditions {
+			if c.Type == corev1.NodeReady && c.Status == corev1.ConditionTrue {
+				currentNodesReady++
+			}
+		}
+	}
+
+	var desiredNodesReady int
+	{
+		var list infrastructurev1alpha2.AWSMachineDeploymentList
+		err := e.clients.ControlPlane.CtrlClient().List(
+			ctx,
+			&list,
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
+		)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+
+		for _, cr := range list.Items {
+			desiredNodesReady += cr.Spec.NodePool.Scaling.Min
+		}
+	}
+
+	if currentNodesReady != desiredNodesReady {
+		executionFailedError.Desc = fmt.Sprintf(
+			"The Tenant Cluster defines %d worker nodes but it has only %d/%d healthy worker nodes running.",
+			desiredNodesReady,
+			currentNodesReady,
+			desiredNodesReady,
+		)
+
+		return microerror.Mask(executionFailedError)
 	}
 
 	return nil

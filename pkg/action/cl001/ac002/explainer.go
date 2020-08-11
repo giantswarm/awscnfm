@@ -6,11 +6,11 @@ import (
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
 	s := `
-Check if the desired amount of Tenant Cluster master nodes are up and ready.
+Check if the Tenant Cluster is up and we can connect to it.
 
-	* Fetch all G8sControlPlane CRs spec.replicas so that we know how many masters the Tenant Cluster is supposed to have.
-	* Fetch the Tenant Cluster master nodes.
-	* Compare the current and desired amount of master nodes.
+	* List all Tenant Cluster nodes.
+	* Listing all Tenant Cluster nodes without errors means the apiserver is up.
+	* Proceed with further actions.
 	`
 
 	return s, nil

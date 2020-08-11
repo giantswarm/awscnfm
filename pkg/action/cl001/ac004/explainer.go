@@ -6,15 +6,12 @@ import (
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
 	s := `
-Delete the tenant cluster of the current cluster scope by triggering the
-deletion of the Cluster CR. This should ensure the following.
+Check if the desired amount of Tenant Cluster worker nodes are up and ready.
 
-	* Trigger deletion to all other CRs associated with the tenant cluster.
-	* Execute cleanup logic in all involved operators.
-	* Remove all cloud provider resources.
-	* Remove all CRs associated with the tenant cluster.
-
-`
+	* Fetch all AWSMachineDeployment CRs spec.scaling.min so that we know how many workers the Tenant Cluster is supposed to have.
+	* Fetch the Tenant Cluster worker nodes.
+	* Compare the current and desired amount of worker nodes.
+	`
 
 	return s, nil
 }

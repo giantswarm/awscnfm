@@ -1,10 +1,4 @@
-package template
-
-import "github.com/giantswarm/awscnfm/pkg/key"
-
-var CommandBase = key.GeneratedWithPrefix("command.go")
-
-var CommandContent = `package {{ .Cluster }}
+package ac005
 
 import (
 	"io"
@@ -12,17 +6,15 @@ import (
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+	"github.com/spf13/cobra"
 
-	"github.com/spf13/cobra"{{ if not .Actions }}
-{{ else }}
-{{ range $a := .Actions }}
-	"github.com/giantswarm/awscnfm/cmd/{{ $.Cluster }}/{{ $a }}"
-{{- end }}
-{{ end }}
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac005/execute"
+	"github.com/giantswarm/awscnfm/cmd/cl001/ac005/explain"
+)
 
 const (
-	name        = "{{ .Cluster }}"
-	description = "Conformance tests for cluster {{ .Cluster }}."
+	name        = "ac005"
+	description = "Action ac005 for cluster 001."
 )
 
 type Config struct {
@@ -43,21 +35,35 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
-{{ range $a := .Actions }}
-	var {{ $a }}Cmd *cobra.Command
+
+	var executeCmd *cobra.Command
 	{
-		c := {{ $a }}.Config{
+		c := execute.Config{
 			Logger: config.Logger,
 			Stderr: config.Stderr,
 			Stdout: config.Stdout,
 		}
 
-		{{ $a }}Cmd, err = {{ $a }}.New(c)
+		executeCmd, err = execute.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	}
-{{ end }}
+
+	var explainCmd *cobra.Command
+	{
+		c := explain.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		explainCmd, err = explain.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -74,14 +80,10 @@ func New(config Config) (*cobra.Command, error) {
 		RunE:  r.Run,
 	}
 
+	f.Init(c)
 
-	f.Init(c){{ if not .Actions }}
-{{- else }}
-{{ range $a := .Actions }}
-	c.AddCommand({{ $a }}Cmd)
-{{- end -}}
-{{ end }}
+	c.AddCommand(executeCmd)
+	c.AddCommand(explainCmd)
 
 	return c, nil
 }
-`
