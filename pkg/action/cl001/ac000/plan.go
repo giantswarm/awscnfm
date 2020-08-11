@@ -32,10 +32,20 @@ var Plan = []plan.Step{
 	{
 		Action:  "ac005",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Comment: "create node pool",
+	},
+	{
+		Action:  "ac004",
+		Backoff: plan.NewBackoff(24*time.Second, 3*time.Minute),
+		Comment: "check worker count",
+	},
+	{
+		Action:  "ac008",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 		Comment: "delete cluster CRs",
 	},
 	{
-		Action:  "ac006",
+		Action:  "ac009",
 		Backoff: plan.NewBackoff(90*time.Minute, 9*time.Minute),
 		Comment: "check CRs deleted",
 	},
