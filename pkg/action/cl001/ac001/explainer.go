@@ -9,7 +9,7 @@ import (
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
-	crs, err := newCRs("https://g8s.codename.region.aws.gigantic.io:443")
+	crs, err := newCRs("https://g8s.codename.eu-central-1.aws.gigantic.io:443")
 	if err != nil {
 		return "", microerror.Mask(err)
 	}
