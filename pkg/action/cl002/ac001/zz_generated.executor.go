@@ -9,7 +9,6 @@ import (
 
 	"github.com/giantswarm/awscnfm/pkg/action"
 	"github.com/giantswarm/awscnfm/pkg/config"
->>>>>>> master
 )
 
 type ExecutorConfig struct {
@@ -45,8 +44,7 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 }
 
 func (e *Executor) Execute(ctx context.Context) error {
-	err := e.execute(ctx)
-	crs, err := e.execute(ctx)
+	crs, _, err := e.execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}

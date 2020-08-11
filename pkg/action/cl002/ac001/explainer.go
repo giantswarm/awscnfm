@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/giantswarm/microerror"
-	"gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 
 	"github.com/giantswarm/awscnfm/pkg/env"
 )

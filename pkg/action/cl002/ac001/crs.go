@@ -13,9 +13,7 @@ func newCRs(host string) (v1alpha2.ClusterCRs, v1alpha2.NodePoolCRs, error) {
 
 	var releaseComponents map[string]string
 	{
-		c := release.Config{
-			Branch: "aws-release-12-0-0-2",
-		}
+		c := release.Config{}
 
 		releaseCollection, err := release.New(c)
 		if err != nil {
