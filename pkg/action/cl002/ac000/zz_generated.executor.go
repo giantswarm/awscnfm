@@ -1,4 +1,4 @@
-package ac001
+package ac000
 
 import (
 	"context"
@@ -8,8 +8,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/config"
->>>>>>> master
 )
 
 type ExecutorConfig struct {
@@ -46,12 +44,9 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 
 func (e *Executor) Execute(ctx context.Context) error {
 	err := e.execute(ctx)
-	crs, err := e.execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
-
-	config.SetCluster("cl002", crs.Cluster.GetName())
 
 	return nil
 }

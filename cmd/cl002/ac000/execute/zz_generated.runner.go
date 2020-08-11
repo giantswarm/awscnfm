@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/action/cl002/ac001"
+	"github.com/giantswarm/awscnfm/pkg/action/cl002/ac000"
 	"github.com/giantswarm/awscnfm/pkg/config"
 	"github.com/giantswarm/awscnfm/pkg/env"
 )
@@ -62,13 +62,13 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 
 	var e action.Executor
 	{
-		c := ac001.ExecutorConfig{
+		c := ac000.ExecutorConfig{
 			Clients: clients,
 			Command: cmd,
 			Logger:  r.logger,
 		}
 
-		e, err = ac001.NewExecutor(c)
+		e, err = ac000.NewExecutor(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}

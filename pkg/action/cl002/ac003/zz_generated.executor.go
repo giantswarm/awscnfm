@@ -1,4 +1,4 @@
-package ac001
+package ac003
 
 import (
 	"context"
@@ -8,20 +8,22 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/config"
->>>>>>> master
 )
 
 type ExecutorConfig struct {
 	Clients *action.Clients
 	Command *cobra.Command
 	Logger  micrologger.Logger
+
+	TenantCluster string
 }
 
 type Executor struct {
 	clients *action.Clients
 	command *cobra.Command
 	logger  micrologger.Logger
+
+	tenantCluster string
 }
 
 func NewExecutor(config ExecutorConfig) (*Executor, error) {
@@ -35,10 +37,16 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
+	if config.TenantCluster == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
+	}
+
 	e := &Executor{
 		clients: config.Clients,
 		command: config.Command,
 		logger:  config.Logger,
+
+		tenantCluster: config.TenantCluster,
 	}
 
 	return e, nil
@@ -46,12 +54,9 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 
 func (e *Executor) Execute(ctx context.Context) error {
 	err := e.execute(ctx)
-	crs, err := e.execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
-
-	config.SetCluster("cl002", crs.Cluster.GetName())
 
 	return nil
 }

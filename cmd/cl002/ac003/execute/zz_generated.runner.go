@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/action/cl002/ac001"
+	"github.com/giantswarm/awscnfm/pkg/action/cl002/ac003"
 	"github.com/giantswarm/awscnfm/pkg/config"
 	"github.com/giantswarm/awscnfm/pkg/env"
 )
@@ -58,17 +58,24 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		if err != nil {
 			return microerror.Mask(err)
 		}
+
+		err = clients.InitTenantCluster(ctx)
+		if err != nil {
+			return microerror.Mask(err)
+		}
 	}
 
 	var e action.Executor
 	{
-		c := ac001.ExecutorConfig{
+		c := ac003.ExecutorConfig{
 			Clients: clients,
 			Command: cmd,
 			Logger:  r.logger,
+
+			TenantCluster: config.Cluster("cl002", env.TenantCluster()),
 		}
 
-		e, err = ac001.NewExecutor(c)
+		e, err = ac003.NewExecutor(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}

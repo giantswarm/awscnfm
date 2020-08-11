@@ -1,17 +1,17 @@
-package execute
+package explain
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/action/cl002/ac001"
-	"github.com/giantswarm/awscnfm/pkg/config"
-	"github.com/giantswarm/awscnfm/pkg/env"
+	"github.com/giantswarm/awscnfm/pkg/action/cl002/ac000"
 )
 
 type runner struct {
@@ -40,44 +40,23 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
 
-	var clients *action.Clients
+	var e action.Explainer
 	{
-		c := action.Config{
-			Logger: r.logger,
+		c := ac000.ExplainerConfig{}
 
-			KubeConfig:    env.KubeConfig(),
-			TenantCluster: config.Cluster("cl002", env.TenantCluster()),
-		}
-
-		clients, err = action.NewClients(c)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = clients.InitControlPlane(ctx)
+		e, err = ac000.NewExplainer(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}
 	}
 
-	var e action.Executor
-	{
-		c := ac001.ExecutorConfig{
-			Clients: clients,
-			Command: cmd,
-			Logger:  r.logger,
-		}
-
-		e, err = ac001.NewExecutor(c)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-	}
-
-	err = e.Execute(ctx)
+	s, err := e.Explain(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
+
+	fmt.Println(strings.TrimSpace(s))
+	fmt.Println()
 
 	return nil
 }
