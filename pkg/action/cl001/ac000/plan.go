@@ -36,7 +36,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac004",
-		Backoff: plan.NewBackoff(24*time.Second, 3*time.Minute),
+		Backoff: plan.NewBackoff(24*time.Minute, 3*time.Minute),
 		Comment: "check worker count",
 	},
 	{
