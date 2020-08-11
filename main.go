@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -19,7 +20,10 @@ func main() {
 	if err != nil {
 		mErr, ok := microerror.Cause(err).(*microerror.Error)
 		if ok && mErr.Desc != "" {
-			fmt.Println(mErr.Desc)
+			fmt.Println(strings.Title(err.Error()))
+			fmt.Println()
+			fmt.Println("    " + mErr.Desc)
+			fmt.Println()
 			os.Exit(1)
 		} else {
 			panic(microerror.JSON(err))

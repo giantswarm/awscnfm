@@ -12,7 +12,7 @@ var Plan = []plan.Step{
 	{
 		Action:  "ac001",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "create cluster",
+		Comment: "create cluster CRs",
 	},
 	{
 		Action:  "ac002",
@@ -31,7 +31,12 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac005",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Comment: "delete cluster CRs",
+	},
+	{
+		Action:  "ac006",
 		Backoff: plan.NewBackoff(90*time.Minute, 9*time.Minute),
-		Comment: "delete cluster",
+		Comment: "check CRs deleted",
 	},
 }
