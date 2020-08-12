@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Add code generation.
+* Add first documentation.
+* Add first cluster scope and actions.
+
 
 
 [Unreleased]: https://github.com/giantswarm/awscnfm/tree/master
