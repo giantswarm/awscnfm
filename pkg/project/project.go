@@ -5,7 +5,7 @@ var (
 	gitSHA      = "n/a"
 	name        = "awscnfm"
 	source      = "https://github.com/giantswarm/awscnfm"
-	version     = "0.0.1"
+	version     = "12.1.0"
 )
 
 func Description() string {
