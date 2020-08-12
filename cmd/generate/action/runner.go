@@ -14,13 +14,13 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	actiontemplate "github.com/giantswarm/awscnfm/cmd/generate/action/template"
-	templatecmd "github.com/giantswarm/awscnfm/cmd/generate/action/template/cmd"
-	templatecmdexecute "github.com/giantswarm/awscnfm/cmd/generate/action/template/cmd/execute"
-	templatecmdexplain "github.com/giantswarm/awscnfm/cmd/generate/action/template/cmd/explain"
-	templatepkgaction "github.com/giantswarm/awscnfm/cmd/generate/action/template/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/key"
+	actiontemplate "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template"
+	templatecmd "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/cmd"
+	templatecmdexecute "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/cmd/execute"
+	templatecmdexplain "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/cmd/explain"
+	templatepkgaction "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
 type runner struct {

@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/giantswarm/awscnfm/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
 var ErrorBase = key.GeneratedWithPrefix("error.go")

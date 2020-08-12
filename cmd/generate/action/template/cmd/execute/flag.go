@@ -3,7 +3,7 @@ package execute
 import (
 	"path/filepath"
 
-	"github.com/giantswarm/awscnfm/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
 var FlagBase = filepath.Join("execute", key.GeneratedWithPrefix("flag.go"))

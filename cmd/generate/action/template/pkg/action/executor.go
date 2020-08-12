@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/giantswarm/awscnfm/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
 var ExecutorBase = key.GeneratedWithPrefix("executor.go")
@@ -15,8 +15,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/pkg/action"{{ if eq .Action "ac001" }}
-	"github.com/giantswarm/awscnfm/pkg/config"{{ end }}
+	"github.com/giantswarm/awscnfm/v12/pkg/action"{{ if eq .Action "ac001" }}
+	"github.com/giantswarm/awscnfm/v12/pkg/config"{{ end }}
 )
 
 type ExecutorConfig struct {

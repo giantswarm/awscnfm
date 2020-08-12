@@ -1,6 +1,6 @@
 package cmd
 
-import "github.com/giantswarm/awscnfm/pkg/key"
+import "github.com/giantswarm/awscnfm/v12/pkg/key"
 
 var RunnerBase = key.GeneratedWithPrefix("runner.go")
 
