@@ -56,9 +56,9 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	if currentWorkerPodsHostNetwork != 5 {
+	if currentWorkerPodsHostNetwork != 6 {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The tenant cluster defines 5 pods with host network on a worker node but it has currently %d pods with host network running.\nFound pods:\n%v",
+			"The tenant cluster defines 6 pods with host network on a worker node but it has currently %d pods with host network running.\nFound pods:\n%v",
 			currentWorkerPodsHostNetwork,
 			strings.Join(workerPods, ","),
 		)
