@@ -1,4 +1,4 @@
-module github.com/giantswarm/awscnfm/v12/v12
+module github.com/giantswarm/awscnfm/v12
 
 go 1.14
 
