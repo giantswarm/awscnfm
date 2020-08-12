@@ -18,5 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add first cluster scope and actions.
 * New action to verifiy if host network pods matches with k8scloudconfig on master nodes
 
+### Fixed
+
+* Include namespace to delete cluster CR's
+
 [Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.1.0...HEAD
 [12.1.0]: https://github.com/giantswarm/awscnfm/releases/tag/v12.1.0
