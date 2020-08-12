@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [12.1.0] - 2020-08-12
+
 ### Added
 
 * Add code generation.
@@ -17,4 +19,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/tree/master
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.1.0...HEAD
+[12.1.0]: https://github.com/giantswarm/awscnfm/releases/tag/v12.1.0
