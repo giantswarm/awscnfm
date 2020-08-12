@@ -7,8 +7,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
 )
 
 type ExecutorConfig struct {

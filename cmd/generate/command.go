@@ -8,8 +8,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/cmd/generate/action"
-	"github.com/giantswarm/awscnfm/cmd/generate/cluster"
+	"github.com/giantswarm/awscnfm/v12/cmd/generate/action"
+	"github.com/giantswarm/awscnfm/v12/cmd/generate/cluster"
 )
 
 const (

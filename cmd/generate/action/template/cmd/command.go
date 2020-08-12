@@ -1,6 +1,6 @@
 package cmd
 
-import "github.com/giantswarm/awscnfm/pkg/key"
+import "github.com/giantswarm/awscnfm/v12/pkg/key"
 
 var CommandBase = key.GeneratedWithPrefix("command.go")
 
@@ -14,8 +14,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/cmd/{{ .Cluster }}/{{ .Action }}/execute"
-	"github.com/giantswarm/awscnfm/cmd/{{ .Cluster }}/{{ .Action }}/explain"
+	"github.com/giantswarm/awscnfm/v12/cmd/{{ .Cluster }}/{{ .Action }}/execute"
+	"github.com/giantswarm/awscnfm/v12/cmd/{{ .Cluster }}/{{ .Action }}/explain"
 )
 
 const (

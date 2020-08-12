@@ -5,7 +5,7 @@ import (
 
 	"github.com/giantswarm/microerror"
 
-	"github.com/giantswarm/awscnfm/pkg/plan"
+	"github.com/giantswarm/awscnfm/v12/pkg/plan"
 )
 
 func (e *Executor) execute(ctx context.Context) error {

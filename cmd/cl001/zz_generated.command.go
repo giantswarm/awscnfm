@@ -8,16 +8,16 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac000"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac001"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac002"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac003"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac004"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac005"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac006"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac007"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac008"
-	"github.com/giantswarm/awscnfm/cmd/cl001/ac009"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac000"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac001"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac002"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac003"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac004"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac005"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac006"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac007"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac008"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac009"
 )
 
 const (
