@@ -45,6 +45,11 @@ var Plan = []plan.Step{
 		Comment: "check master host network",
 	},
 	{
+		Action:  "ac007",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Comment: "check worker host network",
+	},
+	{
 		Action:  "ac008",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 		Comment: "delete cluster CRs",
