@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
 
+- New action to verifiy if host network pods matches with k8scloudconfig on master nodes
 
 [Unreleased]: https://github.com/giantswarm/awscnfm/tree/master
