@@ -4,8 +4,8 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/microerror"
 
-	"github.com/giantswarm/awscnfm/pkg/key"
-	"github.com/giantswarm/awscnfm/pkg/release"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
 func newCRs(host string) (v1alpha2.ClusterCRs, error) {

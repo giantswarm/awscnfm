@@ -1,6 +1,6 @@
 package template
 
-import "github.com/giantswarm/awscnfm/pkg/key"
+import "github.com/giantswarm/awscnfm/v12/pkg/key"
 
 var FlagBase = key.GeneratedWithPrefix("flag.go")
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/giantswarm/awscnfm/pkg/table"
+	"github.com/giantswarm/awscnfm/v12/pkg/table"
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {

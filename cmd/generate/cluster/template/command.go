@@ -1,6 +1,6 @@
 package template
 
-import "github.com/giantswarm/awscnfm/pkg/key"
+import "github.com/giantswarm/awscnfm/v12/pkg/key"
 
 var CommandBase = key.GeneratedWithPrefix("command.go")
 
@@ -15,7 +15,7 @@ import (
 	"github.com/spf13/cobra"{{ if not .Actions }}
 ){{ else }}
 {{ range $a := .Actions }}
-	"github.com/giantswarm/awscnfm/cmd/{{ $.Cluster }}/{{ $a }}"
+	"github.com/giantswarm/awscnfm/v12/cmd/{{ $.Cluster }}/{{ $a }}"
 {{- end }}
 ){{ end }}
 

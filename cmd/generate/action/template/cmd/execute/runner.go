@@ -3,7 +3,7 @@ package execute
 import (
 	"path/filepath"
 
-	"github.com/giantswarm/awscnfm/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
 var RunnerBase = filepath.Join("execute", key.GeneratedWithPrefix("runner.go"))
@@ -18,10 +18,10 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/pkg/action"
-	"github.com/giantswarm/awscnfm/pkg/action/{{ .Cluster }}/{{ .Action }}"
-	"github.com/giantswarm/awscnfm/pkg/config"
-	"github.com/giantswarm/awscnfm/pkg/env"
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/action/{{ .Cluster }}/{{ .Action }}"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 type runner struct {

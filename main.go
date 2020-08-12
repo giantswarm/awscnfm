@@ -11,8 +11,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/cmd"
-	"github.com/giantswarm/awscnfm/pkg/project"
+	"github.com/giantswarm/awscnfm/v12/cmd"
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
 
 func main() {

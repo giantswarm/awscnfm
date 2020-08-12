@@ -3,7 +3,7 @@ package explain
 import (
 	"path/filepath"
 
-	"github.com/giantswarm/awscnfm/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
 var ErrorBase = filepath.Join("explain", key.GeneratedWithPrefix("error.go"))

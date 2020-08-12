@@ -7,8 +7,8 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/jsonmaur/aws-regions/go/regions"
 
-	"github.com/giantswarm/awscnfm/pkg/key"
-	"github.com/giantswarm/awscnfm/pkg/release"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
 func newCRs(ctx context.Context, id string, host string) (v1alpha2.NodePoolCRs, error) {

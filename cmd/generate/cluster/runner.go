@@ -14,8 +14,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	clustertemplate "github.com/giantswarm/awscnfm/cmd/generate/cluster/template"
-	"github.com/giantswarm/awscnfm/pkg/action"
+	clustertemplate "github.com/giantswarm/awscnfm/v12/cmd/generate/cluster/template"
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
 )
 
 type runner struct {
