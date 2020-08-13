@@ -77,7 +77,7 @@ func (e *Executor) execute(ctx context.Context) error {
 	var desiredNodesReady int
 	{
 		var list infrastructurev1alpha2.AWSMachineDeploymentList
-		err := tcClients.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
 			client.MatchingLabels{label.Cluster: id},
