@@ -58,11 +58,6 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		if err != nil {
 			return microerror.Mask(err)
 		}
-
-		err = clients.InitTenantCluster(ctx)
-		if err != nil {
-			return microerror.Mask(err)
-		}
 	}
 
 	var e action.Executor
