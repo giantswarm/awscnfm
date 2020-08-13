@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Include namespace to delete cluster CR's
+* Drop tenant cluster initialization in cleaner verification action
 
 [Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.1.1...HEAD
 [12.1.1]: https://github.com/giantswarm/awscnfm/compare/v12.1.0...v12.1.1
