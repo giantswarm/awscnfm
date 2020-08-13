@@ -4,32 +4,49 @@ import (
 	"context"
 
 	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/client"
 )
 
 func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, error) {
-	crs, err := newCRs(e.clients.ControlPlane.RESTConfig().Host)
+	var err error
+
+	var clients k8sclient.Interface
+	{
+		c := client.ControlPlaneConfig{
+			Logger: e.logger,
+		}
+
+		clients, err = client.NewControlPlane(c)
+		if err != nil {
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
+		}
+	}
+
+	crs, err := newCRs(clients.RESTConfig().Host)
 	if err != nil {
 		return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 	}
 
 	{
-		err = e.clients.ControlPlane.CtrlClient().Create(ctx, crs.Cluster)
+		err = clients.CtrlClient().Create(ctx, crs.Cluster)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
-		err = e.clients.ControlPlane.CtrlClient().Create(ctx, crs.AWSCluster)
+		err = clients.CtrlClient().Create(ctx, crs.AWSCluster)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
-		err = e.clients.ControlPlane.CtrlClient().Create(ctx, crs.G8sControlPlane)
+		err = clients.CtrlClient().Create(ctx, crs.G8sControlPlane)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
-		err = e.clients.ControlPlane.CtrlClient().Create(ctx, crs.AWSControlPlane)
+		err = clients.CtrlClient().Create(ctx, crs.AWSControlPlane)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}

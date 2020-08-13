@@ -20,8 +20,6 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/pkg/action"
 	"github.com/giantswarm/awscnfm/v12/pkg/action/{{ .Cluster }}/{{ .Action }}"
-	"github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 type runner struct {
@@ -50,39 +48,11 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
 
-	var clients *action.Clients
-	{
-		c := action.Config{
-			Logger: r.logger,
-
-			KubeConfig:    env.KubeConfig(),
-			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
-		}
-
-		clients, err = action.NewClients(c)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = clients.InitControlPlane(ctx)
-		if err != nil {
-			return microerror.Mask(err)
-		}{{ if and (ne .Action "ac000") (ne .Action "ac001") }}
-
-		err = clients.InitTenantCluster(ctx)
-		if err != nil {
-			return microerror.Mask(err)
-		}{{ end }}
-	}
-
 	var e action.Executor
 	{
 		c := {{ .Action }}.ExecutorConfig{
-			Clients: clients,
 			Command: cmd,
-			Logger:  r.logger,{{ if and (ne .Action "ac000") (ne .Action "ac001") }}
-
-			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),{{ end }}
+			Logger:  r.logger,
 		}
 
 		e, err = {{ .Action }}.NewExecutor(c)

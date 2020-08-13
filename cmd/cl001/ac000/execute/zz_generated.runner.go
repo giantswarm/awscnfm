@@ -63,7 +63,6 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var e action.Executor
 	{
 		c := ac000.ExecutorConfig{
-			Clients: clients,
 			Command: cmd,
 			Logger:  r.logger,
 		}

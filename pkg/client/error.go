@@ -1,4 +1,4 @@
-package action
+package client
 
 import "github.com/giantswarm/microerror"
 
