@@ -13,20 +13,19 @@ import (
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
-	"github.com/spf13/cobra"
+	"github.com/spf13/cobra"{{ if eq .Action "ac001" }}
 
-	"github.com/giantswarm/awscnfm/v12/pkg/action"{{ if eq .Action "ac001" }}
 	"github.com/giantswarm/awscnfm/v12/pkg/config"{{ end }}
 )
 
 type ExecutorConfig struct {
 	Command *cobra.Command
-	Logger  micrologger.Logger{{ if and (ne .Action "ac000") (ne .Action "ac001") }}
+	Logger  micrologger.Logger
 }
 
 type Executor struct {
 	command *cobra.Command
-	logger  micrologger.Logger{{ if and (ne .Action "ac000") (ne .Action "ac001") }}
+	logger  micrologger.Logger
 }
 
 func NewExecutor(config ExecutorConfig) (*Executor, error) {
