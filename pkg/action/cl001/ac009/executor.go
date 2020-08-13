@@ -4,20 +4,41 @@ import (
 	"context"
 
 	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
+	var err error
+
+	scope := "cl001"
+	id := config.Cluster(scope, env.TenantCluster())
+
+	var cpClients k8sclient.Interface
+	{
+		c := pkgclient.ControlPlaneConfig{
+			Logger: e.logger,
+		}
+
+		cpClients, err = pkgclient.NewControlPlane(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
 	{
 		var list apiv1alpha2.ClusterList
-		err := e.clients.ControlPlane.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			client.MatchingLabels{label.Cluster: id},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -30,10 +51,10 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	{
 		var list infrastructurev1alpha2.AWSClusterList
-		err := e.clients.ControlPlane.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			client.MatchingLabels{label.Cluster: id},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -46,10 +67,10 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	{
 		var list infrastructurev1alpha2.G8sControlPlaneList
-		err := e.clients.ControlPlane.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			client.MatchingLabels{label.Cluster: id},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -62,10 +83,10 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	{
 		var list infrastructurev1alpha2.AWSControlPlaneList
-		err := e.clients.ControlPlane.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			client.MatchingLabels{label.Cluster: id},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -78,10 +99,10 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	{
 		var list apiv1alpha2.MachineDeploymentList
-		err := e.clients.ControlPlane.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			client.MatchingLabels{label.Cluster: id},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -94,10 +115,10 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	{
 		var list infrastructurev1alpha2.AWSMachineDeploymentList
-		err := e.clients.ControlPlane.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			client.MatchingLabels{label.Cluster: id},
 		)
 
 		if err != nil {
