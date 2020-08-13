@@ -3,11 +3,12 @@ package ac005
 import (
 	"context"
 
+	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
+	"github.com/giantswarm/microerror"
+
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/config"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
-	"github.com/giantswarm/microerror"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
