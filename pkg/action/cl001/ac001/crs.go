@@ -5,6 +5,7 @@ import (
 	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
@@ -20,7 +21,7 @@ func newCRs(host string) (v1alpha2.ClusterCRs, error) {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
-		releaseComponents = releaseCollection.ReleaseComponents(key.Release)
+		releaseComponents = releaseCollection.ReleaseComponents(project.Version())
 	}
 
 	var crs v1alpha2.ClusterCRs
@@ -32,7 +33,7 @@ func newCRs(host string) (v1alpha2.ClusterCRs, error) {
 			Owner:             key.Organization,
 			Region:            key.RegionFromHost(host),
 			ReleaseComponents: releaseComponents,
-			ReleaseVersion:    key.Release,
+			ReleaseVersion:    project.Version(),
 		}
 
 		crs, err = v1alpha2.NewClusterCRs(c)

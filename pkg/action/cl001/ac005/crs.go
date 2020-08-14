@@ -8,6 +8,7 @@ import (
 	"github.com/jsonmaur/aws-regions/go/regions"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
@@ -23,7 +24,7 @@ func newCRs(ctx context.Context, id string, host string) (v1alpha2.NodePoolCRs, 
 			return v1alpha2.NodePoolCRs{}, microerror.Mask(err)
 		}
 
-		releaseComponents = releaseCollection.ReleaseComponents(key.Release)
+		releaseComponents = releaseCollection.ReleaseComponents(project.Version())
 	}
 
 	var azs []string
@@ -49,7 +50,7 @@ func newCRs(ctx context.Context, id string, host string) (v1alpha2.NodePoolCRs, 
 			OnDemandPercentageAboveBaseCapacity: 0,
 			Owner:                               "giantswarm",
 			ReleaseComponents:                   releaseComponents,
-			ReleaseVersion:                      key.Release,
+			ReleaseVersion:                      project.Version(),
 			UseAlikeInstanceTypes:               true,
 		}
 
