@@ -82,11 +82,13 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
+	expectedPods := "aws-node, calico-node, cert-exporter, kiam-agent, kube-proxy, node-exporter"
 	if currentWorkerPodsHostNetwork != 6 {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The tenant cluster defines 6 pods with host network on a worker node but it has currently %d pods with host network running.\nFound pods:\n%v",
+			"The tenant cluster defines 6 pods (%s) with host network on a worker node but it has currently %d pods with host network running.\nFound pods:\n%v",
+			expectedPods,
 			currentWorkerPodsHostNetwork,
-			strings.Join(workerPods, ","),
+			strings.Join(workerPods, "\n"),
 		)
 
 		return microerror.Mask(executionFailedError)

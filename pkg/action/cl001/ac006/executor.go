@@ -77,15 +77,22 @@ func (e *Executor) execute(ctx context.Context) error {
 	var currentMasterPodsHostNetwork int
 	var masterPods []string
 	for _, pod := range masterPodList.Items {
+		// this cronjob pod currently counts against the pods with hostnetwork on master nodes
+		// it will be dropped with the fix for aws-cni v1.7.0, see issue https://github.com/giantswarm/giantswarm/issues/11077
+		if strings.Contains(pod.Name, "aws-cni-restarter") {
+			continue
+		}
 		if pod.Spec.HostNetwork {
 			currentMasterPodsHostNetwork++
 			masterPods = append(masterPods, pod.Name)
 		}
 	}
 
+	expectedPods := "aws-node, calico-node, cert-exporter, k8s-api-healthz, k8s-api-server, k8s-controller-manager, k8s-scheduler, kube-proxy, node-exporter"
 	if currentMasterPodsHostNetwork != 9 {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The tenant cluster defines 9 pods with host network on a master node but it has currently %d pods with host network running.\nFound pods:\n%v",
+			"The tenant cluster defines 9 pods (%s) with host network on a master node but it has currently %d pods with host network running.\nFound pods:\n%v",
+			expectedPods,
 			currentMasterPodsHostNetwork,
 			strings.Join(masterPods, "\n"),
 		)
