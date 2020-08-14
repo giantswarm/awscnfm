@@ -16,17 +16,17 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac002",
-		Backoff: plan.NewBackoff(24*time.Minute, 3*time.Minute),
+		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
 		Comment: "check cluster access",
 	},
 	{
 		Action:  "ac003",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(30*time.Minute, 1*time.Minute),
 		Comment: "check master count",
 	},
 	{
 		Action:  "ac004",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
 		Comment: "check worker count",
 	},
 	{
@@ -36,17 +36,17 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac004",
-		Backoff: plan.NewBackoff(24*time.Minute, 3*time.Minute),
+		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
 		Comment: "check worker count",
 	},
 	{
 		Action:  "ac006",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
 		Comment: "check master host network",
 	},
 	{
 		Action:  "ac007",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
 		Comment: "check worker host network",
 	},
 	{
