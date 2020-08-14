@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Tuning backoff time for planner actions.
+
 ## [12.1.1] - 2020-08-12
 
 ## [12.1.0] - 2020-08-12
@@ -18,8 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add code generation.
 * Add first documentation.
 * Add first cluster scope and actions.
-* New action to verifiy if host network pods matches with k8scloudconfig on master nodes
-* New action to verifiy if host network pods matches with k8scloudconfig on worker nodes
+* New action to verifiy if host network pods matches with k8scloudconfig on master nodes.
+* New action to verifiy if host network pods matches with k8scloudconfig on worker nodes.
 
 ### Fixed
 
