@@ -10,8 +10,6 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/pkg/action"
 	"github.com/giantswarm/awscnfm/v12/pkg/action/cl001/ac001"
-	"github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 type runner struct {
@@ -40,30 +38,9 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
 
-	var clients *action.Clients
-	{
-		c := action.Config{
-			Logger: r.logger,
-
-			KubeConfig:    env.KubeConfig(),
-			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
-		}
-
-		clients, err = action.NewClients(c)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = clients.InitControlPlane(ctx)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-	}
-
 	var e action.Executor
 	{
 		c := ac001.ExecutorConfig{
-			Clients: clients,
 			Command: cmd,
 			Logger:  r.logger,
 		}

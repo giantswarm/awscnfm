@@ -5,21 +5,47 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
-	var nodeList corev1.NodeList
+
+	var cpClients k8sclient.Interface
 	{
-		err := e.clients.TenantCluster.CtrlClient().List(
-			ctx,
-			&nodeList,
-		)
+		c := client.ControlPlaneConfig{
+			Logger: e.logger,
+		}
+
+		cpClients, err = client.NewControlPlane(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	var tcClients k8sclient.Interface
+	{
+		c := client.TenantClusterConfig{
+			ControlPlane: cpClients,
+			Logger:       e.logger,
+
+			Scope: "cl001",
+		}
+
+		tcClients, err = client.NewTenantCluster(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+	var nodeList *corev1.NodeList
+	{
+		nodeList, err = tcClients.K8sClient().CoreV1().Nodes().List(metav1.ListOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -39,7 +65,7 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	var workerPodList *corev1.PodList
 	{
-		workerPodList, err = e.clients.TenantCluster.K8sClient().CoreV1().Pods("").List(metav1.ListOptions{
+		workerPodList, err = tcClients.K8sClient().CoreV1().Pods("").List(metav1.ListOptions{
 			FieldSelector: "spec.nodeName=" + workerNode.Name,
 		})
 		if err != nil {
