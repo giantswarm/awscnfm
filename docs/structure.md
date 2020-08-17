@@ -15,6 +15,8 @@ the tenant cluster for its own particular cluster scope. This implies to not
 create a Kubernetes client for the tenant cluster when executing the first
 action of a given cluster scope.
 
+The package hierarchy:
+
 ```nohighlight
 ├── cmd
 │   └── cl001
