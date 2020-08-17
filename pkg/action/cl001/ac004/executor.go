@@ -5,17 +5,53 @@ import (
 	"fmt"
 
 	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
+	var err error
+
+	scope := "cl001"
+	id := config.Cluster(scope, env.TenantCluster())
+
+	var cpClients k8sclient.Interface
+	{
+		c := pkgclient.ControlPlaneConfig{
+			Logger: e.logger,
+		}
+
+		cpClients, err = pkgclient.NewControlPlane(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	var tcClients k8sclient.Interface
+	{
+		c := pkgclient.TenantClusterConfig{
+			ControlPlane: cpClients,
+			Logger:       e.logger,
+
+			Scope: scope,
+		}
+
+		tcClients, err = pkgclient.NewTenantCluster(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
 	var list corev1.NodeList
 	{
-		err := e.clients.TenantCluster.CtrlClient().List(
+		err := tcClients.CtrlClient().List(
 			ctx,
 			&list,
 		)
@@ -41,10 +77,10 @@ func (e *Executor) execute(ctx context.Context) error {
 	var desiredNodesReady int
 	{
 		var list infrastructurev1alpha2.AWSMachineDeploymentList
-		err := e.clients.ControlPlane.CtrlClient().List(
+		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: e.tenantCluster},
+			client.MatchingLabels{label.Cluster: id},
 		)
 		if err != nil {
 			return microerror.Mask(err)
