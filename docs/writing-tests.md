@@ -12,7 +12,7 @@ The idea of actions is to have a composable
 list of independent steps that work together when being executed after one
 another.
 
-Let's say, for example,  you want to check for K8s nodes in state `Ready` in your tenant cluster.
+Let's say, for example, you want to check for K8s nodes in state `Ready` in your tenant cluster.
 You would then implement an action to check for master nodes and another
 separate action to check for worker nodes. This separation makes it easier for
 debugging later in case something is wrong with the tenant cluster and we have
