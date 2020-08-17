@@ -11,7 +11,7 @@ https://drive.google.com/file/d/1qGGoTOkTOW0pt4boPlOqeS-TG9n39yaP/view?usp=shari
 
 A cluster scope represents a very specific **tenant cluster configuration**.
 
-Each cluster scope has a unique name, e. g. `cl001`.
+Each cluster scope has a unique name, e.g. `cl001`.
 
 For example, one cluster scope might want to test single master clusters, where another
 cluster scope might want to test a HA Masters cluster.
