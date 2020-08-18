@@ -11,7 +11,7 @@ Tests are organized based on **cluster scopes** containing multiple **actions**.
 
 For example, there could be one cluster scope for a cluster with one node pool and HA masters, while another cluster scope would be for single master and no node pools.
 
-You can either [execute](/giantswarm/awscnfm/blob/master/docs/using.md) the entire cluster scope or a single action.
+You can either [execute](https://github.com/giantswarm/awscnfm/blob/master/docs/using.md) the entire cluster scope or a single action.
 
 The `awscnfm` major and minor **version** used for testing is supposed to match the major and minor version of the release used by the tenant cluster(s) to test.
 
