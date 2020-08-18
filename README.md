@@ -19,16 +19,6 @@ The `awscnfm` major and minor **version** used for testing is supposed to match 
 
 Find all documentation in the [`docs`](https://github.com/giantswarm/awscnfm/tree/master/docs) folder of this repo.
 
-## Setup
-
-The first thing you need in order to use `awscnfm` is to have an established
-connection to a Control Plane. See the [docs about the environment variables
-needed](/docs/environment.md) in order to do that. You also want to get
-comfortable with the [project structure](/docs/structure.md) so that you
-understand how to execute or explain certain actions for a specific cluster
-scope. More about terminology and several basics can also be found in the
-[introduction docs](/docs/introduction.md).
-
 ## Release versions
 
 The code used for testing conformity is aligned with every Giant Swarm release
