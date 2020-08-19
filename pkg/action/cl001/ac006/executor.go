@@ -14,6 +14,9 @@ import (
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
+// expectedPods are all host network pods which we expect to run on a master node
+var expectedPods = "aws-node, calico-node, cert-exporter, k8s-api-healthz, k8s-api-server, k8s-controller-manager, k8s-scheduler, kube-proxy, node-exporter"
+
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
 
@@ -74,20 +77,25 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	var currentMasterPodsHostNetwork int
 	var masterPods []string
 	for _, pod := range masterPodList.Items {
+		// this cronjob pod currently counts against the pods with hostnetwork on master nodes
+		// it will be dropped with the fix for aws-cni v1.7.0, see issue https://github.com/giantswarm/giantswarm/issues/11077
+		if strings.Contains(pod.Name, "aws-cni-restarter") {
+			continue
+		}
 		if pod.Spec.HostNetwork {
-			currentMasterPodsHostNetwork++
 			masterPods = append(masterPods, pod.Name)
 		}
 	}
 
-	if currentMasterPodsHostNetwork != 9 {
+	if len(masterPods) != len(expectedPods) {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The tenant cluster defines 9 pods with host network on a master node but it has currently %d pods with host network running.\nFound pods:\n%v",
-			currentMasterPodsHostNetwork,
-			strings.Join(masterPods, "\n"),
+			"The Tenant Cluster defines %d pods (%s) but it has currently %d pods (%s) with host network running",
+			len(expectedPods),
+			expectedPods,
+			len(masterPods),
+			strings.Join(masterPods, ", "),
 		)
 
 		return microerror.Mask(executionFailedError)
