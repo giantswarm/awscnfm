@@ -4,6 +4,7 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/microerror"
 
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
@@ -14,14 +15,17 @@ func newCRs(host string) (v1alpha2.ClusterCRs, error) {
 
 	var releaseComponents map[string]string
 	{
-		c := release.Config{}
+		c := release.Config{
+			FromEnv:     env.ReleaseVersion(),
+			FromProject: project.Version(),
+		}
 
 		releaseCollection, err := release.New(c)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
-		releaseComponents = releaseCollection.ReleaseComponents(project.Version())
+		releaseComponents = releaseCollection.ReleaseComponents()
 	}
 
 	var crs v1alpha2.ClusterCRs
