@@ -42,12 +42,12 @@ var Plan = []plan.Step{
 	{
 		Action:  "ac006",
 		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
-		Comment: "check master host network",
+		Comment: "check master with host network set",
 	},
 	{
 		Action:  "ac007",
-		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
-		Comment: "check worker host network",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Comment: "check worker with host network set",
 	},
 	{
 		Action:  "ac008",
