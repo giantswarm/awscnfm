@@ -5,11 +5,17 @@ and actions.
 
 ## 1. Decide on the version to use
 
-`awscnfm` has a versioning scheme aligned with the Giant Swarm tenant cluster releases for AWS. Both the major and the minor version must match.
+`awscnfm` has a versioning scheme aligned with the Giant Swarm tenant cluster
+releases for AWS. Both the major and the minor version must match. Assuming
+`v11.5.1` is the latest patch release of `v11.5.x`, you should use the latest
+`awsncfm` release in minor version `v11.5.x`. If you want to specifically test
+`v11.5.1` even though there does `v11.5.3` exist, you need to specify the
+release version using the environment variable `AWSCNFM_RELEASEVERSION`. That
+way you can then also test any test releases like `v100.0.0-xh3b4sd`.
 
-**Example:** to test a cluster using release `v11.5.1`, you should use the latest `awsncfm` release in minor version `v11.5.x`.
-
-Either download and unpack the [release](https://github.com/giantswarm/awscnfm/releases) or clone the source repository, check out the version tag, and `go build` your binary.
+In order to find a particular release, either download and unpack the
+[release](https://github.com/giantswarm/awscnfm/releases) or clone the source
+repository, check out the relevant Git Tag, and `go build` the binary yourself.
 
 ## 2. Get control plane access
 
