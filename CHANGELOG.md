@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Tuning backoff time for planner actions.
 - Modified the documentation and main README.
 - Changed the default description for cluster scopes slightly, for consistent
   use of the "cluster scope" term.
