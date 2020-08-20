@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   use of the "cluster scope" term.
 - Updated backward incompatible Kubernetes dependencies to v1.18.5.
 
+### Fixed
+
+- Make release management work for test releases.
+
 ## [12.1.1] - 2020-08-12
 
 ## [12.1.0] - 2020-08-12
