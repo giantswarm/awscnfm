@@ -64,6 +64,11 @@ func (r *Release) Components() map[string]string {
 	return releaseComponents
 }
 
+func (r *Release) Version() string {
+	release := mustFind(r.fromEnv, r.fromProject, r.releases)
+	return release.GetName()
+}
+
 func mustFind(fromEnv string, fromProject string, releases []v1alpha1.Release) v1alpha1.Release {
 	var version string
 	{
