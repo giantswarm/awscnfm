@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
+	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -48,7 +48,7 @@ func (e *Executor) execute(ctx context.Context) error {
 	}
 	var nodeList *corev1.NodeList
 	{
-		nodeList, err = tcClients.K8sClient().CoreV1().Nodes().List(metav1.ListOptions{})
+		nodeList, err = tcClients.K8sClient().CoreV1().Nodes().List(ctx, metav1.ListOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -68,7 +68,7 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	var workerPodList *corev1.PodList
 	{
-		workerPodList, err = tcClients.K8sClient().CoreV1().Pods("").List(metav1.ListOptions{
+		workerPodList, err = tcClients.K8sClient().CoreV1().Pods("").List(ctx, metav1.ListOptions{
 			FieldSelector: "spec.nodeName=" + workerNode.Name,
 		})
 		if err != nil {
