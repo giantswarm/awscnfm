@@ -6,10 +6,11 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
-	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger/microloggertest"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/client"
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
