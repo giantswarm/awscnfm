@@ -3,7 +3,7 @@ package ac005
 import (
 	"context"
 
-	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/microerror"
 	"github.com/jsonmaur/aws-regions/go/regions"
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
+	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -13,6 +13,9 @@ import (
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
+
+// expectedPods are all host network pods which we expect to run on a master node
+var expectedPods = "aws-node, calico-node, cert-exporter, k8s-api-healthz, k8s-api-server, k8s-controller-manager, k8s-scheduler, kube-proxy, node-exporter"
 
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
@@ -46,7 +49,7 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	var nodeList *corev1.NodeList
 	{
-		nodeList, err = tcClients.K8sClient().CoreV1().Nodes().List(metav1.ListOptions{})
+		nodeList, err = tcClients.K8sClient().CoreV1().Nodes().List(ctx, metav1.ListOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -66,7 +69,7 @@ func (e *Executor) execute(ctx context.Context) error {
 
 	var masterPodList *corev1.PodList
 	{
-		masterPodList, err = tcClients.K8sClient().CoreV1().Pods("").List(metav1.ListOptions{
+		masterPodList, err = tcClients.K8sClient().CoreV1().Pods("").List(ctx, metav1.ListOptions{
 			FieldSelector: "spec.nodeName=" + masterNode.Name,
 		})
 		if err != nil {
@@ -74,20 +77,25 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	var currentMasterPodsHostNetwork int
 	var masterPods []string
 	for _, pod := range masterPodList.Items {
+		// this cronjob pod currently counts against the pods with hostnetwork on master nodes
+		// it will be dropped with the fix for aws-cni v1.7.0, see issue https://github.com/giantswarm/giantswarm/issues/11077
+		if strings.Contains(pod.Name, "aws-cni-restarter") {
+			continue
+		}
 		if pod.Spec.HostNetwork {
-			currentMasterPodsHostNetwork++
 			masterPods = append(masterPods, pod.Name)
 		}
 	}
 
-	if currentMasterPodsHostNetwork != 9 {
+	if len(masterPods) != len(expectedPods) {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The tenant cluster defines 9 pods with host network on a master node but it has currently %d pods with host network running.\nFound pods:\n%v",
-			currentMasterPodsHostNetwork,
-			strings.Join(masterPods, "\n"),
+			"The Tenant Cluster defines %d pods (%s) but it has currently %d pods (%s) with host network running",
+			len(expectedPods),
+			expectedPods,
+			len(masterPods),
+			strings.Join(masterPods, ", "),
 		)
 
 		return microerror.Mask(executionFailedError)
