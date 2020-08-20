@@ -49,11 +49,6 @@ func New(config Config) (*Release, error) {
 	return r, nil
 }
 
-// TODO
-//
-//     check for specific version
-//     check for fuzzy version
-//
 func (r *Release) Components() map[string]string {
 	// Collecting the components of the release we found based on the input
 	// configuration.
@@ -99,53 +94,56 @@ func mustFind(fromEnv string, fromProject string, releases []v1alpha1.Release) v
 			}
 		}
 
-		// We might not have an exact match. Then we want to check for the latest
-		// release that aligns with our major and minor version. Such a scenario
-		// might be if somebody wants to test conformity of a release we want to
-		// publish.
+		// We might not have an exact match. Then we want to check for the
+		// latest release that aligns with our major and minor version. Such a
+		// scenario might be if somebody wants to test conformity of a release
+		// we want to publish. Note that in case of a test release we fall back
+		// to the exact match again. The fuzzy search on using the latest patch
+		// release does only work with published releases.
 		//
 		//     v13.4.3
 		//     v18.6.8
 		//
-		if release.GetName() == "" {
-			rv, err := semver.NewVersion(version)
-			if err != nil {
-				panic(err)
+		rv := mustToSemver(version)
+
+		for _, o := range releases {
+			ov := mustToSemver(o.GetName())
+
+			// Major and minor must match. We ignore the rest.
+			if rv.Major != ov.Major {
+				continue
+			}
+			if rv.Minor != ov.Minor {
+				continue
+			}
+			if rv.PreRelease != ov.PreRelease {
+				continue
 			}
 
-			for _, o := range releases {
-				ov, err := semver.NewVersion(o.GetName())
-				if err != nil {
-					panic(err)
-				}
+			if release.GetName() == "" {
+				// Remembering the first release we find. We might find another
+				// one with a bigger patch version during the next iterations.
+				release = o
+			} else {
+				pv := mustToSemver(release.GetName())
 
-				// Major and minor must match. We ignore the rest.
-				if rv.Major != ov.Major {
-					continue
-				}
-				if rv.Minor != ov.Minor {
-					continue
-				}
-
-				if release.GetName() == "" {
-					// Remembering the first release we find. We might find another
-					// one with a bigger patch version during the next iterations.
+				if ov.Patch > pv.Patch {
+					// We found a release with a bigger patch version than we
+					// already kept track of.
 					release = o
-				} else {
-					pv, err := semver.NewVersion(release.GetName())
-					if err != nil {
-						panic(err)
-					}
-
-					if ov.Patch > pv.Patch {
-						// We found a release with a bigger patch version than we
-						// already kept track of.
-						release = o
-					}
 				}
 			}
 		}
 	}
 
 	return release
+}
+
+func mustToSemver(s string) *semver.Version {
+	v, err := semver.NewVersion(strings.Replace(s, "v", "", 1))
+	if err != nil {
+		panic(err)
+	}
+
+	return v
 }
