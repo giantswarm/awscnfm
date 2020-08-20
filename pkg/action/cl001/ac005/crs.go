@@ -4,27 +4,31 @@ import (
 	"context"
 
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
 	"github.com/jsonmaur/aws-regions/go/regions"
 
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
-func newCRs(ctx context.Context, id string, host string) (v1alpha2.NodePoolCRs, error) {
+func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host string) (v1alpha2.NodePoolCRs, error) {
 	var err error
 
-	var releaseComponents map[string]string
+	var r *release.Release
 	{
-		c := release.Config{}
+		c := release.Config{
+			FromEnv:     env.ReleaseVersion(),
+			FromProject: project.Version(),
+			Releases:    releases,
+		}
 
-		releaseCollection, err := release.New(c)
+		r, err = release.New(c)
 		if err != nil {
 			return v1alpha2.NodePoolCRs{}, microerror.Mask(err)
 		}
-
-		releaseComponents = releaseCollection.ReleaseComponents(project.Version())
 	}
 
 	var azs []string
@@ -49,8 +53,8 @@ func newCRs(ctx context.Context, id string, host string) (v1alpha2.NodePoolCRs, 
 			OnDemandBaseCapacity:                0,
 			OnDemandPercentageAboveBaseCapacity: 0,
 			Owner:                               "giantswarm",
-			ReleaseComponents:                   releaseComponents,
-			ReleaseVersion:                      project.Version(),
+			ReleaseComponents:                   r.Components(),
+			ReleaseVersion:                      r.Version(),
 			UseAlikeInstanceTypes:               true,
 		}
 

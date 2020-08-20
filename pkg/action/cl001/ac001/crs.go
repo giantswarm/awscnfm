@@ -2,26 +2,30 @@ package ac001
 
 import (
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
 
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
-func newCRs(host string) (v1alpha2.ClusterCRs, error) {
+func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, error) {
 	var err error
 
-	var releaseComponents map[string]string
+	var r *release.Release
 	{
-		c := release.Config{}
+		c := release.Config{
+			FromEnv:     env.ReleaseVersion(),
+			FromProject: project.Version(),
+			Releases:    releases,
+		}
 
-		releaseCollection, err := release.New(c)
+		r, err = release.New(c)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
-
-		releaseComponents = releaseCollection.ReleaseComponents(project.Version())
 	}
 
 	var crs v1alpha2.ClusterCRs
@@ -32,8 +36,8 @@ func newCRs(host string) (v1alpha2.ClusterCRs, error) {
 			Description:       explainerCommand,
 			Owner:             key.Organization,
 			Region:            key.RegionFromHost(host),
-			ReleaseComponents: releaseComponents,
-			ReleaseVersion:    project.Version(),
+			ReleaseComponents: r.Components(),
+			ReleaseVersion:    r.Version(),
 		}
 
 		crs, err = v1alpha2.NewClusterCRs(c)
