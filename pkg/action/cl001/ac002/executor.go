@@ -3,7 +3,7 @@ package ac002
 import (
 	"context"
 
-	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
+	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -40,7 +40,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	_, err = tcClients.K8sClient().CoreV1().Nodes().List(metav1.ListOptions{})
+	_, err = tcClients.K8sClient().CoreV1().Nodes().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return microerror.Mask(err)
 	}
