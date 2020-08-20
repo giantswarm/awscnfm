@@ -21,7 +21,7 @@ import (
 
 const (
 	name        = "{{ .Cluster }}"
-	description = "Conformance tests for cluster {{ .Cluster }}."
+	description = "Conformance tests for cluster scope {{ .Cluster }}."
 )
 
 type Config struct {

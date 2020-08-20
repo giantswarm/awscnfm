@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Tuning backoff time for planner actions.
+- Tuning backoff time for planner actions.
+- Modified the documentation and main README.
+- Changed the default description for cluster scopes slightly, for consistent use of the "cluster scope" term.
 
 ## [12.1.1] - 2020-08-12
 
@@ -24,10 +26,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add first cluster scope and actions.
 * New action to verifiy if host network pods matches with k8scloudconfig on master nodes.
 * New action to verifiy if host network pods matches with k8scloudconfig on worker nodes.
+* Add pod names we expect when running host network tests for master and worker node.
 
 ### Fixed
 
-* Include namespace to delete cluster CR's
+* Include namespace to delete cluster CR's.
+* Skip aws-cni-restarter for host network test on master.
 
 [Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.1.1...HEAD
 [12.1.1]: https://github.com/giantswarm/awscnfm/compare/v12.1.0...v12.1.1

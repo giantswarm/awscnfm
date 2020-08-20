@@ -14,6 +14,9 @@ import (
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
+// expectedPods are all host network pods which we expect to run on a worker node
+var expectedPods = "aws-node, calico-node, cert-exporter, kiam-agent, kube-proxy, node-exporter"
+
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
 
@@ -73,20 +76,20 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	var currentWorkerPodsHostNetwork int
 	var workerPods []string
 	for _, pod := range workerPodList.Items {
 		if pod.Spec.HostNetwork {
-			currentWorkerPodsHostNetwork++
 			workerPods = append(workerPods, pod.Name)
 		}
 	}
 
-	if currentWorkerPodsHostNetwork != 6 {
+	if len(workerPods) != len(expectedPods) {
 		executionFailedError.Desc = fmt.Sprintf(
-			"The tenant cluster defines 6 pods with host network on a worker node but it has currently %d pods with host network running.\nFound pods:\n%v",
-			currentWorkerPodsHostNetwork,
-			strings.Join(workerPods, ","),
+			"The Tenant Cluster defines %d pods (%s) but it has currently %d pods (%s) with host network running",
+			len(expectedPods),
+			expectedPods,
+			len(workerPods),
+			strings.Join(workerPods, ", "),
 		)
 
 		return microerror.Mask(executionFailedError)
