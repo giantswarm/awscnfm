@@ -20,6 +20,8 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/pkg/action"
 	"github.com/giantswarm/awscnfm/v12/pkg/action/{{ .Cluster }}/{{ .Action }}"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 type runner struct {
@@ -51,8 +53,9 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var e action.Executor
 	{
 		c := {{ .Action }}.ExecutorConfig{
-			Command: cmd,
-			Logger:  r.logger,
+			Command:       cmd,
+			Logger:        r.logger,
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
 		}
 
 		e, err = {{ .Action }}.NewExecutor(c)
