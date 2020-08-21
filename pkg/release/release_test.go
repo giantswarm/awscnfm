@@ -83,6 +83,22 @@ func Test_Release_mustFind(t *testing.T) {
 		},
 		{
 			name:        "case 5",
+			fromEnv:     "",
+			fromProject: "v12.0.0-dev",
+			releases: []v1alpha1.Release{
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0-dev"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.0-dev"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.3-dev"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"}},
+			},
+			expectedRelease: v1alpha1.Release{
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.3-dev"},
+			},
+		},
+		{
+			name:        "case 6",
 			fromEnv:     "v100.0.0-xh3b4sd",
 			fromProject: "v12.0.0-dev",
 			releases: []v1alpha1.Release{
