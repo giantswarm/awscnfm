@@ -14,13 +14,17 @@ const (
 )
 
 type ExplainerConfig struct {
+	TenantCluster string
 }
 
 type Explainer struct {
+	tenantCluster string
 }
 
 func NewExplainer(config ExplainerConfig) (*Explainer, error) {
-	e := &Explainer{}
+	e := &Explainer{
+		tenantCluster: config.TenantCluster,
+	}
 
 	return e, nil
 }
