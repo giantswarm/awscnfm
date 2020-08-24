@@ -35,7 +35,7 @@ func (e *Executor) execute(ctx context.Context) error {
 			ControlPlane: cpClients,
 			Logger:       e.logger,
 
-			Scope: "cl001",
+			Scope: e.scope,
 		}
 
 		tcClients, err = pkgclient.NewTenantCluster(c)
