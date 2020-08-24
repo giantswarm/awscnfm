@@ -43,8 +43,10 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var e action.Executor
 	{
 		c := ac000.ExecutorConfig{
-			Command:       cmd,
-			Logger:        r.logger,
+			Command: cmd,
+			Logger:  r.logger,
+
+			Scope:         "cl001",
 			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
 		}
 
