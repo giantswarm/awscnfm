@@ -8,14 +8,9 @@ import (
 	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
-	scope := "cl001"
-	id := config.Cluster(scope, env.TenantCluster())
-
 	var err error
 
 	var cpClients k8sclient.Interface
@@ -44,7 +39,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		releases = list.Items
 	}
 
-	crs, err := newCRs(ctx, releases, id, cpClients.RESTConfig().Host)
+	crs, err := newCRs(ctx, releases, e.tenantCluster, cpClients.RESTConfig().Host)
 	if err != nil {
 		return microerror.Mask(err)
 	}
