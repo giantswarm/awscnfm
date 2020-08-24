@@ -22,6 +22,8 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/pkg/action"
 	"github.com/giantswarm/awscnfm/v12/pkg/action/{{ .Cluster }}/{{ .Action }}"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 type runner struct {
@@ -52,7 +54,9 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 
 	var e action.Explainer
 	{
-		c := {{ .Action }}.ExplainerConfig{}
+		c := {{ .Action }}.ExplainerConfig{
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
+		}
 
 		e, err = {{ .Action }}.NewExplainer(c)
 		if err != nil {
