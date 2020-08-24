@@ -11,14 +11,18 @@ import (
 )
 
 type ExecutorConfig struct {
-	Command       *cobra.Command
-	Logger        micrologger.Logger
+	Command *cobra.Command
+	Logger  micrologger.Logger
+
+	Scope         string
 	TenantCluster string
 }
 
 type Executor struct {
-	command       *cobra.Command
-	logger        micrologger.Logger
+	command *cobra.Command
+	logger  micrologger.Logger
+
+	scope         string
 	tenantCluster string
 }
 
@@ -31,8 +35,10 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 	}
 
 	e := &Executor{
-		command:       config.Command,
-		logger:        config.Logger,
+		command: config.Command,
+		logger:  config.Logger,
+
+		scope:         config.Scope,
 		tenantCluster: config.TenantCluster,
 	}
 

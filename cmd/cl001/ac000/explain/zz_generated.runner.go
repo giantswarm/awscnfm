@@ -45,6 +45,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var e action.Explainer
 	{
 		c := ac000.ExplainerConfig{
+			Scope:         "cl001",
 			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
 		}
 

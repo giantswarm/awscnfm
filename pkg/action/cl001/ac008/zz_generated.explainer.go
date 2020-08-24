@@ -7,15 +7,18 @@ import (
 )
 
 type ExplainerConfig struct {
+	Scope         string
 	TenantCluster string
 }
 
 type Explainer struct {
+	scope         string
 	tenantCluster string
 }
 
 func NewExplainer(config ExplainerConfig) (*Explainer, error) {
 	e := &Explainer{
+		scope:         config.Scope,
 		tenantCluster: config.TenantCluster,
 	}
 
