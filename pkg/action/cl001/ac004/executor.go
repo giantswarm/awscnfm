@@ -11,16 +11,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
-
-	scope := "cl001"
-	id := config.Cluster(scope, env.TenantCluster())
 
 	var cpClients k8sclient.Interface
 	{
@@ -40,7 +35,7 @@ func (e *Executor) execute(ctx context.Context) error {
 			ControlPlane: cpClients,
 			Logger:       e.logger,
 
-			Scope: scope,
+			Scope: "cl001",
 		}
 
 		tcClients, err = pkgclient.NewTenantCluster(c)
@@ -80,7 +75,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 		if err != nil {
 			return microerror.Mask(err)
