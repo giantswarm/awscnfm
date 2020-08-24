@@ -9,18 +9,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func Test_Release_mustFind(t *testing.T) {
+func Test_Release_mustFindPatch(t *testing.T) {
 	testCases := []struct {
 		name            string
-		fromEnv         string
-		fromProject     string
+		version         string
+		release         v1alpha1.Release
 		releases        []v1alpha1.Release
 		expectedRelease v1alpha1.Release
 	}{
 		{
-			name:        "case 0",
-			fromEnv:     "",
-			fromProject: "v12.0.0",
+			name:    "case 0",
+			version: "v12.0.0",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
 			},
@@ -29,9 +28,8 @@ func Test_Release_mustFind(t *testing.T) {
 			},
 		},
 		{
-			name:        "case 1",
-			fromEnv:     "",
-			fromProject: "v12.0.0",
+			name:    "case 1",
+			version: "v12.0.0",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.1"}},
@@ -42,9 +40,8 @@ func Test_Release_mustFind(t *testing.T) {
 			},
 		},
 		{
-			name:        "case 2",
-			fromEnv:     "",
-			fromProject: "v12.0.0",
+			name:    "case 2",
+			version: "v12.0.0",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.2.5"}},
@@ -55,9 +52,8 @@ func Test_Release_mustFind(t *testing.T) {
 			},
 		},
 		{
-			name:        "case 3",
-			fromEnv:     "",
-			fromProject: "v12.0.0",
+			name:    "case 3",
+			version: "v12.0.0",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"}},
@@ -68,9 +64,8 @@ func Test_Release_mustFind(t *testing.T) {
 			},
 		},
 		{
-			name:        "case 4",
-			fromEnv:     "",
-			fromProject: "v12.0.0-dev",
+			name:    "case 4",
+			version: "v12.0.0-dev",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0-dev"}},
@@ -82,9 +77,8 @@ func Test_Release_mustFind(t *testing.T) {
 			},
 		},
 		{
-			name:        "case 5",
-			fromEnv:     "",
-			fromProject: "v12.0.0-dev",
+			name:    "case 5",
+			version: "v12.0.0-dev",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0-dev"}},
@@ -98,9 +92,8 @@ func Test_Release_mustFind(t *testing.T) {
 			},
 		},
 		{
-			name:        "case 6",
-			fromEnv:     "v100.0.0-xh3b4sd",
-			fromProject: "v12.0.0-dev",
+			name:    "case 6",
+			version: "v100.0.0-xh3b4sd",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0-dev"}},
@@ -118,7 +111,7 @@ func Test_Release_mustFind(t *testing.T) {
 
 	for i, tc := range testCases {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			release := mustFind(tc.fromEnv, tc.fromProject, tc.releases)
+			release := mustFindPatch(tc.version, tc.releases)
 
 			if !cmp.Equal(release, tc.expectedRelease) {
 				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedRelease, release))

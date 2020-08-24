@@ -14,15 +14,15 @@ import (
 func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, error) {
 	var err error
 
-	var r *release.Release
+	var p *release.Patch
 	{
-		c := release.Config{
+		c := release.PatchConfig{
 			FromEnv:     env.ReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}
 
-		r, err = release.New(c)
+		p, err = release.NewPatch(c)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
@@ -36,8 +36,8 @@ func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, erro
 			Description:       explainerCommand,
 			Owner:             key.Organization,
 			Region:            key.RegionFromHost(host),
-			ReleaseComponents: r.Components(),
-			ReleaseVersion:    r.Version(),
+			ReleaseComponents: p.Components(),
+			ReleaseVersion:    p.Version(),
 		}
 
 		crs, err = v1alpha2.NewClusterCRs(c)
