@@ -15,7 +15,7 @@ import (
 )
 
 // expectedPods are all host network pods which we expect to run on a master node
-var expectedPods = "aws-node, calico-node, cert-exporter, k8s-api-healthz, k8s-api-server, k8s-controller-manager, k8s-scheduler, kube-proxy, node-exporter"
+var expectedPods = []string{"aws-node", "calico-node", "cert-exporter", "k8s-api-healthz", "k8s-api-server", "k8s-controller-manager", "k8s-scheduler", "kube-proxy", "node-exporter"}
 
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
@@ -93,7 +93,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		executionFailedError.Desc = fmt.Sprintf(
 			"The Tenant Cluster defines %d pods (%s) but it has currently %d pods (%s) with host network running",
 			len(expectedPods),
-			expectedPods,
+			strings.Join(expectedPods, ", "),
 			len(masterPods),
 			strings.Join(masterPods, ", "),
 		)

@@ -1,6 +1,9 @@
 package ac001
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
@@ -29,6 +32,7 @@ func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, erro
 	}
 
 	var crs v1alpha2.ClusterCRs
+	fmt.Println(r.Version())
 	{
 		c := v1alpha2.ClusterCRsConfig{
 			Credential:        key.Credential,
@@ -37,7 +41,7 @@ func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, erro
 			Owner:             key.Organization,
 			Region:            key.RegionFromHost(host),
 			ReleaseComponents: r.Components(),
-			ReleaseVersion:    r.Version(),
+			ReleaseVersion:    strings.Replace(r.Version(), "v", "", -1),
 		}
 
 		crs, err = v1alpha2.NewClusterCRs(c)
