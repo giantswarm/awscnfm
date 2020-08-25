@@ -1,6 +1,8 @@
 package release
 
 import (
+	"strings"
+
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
 )
@@ -59,7 +61,7 @@ func (p *Patch) Components() map[string]string {
 }
 
 func (p *Patch) Version() string {
-	return p.release().GetName()
+	return strings.Replace(p.release().GetName(), "v", "", 1)
 }
 
 func (p *Patch) release() *v1alpha1.Release {
