@@ -9,7 +9,7 @@ import (
 	"github.com/giantswarm/microerror"
 )
 
-type PatchConfig struct {
+type MinorConfig struct {
 	// FromEnv is the release version we get from the environment. This might be
 	// a custom release version created for testing, e.g. 100.0.0-xh3b4sd. If
 	// this information is given it is preferred over the value given by
@@ -26,13 +26,13 @@ type PatchConfig struct {
 	Releases []v1alpha1.Release
 }
 
-type Patch struct {
+type Minor struct {
 	fromEnv     string
 	fromProject string
 	releases    []v1alpha1.Release
 }
 
-func NewPatch(config PatchConfig) (*Patch, error) {
+func NewMinor(config MinorConfig) (*Minor, error) {
 	if config.FromProject == "" && config.FromEnv == "" {
 		return nil, microerror.Maskf(invalidConfigError, "either %T.FromProject or %T.FromEnv must be given", config, config)
 	}
@@ -40,21 +40,21 @@ func NewPatch(config PatchConfig) (*Patch, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Releases must not be empty", config)
 	}
 
-	p := &Patch{
+	m := &Minor{
 		fromEnv:     config.FromEnv,
 		fromProject: config.FromProject,
 		releases:    config.Releases,
 	}
 
-	return p, nil
+	return m, nil
 }
 
-func (p *Patch) Components() map[string]string {
+func (m *Minor) Components() map[string]string {
 	// Collecting the components of the release we found based on the input
 	// configuration.
 	releaseComponents := map[string]string{}
 	{
-		for _, c := range p.release().Spec.Components {
+		for _, c := range m.release().Spec.Components {
 			releaseComponents[c.Name] = c.Version
 		}
 	}
@@ -62,23 +62,23 @@ func (p *Patch) Components() map[string]string {
 	return releaseComponents
 }
 
-func (p *Patch) Version() string {
-	return strings.Replace(p.release().GetName(), "v", "", 1)
+func (m *Minor) Version() string {
+	return strings.Replace(m.release().GetName(), "v", "", 1)
 }
 
-func (p *Patch) release() *v1alpha1.Release {
-	version := findVersion(p.fromEnv, p.fromProject)
+func (m *Minor) release() *v1alpha1.Release {
+	version := findVersion(m.fromEnv, m.fromProject)
 
-	release := findRelease(version, p.releases)
+	release := findRelease(version, m.releases)
 	if release.GetName() != "" {
 		return &release
 	}
 
-	patch := mustFindPatch(version, p.releases)
+	patch := mustFindMinor(version, m.releases)
 	return &patch
 }
 
-func mustFindPatch(version string, releases []v1alpha1.Release) v1alpha1.Release {
+func mustFindMinor(version string, releases []v1alpha1.Release) v1alpha1.Release {
 	// We might not have an exact match. Then we want to check for the
 	// latest release that aligns with our major and minor version. Such a
 	// scenario might be if somebody wants to test conformity of a release
@@ -98,7 +98,7 @@ func mustFindPatch(version string, releases []v1alpha1.Release) v1alpha1.Release
 		if vv.Major != rv.Major {
 			continue
 		}
-		if vv.Minor != rv.Minor {
+		if vv.Minor-1 != rv.Minor {
 			continue
 		}
 		if vv.PreRelease != rv.PreRelease {

@@ -27,9 +27,9 @@ func mustToSemver(s string) *semver.Version {
 //     v24.6.8-dev
 //
 func findRelease(version string, releases []v1alpha1.Release) v1alpha1.Release {
-	for _, o := range releases {
-		if o.GetName() == version {
-			return o
+	for _, r := range releases {
+		if r.GetName() == version {
+			return r
 		}
 	}
 
