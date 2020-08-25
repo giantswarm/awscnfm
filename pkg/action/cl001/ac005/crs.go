@@ -17,15 +17,15 @@ import (
 func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host string) (v1alpha2.NodePoolCRs, error) {
 	var err error
 
-	var r *release.Release
+	var p *release.Patch
 	{
-		c := release.Config{
+		c := release.PatchConfig{
 			FromEnv:     env.ReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}
 
-		r, err = release.New(c)
+		p, err = release.NewPatch(c)
 		if err != nil {
 			return v1alpha2.NodePoolCRs{}, microerror.Mask(err)
 		}
@@ -53,8 +53,8 @@ func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host st
 			OnDemandBaseCapacity:                0,
 			OnDemandPercentageAboveBaseCapacity: 0,
 			Owner:                               "giantswarm",
-			ReleaseComponents:                   r.Components(),
-			ReleaseVersion:                      r.Version(),
+			ReleaseComponents:                   p.Components(),
+			ReleaseVersion:                      p.Version(),
 			UseAlikeInstanceTypes:               true,
 		}
 
