@@ -15,7 +15,7 @@ import (
 )
 
 // expectedPods are all host network pods which we expect to run on a worker node
-var expectedPods = "aws-node, calico-node, cert-exporter, kiam-agent, kube-proxy, node-exporter"
+var expectedPods = []string{"aws-node", "calico-node", "cert-exporter", "kiam-agent", "kube-proxy", "node-exporter"}
 
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
@@ -87,7 +87,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		executionFailedError.Desc = fmt.Sprintf(
 			"The Tenant Cluster defines %d pods (%s) but it has currently %d pods (%s) with host network running",
 			len(expectedPods),
-			expectedPods,
+			strings.Join(expectedPods, ", "),
 			len(workerPods),
 			strings.Join(workerPods, ", "),
 		)
