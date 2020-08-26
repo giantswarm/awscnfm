@@ -65,6 +65,18 @@ func Test_Release_mustFindPatch(t *testing.T) {
 		},
 		{
 			name:    "case 4",
+			version: "v12.0.9",
+			releases: []v1alpha1.Release{
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"}},
+			},
+			expectedRelease: v1alpha1.Release{
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"},
+			},
+		},
+		{
+			name:    "case 5",
 			version: "v12.0.0-dev",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
@@ -77,7 +89,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			},
 		},
 		{
-			name:    "case 5",
+			name:    "case 6",
 			version: "v12.0.0-dev",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
@@ -92,7 +104,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			},
 		},
 		{
-			name:    "case 6",
+			name:    "case 7",
 			version: "v100.0.0-xh3b4sd",
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
