@@ -79,16 +79,6 @@ func (m *Minor) release() *v1alpha1.Release {
 }
 
 func mustFindMinor(version string, releases []v1alpha1.Release) v1alpha1.Release {
-	// We might not have an exact match. Then we want to check for the latest
-	// release that aligns with our major version. Such a scenario might be if
-	// somebody wants to test conformity of a release we want to publish. Note
-	// that in case of a test release we fall back to the exact match again. The
-	// fuzzy search on using the latest minor release does only work with
-	// published releases.
-	//
-	//     v13.4.3
-	//     v18.6.8
-	//
 	vv := mustToSemver(version)
 
 	var versions semver.Versions
