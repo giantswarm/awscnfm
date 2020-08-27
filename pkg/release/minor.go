@@ -74,8 +74,8 @@ func (m *Minor) release() *v1alpha1.Release {
 		return &release
 	}
 
-	patch := mustFindMinor(version, m.releases)
-	return &patch
+	minor := mustFindMinor(version, m.releases)
+	return &minor
 }
 
 func mustFindMinor(version string, releases []v1alpha1.Release) v1alpha1.Release {
