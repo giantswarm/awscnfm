@@ -13,6 +13,12 @@ const (
 	explainerCommand = "awscnfm cl001 ac001 explain"
 )
 
+const (
+	// This is a hack to make initially generated code compile because there is
+	// nothing making use of the constant when starting out.
+	_ = explainerCommand
+)
+
 type ExplainerConfig struct {
 	Scope         string
 	TenantCluster string
