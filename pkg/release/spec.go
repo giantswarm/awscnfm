@@ -1,9 +1,19 @@
 package release
 
-// Resolver implements Latest and Previous which return their respective semver
-// level version depending on the MAJOR, MINOR and PATCH level implementations.
-// Consider a project version of the awscnfm tool of v12.2.x and the following
-// releases are available on the Control Plane.
+type ComponentsContainer interface {
+	Latest() map[string]string
+	Previous() map[string]string
+}
+
+type Resolver interface {
+	Components() ComponentsContainer
+	Version() VersionContainer
+}
+
+// VersionContainer implements Latest and Previous which return their respective
+// semver level version depending on the MAJOR, MINOR and PATCH level
+// implementations. Consider a project version of the awscnfm tool of v12.2.x
+// and the following releases are available on the Control Plane.
 //
 //     MAJOR               MINOR               PATCH
 //
@@ -21,11 +31,11 @@ package release
 //
 // In the described scenario above example behaviour should be as follows.
 //
-//     * the MAJOR level implementation of Resolver.Latest returns v11.5.3
-//     * the MINOR level implementation of Resolver.Latest returns v12.1.0
-//     * the PATCH level implementation of Resolver.Latest returns v12.2.5
+//     * the MAJOR level implementation of VersionContainer.Latest returns v11.5.3
+//     * the MINOR level implementation of VersionContainer.Latest returns v12.1.0
+//     * the PATCH level implementation of VersionContainer.Latest returns v12.2.5
 //
-type Resolver interface {
+type VersionContainer interface {
 	Latest() string
 	Previous() string
 }
