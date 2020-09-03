@@ -53,8 +53,8 @@ func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host st
 			OnDemandBaseCapacity:                0,
 			OnDemandPercentageAboveBaseCapacity: 0,
 			Owner:                               "giantswarm",
-			ReleaseComponents:                   p.Components(),
-			ReleaseVersion:                      p.Version(),
+			ReleaseComponents:                   p.Components().Latest(),
+			ReleaseVersion:                      p.Version().Latest(),
 			UseAlikeInstanceTypes:               true,
 		}
 

@@ -36,8 +36,8 @@ func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, erro
 			Description:       explainerCommand,
 			Owner:             key.Organization,
 			Region:            key.RegionFromHost(host),
-			ReleaseComponents: p.Components(),
-			ReleaseVersion:    p.Version(),
+			ReleaseComponents: p.Components().Latest(),
+			ReleaseVersion:    p.Version().Latest(),
 		}
 
 		crs, err = v1alpha2.NewClusterCRs(c)
