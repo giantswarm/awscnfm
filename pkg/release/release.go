@@ -27,6 +27,10 @@ func mustToSemver(s string) *semver.Version {
 //     v24.6.8-dev
 //
 func findRelease(version string, releases []v1alpha1.Release) v1alpha1.Release {
+	if !strings.HasPrefix(version, "v") {
+		version = fmt.Sprintf("v%s", version)
+	}
+
 	for _, r := range releases {
 		if r.GetName() == version {
 			return r

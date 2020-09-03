@@ -49,36 +49,48 @@ func NewMinor(config MinorConfig) (*Minor, error) {
 	return m, nil
 }
 
-func (m *Minor) Components() map[string]string {
-	// Collecting the components of the release we found based on the input
-	// configuration.
-	releaseComponents := map[string]string{}
+func (m *Minor) Components() ComponentsContainer {
+	version := m.Version()
+
+	latest := map[string]string{}
 	{
-		for _, c := range m.release().Spec.Components {
-			releaseComponents[c.Name] = c.Version
+		release := findRelease(version.Latest(), m.releases)
+		for _, c := range release.Spec.Components {
+			latest[c.Name] = c.Version
 		}
 	}
 
-	return releaseComponents
-}
-
-func (m *Minor) Version() string {
-	return strings.Replace(m.release().GetName(), "v", "", 1)
-}
-
-func (m *Minor) release() *v1alpha1.Release {
-	version := findVersion(m.fromEnv, m.fromProject)
-
-	release := findRelease(version, m.releases)
-	if release.GetName() != "" {
-		return &release
+	previous := map[string]string{}
+	{
+		release := findRelease(version.Previous(), m.releases)
+		for _, c := range release.Spec.Components {
+			previous[c.Name] = c.Version
+		}
 	}
 
-	minor := mustFindMinor(version, m.releases)
-	return &minor
+	return Components{
+		latest:   latest,
+		previous: previous,
+	}
 }
 
-func mustFindMinor(version string, releases []v1alpha1.Release) v1alpha1.Release {
+func (m *Minor) Version() VersionContainer {
+	version := findVersion(m.fromEnv, m.fromProject)
+
+	previous, minor := mustFindMinors(version, m.releases)
+	latest := mustFindLatest(version, m.releases)
+
+	if latest.GetName() == minor.GetName() {
+		minor = previous
+	}
+
+	return Version{
+		latest:   strings.Replace(latest.GetName(), "v", "", 1),
+		previous: strings.Replace(minor.GetName(), "v", "", 1),
+	}
+}
+
+func mustFindMinors(version string, releases []v1alpha1.Release) (v1alpha1.Release, v1alpha1.Release) {
 	vv := mustToSemver(version)
 
 	var versions semver.Versions
@@ -99,10 +111,14 @@ func mustFindMinor(version string, releases []v1alpha1.Release) v1alpha1.Release
 	}
 
 	if len(versions) == 0 {
-		return v1alpha1.Release{}
+		return v1alpha1.Release{}, v1alpha1.Release{}
+	}
+
+	if len(versions) == 1 {
+		return v1alpha1.Release{}, findRelease(versions[0].String(), releases)
 	}
 
 	sort.Sort(sort.Reverse(versions))
 
-	return findRelease("v"+versions[0].String(), releases)
+	return findRelease(versions[1].String(), releases), findRelease(versions[0].String(), releases)
 }
