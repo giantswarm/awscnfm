@@ -12,12 +12,13 @@ import (
 
 func Test_Release_mustFindPatch(t *testing.T) {
 	testCases := []struct {
-		name             string
-		version          string
-		release          v1alpha1.Release
-		releases         []v1alpha1.Release
-		expectedPrevious v1alpha1.Release
-		expectedLatest   v1alpha1.Release
+		name               string
+		version            string
+		release            v1alpha1.Release
+		releases           []v1alpha1.Release
+		expectedPrevious   v1alpha1.Release
+		expectedLatest     v1alpha1.Release
+		expectedUpgradable bool
 	}{
 		{
 			name:    "case 0",
@@ -29,6 +30,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"},
 			},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 1",
@@ -44,6 +46,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.2"},
 			},
+			expectedUpgradable: true,
 		},
 		{
 			name:    "case 2",
@@ -57,6 +60,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"},
 			},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 3",
@@ -72,6 +76,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"},
 			},
+			expectedUpgradable: true,
 		},
 		{
 			name:    "case 4",
@@ -87,6 +92,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"},
 			},
+			expectedUpgradable: true,
 		},
 		{
 			name:    "case 5",
@@ -101,6 +107,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0-dev"},
 			},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 6",
@@ -119,6 +126,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.3-dev"},
 			},
+			expectedUpgradable: true,
 		},
 		{
 			name:    "case 7",
@@ -136,6 +144,7 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v100.0.0-xh3b4sd"},
 			},
+			expectedUpgradable: false,
 		},
 	}
 
@@ -143,20 +152,20 @@ func Test_Release_mustFindPatch(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			var err error
 
-			var p Resolver
+			var r Resolver
 			{
 				c := PatchConfig{
 					FromProject: tc.version,
 					Releases:    tc.releases,
 				}
 
-				p, err = NewPatch(c)
+				r, err = NewPatch(c)
 				if err != nil {
 					t.Fatal(err)
 				}
 			}
 
-			v := p.Version()
+			v := r.Version()
 
 			expectedPrevious := strings.Replace(tc.expectedPrevious.GetName(), "v", "", 1)
 			expectedLatest := strings.Replace(tc.expectedLatest.GetName(), "v", "", 1)
@@ -166,6 +175,9 @@ func Test_Release_mustFindPatch(t *testing.T) {
 			}
 			if !cmp.Equal(v.Latest(), expectedLatest) {
 				t.Fatalf("\n\n%s\n", cmp.Diff(expectedLatest, v.Latest()))
+			}
+			if !cmp.Equal(r.Upgradable(), tc.expectedUpgradable) {
+				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedUpgradable, r.Upgradable()))
 			}
 		})
 	}

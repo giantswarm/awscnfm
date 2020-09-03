@@ -12,12 +12,13 @@ import (
 
 func Test_Release_mustFindMajor(t *testing.T) {
 	testCases := []struct {
-		name             string
-		version          string
-		release          v1alpha1.Release
-		releases         []v1alpha1.Release
-		expectedPrevious v1alpha1.Release
-		expectedLatest   v1alpha1.Release
+		name               string
+		version            string
+		release            v1alpha1.Release
+		releases           []v1alpha1.Release
+		expectedPrevious   v1alpha1.Release
+		expectedLatest     v1alpha1.Release
+		expectedUpgradable bool
 	}{
 		{
 			name:    "case 0",
@@ -29,6 +30,7 @@ func Test_Release_mustFindMajor(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"},
 			},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 1",
@@ -36,10 +38,11 @@ func Test_Release_mustFindMajor(t *testing.T) {
 			releases: []v1alpha1.Release{
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.0"}},
 			},
-			expectedPrevious: v1alpha1.Release{},
-			expectedLatest: v1alpha1.Release{
+			expectedPrevious: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v11.0.0"},
 			},
+			expectedLatest:     v1alpha1.Release{},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 2",
@@ -53,6 +56,7 @@ func Test_Release_mustFindMajor(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.2"},
 			},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 3",
@@ -62,10 +66,11 @@ func Test_Release_mustFindMajor(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.1"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.2"}},
 			},
-			expectedPrevious: v1alpha1.Release{},
-			expectedLatest: v1alpha1.Release{
+			expectedPrevious: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v11.0.2"},
 			},
+			expectedLatest:     v1alpha1.Release{},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 4",
@@ -81,6 +86,7 @@ func Test_Release_mustFindMajor(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.2.5"},
 			},
+			expectedUpgradable: true,
 		},
 		{
 			name:    "case 5",
@@ -90,10 +96,11 @@ func Test_Release_mustFindMajor(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.5"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1"}},
 			},
-			expectedPrevious: v1alpha1.Release{},
-			expectedLatest: v1alpha1.Release{
+			expectedPrevious: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1"},
 			},
+			expectedLatest:     v1alpha1.Release{},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 6",
@@ -105,10 +112,11 @@ func Test_Release_mustFindMajor(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.5"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1-dev"}},
 			},
-			expectedPrevious: v1alpha1.Release{},
-			expectedLatest: v1alpha1.Release{
+			expectedPrevious: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1-dev"},
 			},
+			expectedLatest:     v1alpha1.Release{},
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 7",
@@ -129,6 +137,7 @@ func Test_Release_mustFindMajor(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.3-dev"},
 			},
+			expectedUpgradable: true,
 		},
 		{
 			name:    "case 8",
@@ -149,6 +158,7 @@ func Test_Release_mustFindMajor(t *testing.T) {
 			expectedLatest: v1alpha1.Release{
 				ObjectMeta: metav1.ObjectMeta{Name: "v100.0.3-xh3b4sd"},
 			},
+			expectedUpgradable: true,
 		},
 	}
 
@@ -156,20 +166,20 @@ func Test_Release_mustFindMajor(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			var err error
 
-			var m Resolver
+			var r Resolver
 			{
 				c := MajorConfig{
 					FromProject: tc.version,
 					Releases:    tc.releases,
 				}
 
-				m, err = NewMajor(c)
+				r, err = NewMajor(c)
 				if err != nil {
 					t.Fatal(err)
 				}
 			}
 
-			v := m.Version()
+			v := r.Version()
 
 			expectedPrevious := strings.Replace(tc.expectedPrevious.GetName(), "v", "", 1)
 			expectedLatest := strings.Replace(tc.expectedLatest.GetName(), "v", "", 1)
@@ -179,6 +189,9 @@ func Test_Release_mustFindMajor(t *testing.T) {
 			}
 			if !cmp.Equal(v.Latest(), expectedLatest) {
 				t.Fatalf("\n\n%s\n", cmp.Diff(expectedLatest, v.Latest()))
+			}
+			if !cmp.Equal(r.Upgradable(), tc.expectedUpgradable) {
+				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedUpgradable, r.Upgradable()))
 			}
 		})
 	}

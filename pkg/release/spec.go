@@ -7,6 +7,9 @@ type ComponentsContainer interface {
 
 type Resolver interface {
 	Components() ComponentsContainer
+	// Upgradable returns true if there does a latest and a previous version
+	// exist for the currently configured constraints.
+	Upgradable() bool
 	Version() VersionContainer
 }
 

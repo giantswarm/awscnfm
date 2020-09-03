@@ -74,23 +74,54 @@ func (m *Minor) Components() ComponentsContainer {
 	}
 }
 
+func (m *Minor) Upgradable() bool {
+	return m.Version().Latest() != "" && m.Version().Previous() != ""
+}
+
 func (m *Minor) Version() VersionContainer {
-	version := findVersion(m.fromEnv, m.fromProject)
+	previous, latest := mustFindMinors(findVersion(m.fromEnv, m.fromProject), m.releases)
 
-	previous, minor := mustFindMinors(version, m.releases)
-	latest := mustFindLatest(version, m.releases)
-
-	if latest.GetName() == minor.GetName() {
-		minor = previous
+	if previous.GetName() == latest.GetName() {
+		previous = v1alpha1.Release{}
 	}
 
 	return Version{
 		latest:   strings.Replace(latest.GetName(), "v", "", 1),
-		previous: strings.Replace(minor.GetName(), "v", "", 1),
+		previous: strings.Replace(previous.GetName(), "v", "", 1),
 	}
 }
 
 func mustFindMinors(version string, releases []v1alpha1.Release) (v1alpha1.Release, v1alpha1.Release) {
+	return mustFindPreviousMinor(version, releases), mustFindLatestMinor(version, releases)
+}
+
+func mustFindLatestMinor(version string, releases []v1alpha1.Release) v1alpha1.Release {
+	vv := mustToSemver(version)
+
+	var versions semver.Versions
+	for _, r := range releases {
+		rv := mustToSemver(r.GetName())
+
+		if vv.Major != rv.Major {
+			continue
+		}
+		if vv.PreRelease != rv.PreRelease {
+			continue
+		}
+
+		versions = append(versions, rv)
+	}
+
+	if len(versions) == 0 {
+		return v1alpha1.Release{}
+	}
+
+	sort.Sort(sort.Reverse(versions))
+
+	return findRelease(versions[0].String(), releases)
+}
+
+func mustFindPreviousMinor(version string, releases []v1alpha1.Release) v1alpha1.Release {
 	vv := mustToSemver(version)
 
 	var versions semver.Versions
@@ -111,14 +142,10 @@ func mustFindMinors(version string, releases []v1alpha1.Release) (v1alpha1.Relea
 	}
 
 	if len(versions) == 0 {
-		return v1alpha1.Release{}, v1alpha1.Release{}
-	}
-
-	if len(versions) == 1 {
-		return v1alpha1.Release{}, findRelease(versions[0].String(), releases)
+		return v1alpha1.Release{}
 	}
 
 	sort.Sort(sort.Reverse(versions))
 
-	return findRelease(versions[1].String(), releases), findRelease(versions[0].String(), releases)
+	return findRelease(versions[0].String(), releases)
 }

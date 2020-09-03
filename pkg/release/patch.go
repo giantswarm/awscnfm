@@ -74,8 +74,16 @@ func (p *Patch) Components() ComponentsContainer {
 	}
 }
 
+func (p *Patch) Upgradable() bool {
+	return p.Version().Latest() != "" && p.Version().Previous() != ""
+}
+
 func (p *Patch) Version() VersionContainer {
 	previous, latest := mustFindPatches(findVersion(p.fromEnv, p.fromProject), p.releases)
+
+	if previous.GetName() == latest.GetName() {
+		previous = v1alpha1.Release{}
+	}
 
 	return Version{
 		latest:   strings.Replace(latest.GetName(), "v", "", 1),
