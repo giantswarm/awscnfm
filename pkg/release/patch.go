@@ -94,6 +94,10 @@ func (p *Patch) Version() VersionContainer {
 func mustFindPatches(version string, releases []v1alpha1.Release) (v1alpha1.Release, v1alpha1.Release) {
 	vv := mustToSemver(version)
 
+	if vv.PreRelease == devSuffix {
+		vv.PreRelease = ""
+	}
+
 	var versions semver.Versions
 	for _, r := range releases {
 		rv := mustToSemver(r.GetName())

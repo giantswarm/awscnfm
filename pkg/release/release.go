@@ -8,6 +8,10 @@ import (
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 )
 
+const (
+	devSuffix = "dev"
+)
+
 func mustToSemver(s string) *semver.Version {
 	v, err := semver.NewVersion(strings.Replace(s, "v", "", 1))
 	if err != nil {

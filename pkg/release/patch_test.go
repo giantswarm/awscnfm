@@ -103,11 +103,13 @@ func Test_Release_mustFindPatch(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"}},
 			},
-			expectedPrevious: v1alpha1.Release{},
-			expectedLatest: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0-dev"},
+			expectedPrevious: v1alpha1.Release{
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"},
 			},
-			expectedUpgradable: false,
+			expectedLatest: v1alpha1.Release{
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"},
+			},
+			expectedUpgradable: true,
 		},
 		{
 			name:    "case 6",
@@ -121,10 +123,10 @@ func Test_Release_mustFindPatch(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"}},
 			},
 			expectedPrevious: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"},
 			},
 			expectedLatest: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.3-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"},
 			},
 			expectedUpgradable: true,
 		},
