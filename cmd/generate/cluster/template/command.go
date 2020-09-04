@@ -39,9 +39,9 @@ func New(config Config) (*cobra.Command, error) {
 	}
 	if config.Stdout == nil {
 		config.Stdout = os.Stdout
-	}
+	}{{ if .Actions }}
 
-	var err error
+	var err error{{ end }}
 {{ range $a := .Actions }}
 	var {{ $a }}Cmd *cobra.Command
 	{

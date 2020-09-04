@@ -3,7 +3,7 @@ package ac008
 import (
 	"context"
 
-	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
+	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -11,16 +11,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
-
-	scope := "cl001"
-	id := config.Cluster(scope, env.TenantCluster())
 
 	var cpClients k8sclient.Interface
 	{
@@ -39,7 +34,7 @@ func (e *Executor) execute(ctx context.Context) error {
 			ctx,
 			&apiv1alpha2.Cluster{},
 			client.InNamespace(metav1.NamespaceDefault),
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 		if errors.IsNotFound(err) {
 			// fall through

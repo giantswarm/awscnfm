@@ -3,23 +3,18 @@ package ac009
 import (
 	"context"
 
-	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
-	"github.com/giantswarm/k8sclient/v3/pkg/k8sclient"
+	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
 	var err error
-
-	scope := "cl001"
-	id := config.Cluster(scope, env.TenantCluster())
 
 	var cpClients k8sclient.Interface
 	{
@@ -38,7 +33,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -54,7 +49,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -70,7 +65,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -86,7 +81,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -102,7 +97,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 		if err != nil {
 			return microerror.Mask(err)
@@ -118,7 +113,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
-			client.MatchingLabels{label.Cluster: id},
+			client.MatchingLabels{label.Cluster: e.tenantCluster},
 		)
 
 		if err != nil {

@@ -22,16 +22,29 @@ const (
 	explainerCommand = "awscnfm {{ .Cluster }} {{ .Action }} explain"
 )
 
+const (
+	// This is a hack to make initially generated code compile because there is
+	// nothing making use of the constant when starting out.
+	_ = explainerCommand
+)
+
 {{ end -}}
 
 type ExplainerConfig struct {
+	Scope         string
+	TenantCluster string
 }
 
 type Explainer struct {
+	scope         string
+	tenantCluster string
 }
 
 func NewExplainer(config ExplainerConfig) (*Explainer, error) {
-	e := &Explainer{}
+	e := &Explainer{
+		scope:         config.Scope,
+		tenantCluster: config.TenantCluster,
+	}
 
 	return e, nil
 }

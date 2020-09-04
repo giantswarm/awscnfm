@@ -11,8 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Tuning backoff time for planner actions.
 - Modified the documentation and main README.
-- Changed the default description for cluster scopes slightly, for consistent use of the "cluster scope" term.
+- Changed the default description for cluster scopes slightly, for consistent
+  use of the "cluster scope" term.
+- Updated backward incompatible Kubernetes dependencies to v1.18.5.
+
+### Fixed
+
+- Make release management work for test releases.
 
 ## [12.1.1] - 2020-08-12
 

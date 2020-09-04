@@ -2,139 +2,61 @@ package release
 
 import (
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"strings"
 
-	"github.com/ghodss/yaml"
-	"github.com/giantswarm/microerror"
+	"github.com/coreos/go-semver/semver"
+	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 )
 
 const (
-	defaultBranch = "master"
+	devSuffix = "dev"
 )
 
-const (
-	releasesAWSIndexURLFmt   = "https://raw.githubusercontent.com/giantswarm/releases/%s/aws/kustomization.yaml"
-	releasesAWSReleaseURLFmt = "https://raw.githubusercontent.com/giantswarm/releases/%s/aws/%s/release.yaml"
-)
-
-type Config struct {
-	Branch string
-}
-
-type Release struct {
-	releases []ReleaseObject
-}
-
-func New(config Config) (*Release, error) {
-	if config.Branch == "" {
-		config.Branch = defaultBranch
-	}
-
-	releases, err := readReleases(config.Branch)
+func mustToSemver(s string) *semver.Version {
+	v, err := semver.NewVersion(strings.Replace(s, "v", "", 1))
 	if err != nil {
-		return nil, microerror.Mask(err)
+		panic(err)
 	}
 
-	r := &Release{
-		releases: releases,
-	}
-
-	return r, nil
+	return v
 }
 
-func (r *Release) ReleaseComponents(version string) map[string]string {
-	var releaseVersion string
+// findRelease looks for the exact release match. We use this to figure out
+// which release version to consider for our conformance tests. We might have a
+// direct match in case somebody specifies the exact test release they want to
+// test for conformity. Examples of such direct matches would be test releases
+// like shown below.
+//
+//     v100.0.0-xh3b4sd
+//     v24.6.8-dev
+//
+func findRelease(version string, releases []v1alpha1.Release) v1alpha1.Release {
+	if !strings.HasPrefix(version, "v") {
+		version = fmt.Sprintf("v%s", version)
+	}
+
+	for _, r := range releases {
+		if r.GetName() == version {
+			return r
+		}
+	}
+
+	return v1alpha1.Release{}
+}
+
+func findVersion(fromEnv string, fromProject string) string {
+	var version string
 	{
-		if strings.HasPrefix(version, "v") {
-			releaseVersion = version
+		if fromEnv == "" {
+			version = fromProject
 		} else {
-			releaseVersion = fmt.Sprintf("v%s", version)
+			version = fromEnv
+		}
+
+		if !strings.HasPrefix(version, "v") {
+			version = fmt.Sprintf("v%s", version)
 		}
 	}
 
-	releaseComponents := make(map[string]string)
-
-	for _, release := range r.releases {
-		if release.Metadata.Name == releaseVersion {
-			for _, component := range release.Spec.Components {
-				releaseComponents[component.Name] = component.Version
-			}
-		}
-	}
-
-	return releaseComponents
-}
-
-func (r *Release) Validate(version string) bool {
-	var releaseVersion string
-	{
-		if strings.HasPrefix(version, "v") {
-			releaseVersion = version
-		} else {
-			releaseVersion = fmt.Sprintf("v%s", version)
-		}
-
-	}
-
-	for _, release := range r.releases {
-		if release.Metadata.Name == releaseVersion {
-			return true
-		}
-	}
-
-	return false
-}
-
-func readReleases(branch string) ([]ReleaseObject, error) {
-	var b []byte
-	{
-		resp, err := http.Get(fmt.Sprintf(releasesAWSIndexURLFmt, branch))
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-		defer resp.Body.Close()
-
-		b, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	r := struct {
-		Resources []string `yaml:"resources"`
-	}{}
-	{
-		err := yaml.Unmarshal(b, &r)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var releases []ReleaseObject
-	{
-		for _, v := range r.Resources {
-			resp, err := http.Get(fmt.Sprintf(releasesAWSReleaseURLFmt, branch, v))
-			if err != nil {
-				return nil, microerror.Mask(err)
-			}
-			defer resp.Body.Close()
-
-			bodyBytes, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				return nil, microerror.Mask(err)
-			}
-
-			release := ReleaseObject{}
-			err = yaml.Unmarshal(bodyBytes, &release)
-			if err != nil {
-				return nil, microerror.Mask(err)
-			}
-
-			releases = append(releases, release)
-		}
-	}
-
-	return releases, nil
+	return version
 }
