@@ -98,6 +98,10 @@ func mustFindMajors(version string, releases []v1alpha1.Release) (v1alpha1.Relea
 func mustFindLatestMajor(version string, releases []v1alpha1.Release) v1alpha1.Release {
 	vv := mustToSemver(version)
 
+	if vv.PreRelease == "dev" {
+		vv.PreRelease = ""
+	}
+
 	var versions semver.Versions
 	for _, r := range releases {
 		rv := mustToSemver(r.GetName())
@@ -123,6 +127,10 @@ func mustFindLatestMajor(version string, releases []v1alpha1.Release) v1alpha1.R
 
 func mustFindPreviousMajor(version string, releases []v1alpha1.Release) v1alpha1.Release {
 	vv := mustToSemver(version)
+
+	if vv.PreRelease == "dev" {
+		vv.PreRelease = ""
+	}
 
 	var versions semver.Versions
 	for _, r := range releases {

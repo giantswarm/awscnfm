@@ -102,13 +102,11 @@ func Test_Release_mustFindMinor(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1-dev"}},
 			},
-			expectedPrevious: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.2-dev"},
-			},
+			expectedPrevious: v1alpha1.Release{},
 			expectedLatest: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"},
 			},
-			expectedUpgradable: true,
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 6",
@@ -122,7 +120,7 @@ func Test_Release_mustFindMinor(t *testing.T) {
 			},
 			expectedPrevious: v1alpha1.Release{},
 			expectedLatest: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"},
 			},
 			expectedUpgradable: false,
 		},
@@ -139,13 +137,11 @@ func Test_Release_mustFindMinor(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"}},
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"}},
 			},
-			expectedPrevious: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.7-dev"},
-			},
+			expectedPrevious: v1alpha1.Release{},
 			expectedLatest: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.2.3-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"},
 			},
-			expectedUpgradable: true,
+			expectedUpgradable: false,
 		},
 		{
 			name:    "case 8",
@@ -164,6 +160,27 @@ func Test_Release_mustFindMinor(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{Name: "v100.0.3-xh3b4sd"},
 			},
 			expectedUpgradable: false,
+		},
+		{
+			name:    "case 9",
+			version: "v12.2.3-dev",
+			releases: []v1alpha1.Release{
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.0"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.2.0"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.7"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.3"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.2"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.2.3"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.0.5"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"}},
+			},
+			expectedPrevious: v1alpha1.Release{
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.7"},
+			},
+			expectedLatest: v1alpha1.Release{
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.2.3"},
+			},
+			expectedUpgradable: true,
 		},
 	}
 

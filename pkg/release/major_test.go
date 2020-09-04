@@ -113,7 +113,7 @@ func Test_Release_mustFindMajor(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1-dev"}},
 			},
 			expectedPrevious: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v11.0.5"},
 			},
 			expectedLatest:     v1alpha1.Release{},
 			expectedUpgradable: false,
@@ -132,10 +132,10 @@ func Test_Release_mustFindMajor(t *testing.T) {
 				{ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"}},
 			},
 			expectedPrevious: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v11.2.3-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v11.0.0"},
 			},
 			expectedLatest: v1alpha1.Release{
-				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.3-dev"},
+				ObjectMeta: metav1.ObjectMeta{Name: "v12.1.1"},
 			},
 			expectedUpgradable: true,
 		},
@@ -159,6 +159,22 @@ func Test_Release_mustFindMajor(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{Name: "v100.0.3-xh3b4sd"},
 			},
 			expectedUpgradable: true,
+		},
+		{
+			name:    "case 9",
+			version: "v12.1.1-dev",
+			releases: []v1alpha1.Release{
+				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.0"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.0"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.2"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v11.0.5"}},
+				{ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1"}},
+			},
+			expectedPrevious: v1alpha1.Release{
+				ObjectMeta: metav1.ObjectMeta{Name: "v11.1.1"},
+			},
+			expectedLatest:     v1alpha1.Release{},
+			expectedUpgradable: false,
 		},
 	}
 
