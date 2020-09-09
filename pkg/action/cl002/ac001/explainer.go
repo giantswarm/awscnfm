@@ -68,7 +68,8 @@ func (e *Explainer) explain(ctx context.Context) (string, error) {
 	}
 
 	s := `
-Create a basic Tenant Cluster with all its defaults. Note that some
+Create a basic Tenant Cluster in the previous patch version. In later actions
+the cluster is being upgraded to the latest patch version. Note that some
 information of the output below slightly differs when executing conformance
 tests on different control planes.
 
