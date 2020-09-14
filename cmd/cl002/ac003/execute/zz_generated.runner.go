@@ -46,8 +46,8 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			Command: cmd,
 			Logger:  r.logger,
 
-			Scope:         "cl001",
-			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
+			Scope:         "cl002",
+			TenantCluster: config.Cluster("cl002", env.TenantCluster()),
 		}
 
 		e, err = ac003.NewExecutor(c)
