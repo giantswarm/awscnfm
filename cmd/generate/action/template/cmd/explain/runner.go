@@ -55,8 +55,8 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var e action.Explainer
 	{
 		c := {{ .Action }}.ExplainerConfig{
-			Scope:         "cl001",
-			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
+			Scope:         "{{ .Cluster }}",
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
 		}
 
 		e, err = {{ .Action }}.NewExplainer(c)
