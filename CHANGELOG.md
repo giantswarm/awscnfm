@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [12.1.4] - 2020-09-16
 
+### Added
+
+- Add cluster scope `cl002` for patch upgrade tests.
+
 ### Changed
 
 - Tuning backoff time for planner actions.
@@ -18,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the default description for cluster scopes slightly, for consistent
   use of the "cluster scope" term.
 - Updated backward incompatible Kubernetes dependencies to v1.18.5.
+- Enable info logging for executing test plans.
 
 ### Fixed
 
