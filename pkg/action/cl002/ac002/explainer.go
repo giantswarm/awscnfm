@@ -6,11 +6,10 @@ import (
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
 	s := `
-Check if the Tenant Cluster is up and we can connect to it.
+Check if the Tenant Cluster successfully created.
 
-	* List all Tenant Cluster nodes.
-	* Listing all Tenant Cluster nodes without errors means the apiserver is up.
-	* Proceed with further actions.
+	* List all Tenant Cluster nodes. Doing so without errors means the apiserver is up.
+	* Check for the "Created" status condition in the AWSCluster CR.
 
 A cluster creation takes up to 30 minutes. This aligns with our cluster creation metric in cluster-operator,
 see https://github.com/giantswarm/cluster-operator/blob/master/service/collector/cluster_transition.go#L135.
