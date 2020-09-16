@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -36,13 +35,26 @@ func mainE(ctx context.Context) error {
 
 	var logger micrologger.Logger
 	{
-		c := micrologger.Config{
-			IOWriter: ioutil.Discard,
-		}
+		c := micrologger.Config{}
 
 		logger, err = micrologger.New(c)
 		if err != nil {
 			return microerror.Mask(err)
+		}
+	}
+
+	{
+		c := micrologger.ActivationLoggerConfig{
+			Underlying: logger,
+
+			Activations: map[string]interface{}{
+				micrologger.KeyLevel: "info",
+			},
+		}
+
+		logger, err = micrologger.NewActivation(c)
+		if err != nil {
+			panic(err)
 		}
 	}
 
