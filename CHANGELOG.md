@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [12.1.4] - 2020-09-16
+
+### Added
+
+- Add cluster scope `cl002` for patch upgrade tests.
+
 ### Changed
 
 - Tuning backoff time for planner actions.
@@ -16,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the default description for cluster scopes slightly, for consistent
   use of the "cluster scope" term.
 - Updated backward incompatible Kubernetes dependencies to v1.18.5.
+- Enable info logging for executing test plans.
 
 ### Fixed
 
@@ -39,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include namespace to delete cluster CR's.
 * Skip aws-cni-restarter for host network test on master.
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.1.1...HEAD
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.1.4...HEAD
+[12.1.4]: https://github.com/giantswarm/awscnfm/compare/v12.1.1...v12.1.4
 [12.1.1]: https://github.com/giantswarm/awscnfm/compare/v12.1.0...v12.1.1
 [12.1.0]: https://github.com/giantswarm/awscnfm/releases/tag/v12.1.0
