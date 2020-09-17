@@ -27,6 +27,6 @@ require (
 )
 
 replace (
-	github.com/coreos/etcd v3.3.17+incompatible => github.com/coreos/etcd v3.3.24+incompatible
+	github.com/coreos/etcd v3.3.10+incompatible => github.com/coreos/etcd v3.3.24+incompatible
 	github.com/gorilla/websocket => github.com/gorilla/websocket v1.4.2
 )
