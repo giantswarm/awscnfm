@@ -13,11 +13,17 @@ import (
 
 type ControlPlaneConfig struct {
 	Logger micrologger.Logger
+
+	KubeConfig string
 }
 
 func NewControlPlane(config ControlPlaneConfig) (k8sclient.Interface, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
+	}
+
+	if config.KubeConfig == "" {
+		config.KubeConfig = env.DefaultKubeConfig
 	}
 
 	var err error
@@ -32,7 +38,7 @@ func NewControlPlane(config ControlPlaneConfig) (k8sclient.Interface, error) {
 			},
 			Logger: config.Logger,
 
-			KubeConfigPath: env.KubeConfig(),
+			KubeConfigPath: config.KubeConfig,
 		}
 
 		clients, err = k8sclient.NewClients(c)

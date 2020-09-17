@@ -10,6 +10,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
@@ -19,6 +20,8 @@ func (e *Executor) execute(ctx context.Context) error {
 	{
 		c := client.ControlPlaneConfig{
 			Logger: e.logger,
+
+			KubeConfig: env.KubeConfig(),
 		}
 
 		cpClients, err = client.NewControlPlane(c)
