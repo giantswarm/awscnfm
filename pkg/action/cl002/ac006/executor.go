@@ -10,6 +10,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
@@ -20,6 +21,8 @@ func (e *Executor) execute(ctx context.Context) error {
 	{
 		c := pkgclient.ControlPlaneConfig{
 			Logger: e.logger,
+
+			KubeConfig: env.KubeConfig(),
 		}
 
 		cpClients, err = pkgclient.NewControlPlane(c)

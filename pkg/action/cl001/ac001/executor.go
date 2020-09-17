@@ -9,6 +9,7 @@ import (
 	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, error) {
@@ -18,6 +19,8 @@ func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, error) {
 	{
 		c := client.ControlPlaneConfig{
 			Logger: e.logger,
+
+			KubeConfig: env.KubeConfig(),
 		}
 
 		cpClients, err = client.NewControlPlane(c)

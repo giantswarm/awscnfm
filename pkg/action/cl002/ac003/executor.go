@@ -24,6 +24,8 @@ func (e *Executor) execute(ctx context.Context) error {
 	{
 		c := client.ControlPlaneConfig{
 			Logger: e.logger,
+
+			KubeConfig: env.KubeConfig(),
 		}
 
 		cpClients, err = client.NewControlPlane(c)
