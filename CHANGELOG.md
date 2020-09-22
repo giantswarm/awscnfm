@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Inserted `ac008` for testing kiam app to `cl001`.
+
 ## [12.1.4] - 2020-09-16
 
 ### Added
