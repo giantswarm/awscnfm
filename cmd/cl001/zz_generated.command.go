@@ -1,7 +1,6 @@
 package cl001
 
 import (
-	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac008"
 	"io"
 	"os"
 
@@ -17,6 +16,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac005"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac006"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac007"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac008"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac009"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac010"
 )
