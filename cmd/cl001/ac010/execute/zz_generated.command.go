@@ -11,7 +11,7 @@ import (
 
 const (
 	name        = "execute"
-	description = "Execute action ac009 for cluster cl001."
+	description = "Execute action ac010 for cluster cl001."
 )
 
 type Config struct {

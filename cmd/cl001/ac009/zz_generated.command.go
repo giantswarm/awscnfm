@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	name        = "ac008"
-	description = "Action ac008 for cluster 001."
+	name        = "ac009"
+	description = "Action ac009 for cluster 001."
 )
 
 type Config struct {
