@@ -19,9 +19,9 @@ require (
 	github.com/prometheus/client_golang v1.7.1 // indirect
 	github.com/spf13/cobra v1.0.0
 	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7
-	k8s.io/api v0.18.6
-	k8s.io/apimachinery v0.18.6
-	k8s.io/client-go v0.18.6
+	k8s.io/api v0.18.9
+	k8s.io/apimachinery v0.18.9
+	k8s.io/client-go v0.18.9
 	sigs.k8s.io/cluster-api v0.3.8
 	sigs.k8s.io/controller-runtime v0.6.3
 )
