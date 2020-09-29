@@ -110,14 +110,12 @@ func (e *Executor) checkKiamPods(ctx context.Context, tcClient kubernetes.Interf
 		}
 
 		if len(kiamServerPods.Items) != expectedKiamServerPodCount {
-			executionFailedError.Desc = fmt.Sprintf("Execution failed: wrong kiam-server pod count, expected %d but got %d", expectedKiamServerPodCount, len(kiamServerPods.Items))
-			return microerror.Mask(executionFailedError)
+			return microerror.Maskf(executionFailedError, fmt.Sprintf("wrong kiam-server pod count, expected %d but got %d", expectedKiamServerPodCount, len(kiamServerPods.Items)))
 		}
 
 		for _, kiamServerPod := range kiamServerPods.Items {
 			if kiamServerPod.Status.Phase != apiv1.PodRunning {
-				executionFailedError.Desc = fmt.Sprintf("Execution failed: pod %s in namespace %s is not running.", kiamServerPod.Name, kiamServerPod.Namespace)
-				return microerror.Mask(executionFailedError)
+				return microerror.Maskf(executionFailedError, fmt.Sprintf("pod %s in namespace %s is not running.", kiamServerPod.Name, kiamServerPod.Namespace))
 			}
 		}
 	}
@@ -130,14 +128,12 @@ func (e *Executor) checkKiamPods(ctx context.Context, tcClient kubernetes.Interf
 		}
 
 		if len(kiamAgentPods.Items) != expectedKiamAgentPodCount {
-			executionFailedError.Desc = fmt.Sprintf("Execution failed: wrong kiam-agent pod count, expected %d but got %d", expectedKiamAgentPodCount, len(kiamAgentPods.Items))
-			return microerror.Mask(executionFailedError)
+			return microerror.Maskf(executionFailedError, fmt.Sprintf("wrong kiam-agent pod count, expected %d but got %d", expectedKiamAgentPodCount, len(kiamAgentPods.Items)))
 		}
 
 		for _, kiamAgentPod := range kiamAgentPods.Items {
 			if kiamAgentPod.Status.Phase != apiv1.PodRunning {
-				executionFailedError.Desc = fmt.Sprintf("Execution failed: pod %s in namespace %s is not running.", kiamAgentPod.Name, kiamAgentPod.Namespace)
-				return microerror.Mask(executionFailedError)
+				return microerror.Maskf(executionFailedError, fmt.Sprintf("pod %s in namespace %s is not running.", kiamAgentPod.Name, kiamAgentPod.Namespace))
 			}
 		}
 	}
