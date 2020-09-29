@@ -13,9 +13,9 @@ func (e *Explainer) explain(ctx context.Context) (string, error) {
 		d += s.Backoff.Wait()
 	}
 
-	s := "Execute the conformance test plan of this cluster scope. Actions below are\n"
-	s += "executed in order. A tenant cluster is conform if the plan executes without\n"
-	s += "errors. Plan execution might take up to " + d.String() + ".\n\n"
+	s := "Test plan for " + e.scope + " launches a basic Tenant Cluster and verifies basic criteria\n"
+	s += "like the correct number of nodes and pods are running. Plan execution might take\n"
+	s += "up to " + d.String() + ".\n\n"
 
 	t := [][]string{{"ACTION", "RETRY", "WAIT", "COMMENT"}}
 
