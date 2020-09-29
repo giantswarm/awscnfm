@@ -3,13 +3,15 @@ package ac008
 import (
 	"context"
 	"fmt"
-	"github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
+
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 const (
