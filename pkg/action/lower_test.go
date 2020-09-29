@@ -34,14 +34,14 @@ func Test_Action_Lower(t *testing.T) {
 		},
 		{
 			name:   "case 3",
-			aca:    "ac010",
-			acb:    "ac010",
+			aca:    "ac012",
+			acb:    "ac012",
 			result: false,
 		},
 		{
 			name:   "case 4",
 			aca:    "ac015",
-			acb:    "ac010",
+			acb:    "ac012",
 			result: false,
 		},
 		{
@@ -70,7 +70,7 @@ func Test_Action_Lower(t *testing.T) {
 		},
 		{
 			name:   "case 9",
-			aca:    "ac009",
+			aca:    "ac011",
 			acb:    "ac029",
 			result: true,
 		},
