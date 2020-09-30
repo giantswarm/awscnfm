@@ -51,7 +51,7 @@ func (e *Executor) Execute(ctx context.Context) error {
 		return microerror.Mask(err)
 	}
 
-	config.SetCluster("cl002", crs.Cluster.GetName())
+	config.SetCluster("cl003", crs.Cluster.GetName())
 
 	return nil
 }
