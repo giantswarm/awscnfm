@@ -137,15 +137,6 @@ func awsApiCallJob(dockerRegistry string, awsRegion string, clusterID string) *b
 	return j
 }
 
-func isJobCompleted(j *batchapiv1.Job) bool {
-	for _, c := range j.Status.Conditions {
-		if c.Type == "Complete" && c.Status == apiv1.ConditionTrue {
-			return true
-		}
-	}
-	return false
-}
-
 func jobDockerImage(dockerRegistry string) string {
 	return fmt.Sprintf("%s/giantswarm/awscli:2.0.24", dockerRegistry)
 }
