@@ -31,7 +31,7 @@ func Test_Action_Incr(t *testing.T) {
 		{
 			name:   "case 3",
 			ac:     "ac012",
-			result: "ac011",
+			result: "ac013",
 		},
 		{
 			name:   "case 4",
