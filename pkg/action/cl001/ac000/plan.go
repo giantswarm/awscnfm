@@ -57,10 +57,20 @@ var Plan = []plan.Step{
 	{
 		Action:  "ac009",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "delete cluster CRs",
+		Comment: "create job to test kiam aws api call",
 	},
 	{
 		Action:  "ac010",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Comment: "check job to test kiam aws api call",
+	},
+	{
+		Action:  "ac011",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Comment: "delete cluster CRs",
+	},
+	{
+		Action:  "ac012",
 		Backoff: plan.NewBackoff(90*time.Minute, 9*time.Minute),
 		Comment: "check CRs deleted",
 	},
