@@ -30,7 +30,7 @@ func jobNetworkPolicy() *networkingv1.NetworkPolicy {
 			Namespace: kubeSystemNamespace,
 			Labels: map[string]string{
 				"app":        name,
-				"created-by": project.Name(),
+				"managed-by": project.Name(),
 			},
 		},
 
