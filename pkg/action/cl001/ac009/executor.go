@@ -95,7 +95,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	err = e.testAWSApiCalls(ctx, tcClients.K8sClient(), awsRegion, dockerRegistry)
+	err = e.createAWSApiCallJob(ctx, tcClients.K8sClient(), awsRegion, dockerRegistry)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -103,8 +103,8 @@ func (e *Executor) execute(ctx context.Context) error {
 	return nil
 }
 
-// testAWSApiCalls will spawn a job in k8s tenant cluster to test calling AWS API to ensure kiam works as expected
-func (e *Executor) testAWSApiCalls(ctx context.Context, tcClient kubernetes.Interface, awsRegion string, dockerRegistry string) error {
+// createAWSApiCallJob will spawn a job in k8s tenant cluster to test calling AWS API to ensure kiam works as expected
+func (e *Executor) createAWSApiCallJob(ctx context.Context, tcClient kubernetes.Interface, awsRegion string, dockerRegistry string) error {
 	networkPolicy := jobNetworkPolicy()
 	_, err := tcClient.NetworkingV1().NetworkPolicies(kubeSystemNamespace).Create(ctx, networkPolicy, metav1.CreateOptions{})
 	if err != nil {

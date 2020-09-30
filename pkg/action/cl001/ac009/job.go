@@ -79,7 +79,7 @@ func awsApiCallJob(dockerRegistry string, awsRegion string, clusterID string) *b
 			Namespace: kubeSystemNamespace,
 			Labels: map[string]string{
 				"app":        name,
-				"created-by": project.Name(),
+				"managed-by": project.Name(),
 			},
 		},
 		Spec: batchapiv1.JobSpec{
@@ -95,7 +95,7 @@ func awsApiCallJob(dockerRegistry string, awsRegion string, clusterID string) *b
 					},
 					Labels: map[string]string{
 						"app":        name,
-						"created-by": project.Name(),
+						"managed-by": project.Name(),
 					},
 				},
 				Spec: apiv1.PodSpec{
