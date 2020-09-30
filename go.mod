@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/coreos/go-semver v0.3.0
 	github.com/fatih/color v1.9.0
-	github.com/ghodss/yaml v1.0.0
+	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32
 	github.com/giantswarm/apiextensions/v2 v2.5.1
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.0
@@ -14,6 +14,7 @@ require (
 	github.com/giantswarm/microerror v0.2.1
 	github.com/giantswarm/micrologger v0.3.3
 	github.com/giantswarm/tenantcluster/v3 v3.0.0
+	github.com/giantswarm/valuemodifier v0.2.0
 	github.com/google/go-cmp v0.5.2
 	github.com/jsonmaur/aws-regions/go v0.0.0-20200521181458-43baf1be9a5a
 	github.com/prometheus/client_golang v1.7.1 // indirect
