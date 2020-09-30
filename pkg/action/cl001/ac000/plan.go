@@ -62,7 +62,7 @@ var Plan = []plan.Step{
 	{
 		Action:  "ac0010",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "check kiam's pods and secrets",
+		Comment: "check job to test kiam aws api call",
 	},
 	{
 		Action:  "ac011",
