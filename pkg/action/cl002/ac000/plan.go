@@ -22,7 +22,7 @@ var Plan = []plan.Step{
 	{
 		Action:  "ac003",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "upgrade tenant cluster",
+		Comment: "trigger patch upgrade",
 	},
 	{
 		Action:  "ac004",
