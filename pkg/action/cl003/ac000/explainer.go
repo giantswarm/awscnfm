@@ -13,8 +13,8 @@ func (e *Explainer) explain(ctx context.Context) (string, error) {
 		d += s.Backoff.Wait()
 	}
 
-	s := "Test plan for " + e.scope + " launches a basic Tenant Cluster in the previous patch release\n"
-	s += "and upgrades the Tenant Cluster to the latest patch release once it is up. Plan\n"
+	s := "Test plan for " + e.scope + " launches a basic Tenant Cluster in the previous minor release\n"
+	s += "and upgrades the Tenant Cluster to the latest minor release once it is up. Plan\n"
 	s += "execution might take up to " + d.String() + ".\n\n"
 
 	t := [][]string{{"ACTION", "RETRY", "WAIT", "COMMENT"}}
