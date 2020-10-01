@@ -66,7 +66,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac011",
-		Backoff: plan.NewBackoff(60*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 		Comment: "cleanup kiam test resources",
 	},
 	{

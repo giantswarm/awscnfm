@@ -210,7 +210,7 @@ func New(config Config) (*cobra.Command, error) {
 			Stdout: config.Stdout,
 		}
 
-		ac010Cmd, err = ac011.New(c)
+		ac011Cmd, err = ac011.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
