@@ -40,7 +40,7 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	// We compute the mapping of actions we have to move based on the given
 	// action we want to insert. Consider having a list of actions from ac000 to
-	// ac011 and we want to insert an empty action ac004. The resulting mapping
+	// ac013 and we want to insert an empty action ac004. The resulting mapping
 	// below would look like this.
 	//
 	//     map[string]string{
@@ -48,8 +48,8 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	//         "ac005": "ac006",
 	//         "ac006": "ac007",
 	//         "ac007": "ac008",
-	//         "ac008": "ac011",
-	//         "ac011": "ac012",
+	//         "ac008": "ac013",
+	//         "ac013": "ac013",
 	//     }
 	//
 	actions := map[string]string{}

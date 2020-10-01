@@ -30,8 +30,8 @@ func Test_Action_Incr(t *testing.T) {
 		},
 		{
 			name:   "case 3",
-			ac:     "ac012",
-			result: "ac013",
+			ac:     "ac013",
+			result: "ac014",
 		},
 		{
 			name:   "case 4",
@@ -60,8 +60,8 @@ func Test_Action_Incr(t *testing.T) {
 		},
 		{
 			name:   "case 9",
-			ac:     "ac011",
-			result: "ac012",
+			ac:     "ac013",
+			result: "ac014",
 		},
 		{
 			name:   "case 10",
