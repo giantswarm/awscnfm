@@ -14,6 +14,7 @@ require (
 	github.com/giantswarm/microerror v0.2.1
 	github.com/giantswarm/micrologger v0.3.3
 	github.com/giantswarm/tenantcluster/v3 v3.0.0
+	github.com/giantswarm/valuemodifier v0.2.1
 	github.com/google/go-cmp v0.5.2
 	github.com/jsonmaur/aws-regions/go v0.0.0-20200521181458-43baf1be9a5a
 	github.com/prometheus/client_golang v1.7.1 // indirect
