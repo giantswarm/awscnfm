@@ -61,11 +61,16 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac010",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(60*time.Second, 2*time.Second),
 		Comment: "check job to test kiam aws api call",
 	},
 	{
-		Action:  "ac013",
+		Action:  "ac011",
+		Backoff: plan.NewBackoff(60*time.Second, 2*time.Second),
+		Comment: "cleanup kiam test resources",
+	},
+	{
+		Action:  "ac012",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 		Comment: "delete cluster CRs",
 	},
