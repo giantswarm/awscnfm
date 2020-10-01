@@ -2,6 +2,7 @@ package key
 
 import (
 	"fmt"
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"strings"
 )
 
@@ -21,6 +22,10 @@ const (
 	Organization = "giantswarm"
 )
 
+const (
+	KiamTestNamespace = "kube-system"
+)
+
 func APIEndpoint(id string, base string) string {
 	return fmt.Sprintf("api.%s.k8s.%s", id, base)
 }
@@ -38,6 +43,14 @@ func GeneratedWithPrefix(s string) string {
 
 func HasGeneratedPrefix(s string) bool {
 	return strings.Contains(s, GeneratePrefix)
+}
+
+func KiamTestJobName() string {
+	return fmt.Sprintf("%s-kiam-test", project.Name())
+}
+
+func KiamTestNetPolName() string {
+	return fmt.Sprintf("%s-kiam-test", project.Name())
 }
 
 func RegionFromHost(h string) string {
