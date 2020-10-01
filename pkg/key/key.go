@@ -2,8 +2,9 @@ package key
 
 import (
 	"fmt"
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"strings"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
 
 const (
