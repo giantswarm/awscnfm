@@ -48,15 +48,15 @@ func (e *Executor) execute(ctx context.Context) error {
 		releases = list.Items
 	}
 
-	var p *release.Patch
+	var m *release.Minor
 	{
-		c := release.PatchConfig{
+		c := release.MinorConfig{
 			FromEnv:     env.ReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}
 
-		p, err = release.NewPatch(c)
+		m, err = release.NewMinor(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -74,8 +74,8 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	cl.Labels[label.ClusterOperatorVersion] = p.Components().Latest()["cluster-operator"]
-	cl.Labels[label.ReleaseVersion] = p.Version().Latest()
+	cl.Labels[label.ClusterOperatorVersion] = m.Components().Latest()["cluster-operator"]
+	cl.Labels[label.ReleaseVersion] = m.Version().Latest()
 
 	{
 		err = cpClients.CtrlClient().Update(ctx, &cl)
