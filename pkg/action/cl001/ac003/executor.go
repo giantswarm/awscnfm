@@ -23,7 +23,7 @@ func (e *Executor) execute(ctx context.Context) error {
 		c := pkgclient.ControlPlaneConfig{
 			Logger: e.logger,
 
-			KubeConfig: env.KubeConfig(),
+			KubeConfig: env.ControlPlaneKubeConfig(),
 		}
 
 		cpClients, err = pkgclient.NewControlPlane(c)
