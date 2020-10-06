@@ -22,7 +22,7 @@ func (e *Explainer) explain(ctx context.Context) (string, error) {
 		c := client.ControlPlaneConfig{
 			Logger: microloggertest.New(),
 
-			KubeConfig: env.KubeConfig(),
+			KubeConfig: env.ControlPlaneKubeConfig(),
 		}
 
 		cpClients, err = client.NewControlPlane(c)

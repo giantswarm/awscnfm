@@ -5,5 +5,6 @@ import (
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
-	return "", nil
+	s := `Cleanup kiam test resources from the tenant cluster`
+	return s, nil
 }
