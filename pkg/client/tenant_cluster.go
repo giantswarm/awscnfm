@@ -55,7 +55,7 @@ func NewTenantCluster(config TenantClusterConfig) (k8sclient.Interface, error) {
 	// If there is no kube config provided we try to look it up via Control
 	// Plane resources. Therefore the Control Plane client is necessary as well
 	// as the cluster scope so that we can lookup the actual Tenant Cluster ID.
-	clients, err := clientsFromKubeConfig(config)
+	clients, err := clientsFromAPISecret(config)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}

@@ -8,10 +8,6 @@ const (
 	EnvVarTenantClusterKubeConfig = "AWSCNFM_TENANTCLUSTER_KUBECONFIG"
 )
 
-const (
-	DefaultTenantClusterKubeConfig = "~/.kube/config"
-)
-
 // TenantClusterKubeConfig is the local path to the kube config file used to
 // create the Control Plane specific rest config.
 func TenantClusterKubeConfig() string {
