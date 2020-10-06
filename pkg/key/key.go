@@ -3,6 +3,8 @@ package key
 import (
 	"fmt"
 	"strings"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
 
 const (
@@ -19,6 +21,10 @@ const (
 	// Organization is the Giant Swarm specific organization we create our
 	// conformance test clusters in.
 	Organization = "giantswarm"
+)
+
+const (
+	KiamTestNamespace = "kube-system"
 )
 
 func APIEndpoint(id string, base string) string {
@@ -38,6 +44,14 @@ func GeneratedWithPrefix(s string) string {
 
 func HasGeneratedPrefix(s string) bool {
 	return strings.Contains(s, GeneratePrefix)
+}
+
+func KiamTestJobName() string {
+	return fmt.Sprintf("%s-kiam-test", project.Name())
+}
+
+func KiamTestNetPolName() string {
+	return fmt.Sprintf("%s-kiam-test", project.Name())
 }
 
 func RegionFromHost(h string) string {
