@@ -23,7 +23,7 @@ func NewControlPlane(config ControlPlaneConfig) (k8sclient.Interface, error) {
 	}
 
 	if config.KubeConfig == "" {
-		config.KubeConfig = env.DefaultKubeConfig
+		config.KubeConfig = env.DefaultControlPlaneKubeConfig
 	}
 
 	var err error

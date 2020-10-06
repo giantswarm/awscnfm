@@ -5,15 +5,15 @@ import (
 )
 
 const (
-	EnvVarKubeConfig = "AWSCNFM_KUBECONFIG"
+	EnvVarControlPlaneKubeConfig = "AWSCNFM_CONTROLPLANE_KUBECONFIG"
 )
 
 const (
-	DefaultKubeConfig = "~/.kube/config"
+	DefaultControlPlaneKubeConfig = "~/.kube/config"
 )
 
-// KubeConfig is the local path to the kube config file used to create the
-// Control Plane specific rest config.
-func KubeConfig() string {
-	return os.Getenv(EnvVarKubeConfig)
+// ControlPlaneKubeConfig is the local path to the kube config file used to
+// create the Control Plane specific rest config.
+func ControlPlaneKubeConfig() string {
+	return os.Getenv(EnvVarControlPlaneKubeConfig)
 }
