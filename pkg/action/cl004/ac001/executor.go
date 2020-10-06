@@ -20,7 +20,7 @@ func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, v1alpha2.N
 		c := client.ControlPlaneConfig{
 			Logger: e.logger,
 
-			KubeConfig: env.KubeConfig(),
+			KubeConfig: env.ControlPlaneKubeConfig(),
 		}
 
 		cpClients, err = client.NewControlPlane(c)
