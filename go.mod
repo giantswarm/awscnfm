@@ -6,7 +6,7 @@ require (
 	github.com/coreos/go-semver v0.3.0
 	github.com/fatih/color v1.9.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/giantswarm/apiextensions/v2 v2.6.0
+	github.com/giantswarm/apiextensions/v2 v2.6.1
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.0
 	github.com/giantswarm/columnize v2.0.2+incompatible
@@ -23,7 +23,7 @@ require (
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
 	k8s.io/client-go v0.18.9
-	sigs.k8s.io/cluster-api v0.3.8
+	sigs.k8s.io/cluster-api v0.3.10
 	sigs.k8s.io/controller-runtime v0.6.3
 )
 
