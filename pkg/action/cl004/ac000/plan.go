@@ -46,7 +46,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "ac007",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(5*time.Minute, 30*time.Second),
 		Comment: "check worker with host network set",
 	},
 	{
