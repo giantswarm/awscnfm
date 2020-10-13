@@ -2,27 +2,26 @@ package ac009
 
 import (
 	"context"
+	"fmt"
 
-	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
-	valuemodifierpath "github.com/giantswarm/valuemodifier/path"
+	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 const (
 	kubeSystemNamespace = "kube-system"
 
-	draughtsmanNamespace                  = "draughtsman"
-	draughtsmanConfigMapName              = "draughtsman-values-configmap"
-	draughtsmanConfigMapDataKey           = "values"
-	draughtsmanConfigMapDockerRegistryKey = "Installation.V1.Registry.Domain"
+	kiamServerLabelSelector = "app=kiam,component=kiam-server"
+	kiamAgentLabelSelector  = "app=kiam,component=kiam-agent"
+
+	masterNodeLabelSelector = "kubernetes.io/role=master"
+	workerNodeLabelSelector = "kubernetes.io/role=worker"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
@@ -57,96 +56,87 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	// awsRegion is necessary to execute aws-cli call
-	var awsRegion string
-	{
-		var cr infrastructurev1alpha2.AWSCluster
-		{
-			var list infrastructurev1alpha2.AWSClusterList
-			err := cpClients.CtrlClient().List(
-				ctx,
-				&list,
-				k8sruntimeclient.InNamespace(cr.GetNamespace()),
-				k8sruntimeclient.MatchingLabels{label.Cluster: e.tenantCluster},
-			)
-			if err != nil {
-				return microerror.Mask(err)
-			}
-
-			if len(list.Items) == 0 {
-				return microerror.Mask(notFoundError)
-			}
-			if len(list.Items) > 1 {
-				return microerror.Mask(tooManyCRsError)
-			}
-
-			cr = list.Items[0]
-		}
-
-		awsRegion = cr.Spec.Provider.Region
+	err = e.checkTLSCerts(ctx, tcClients.K8sClient())
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
-	// dockerRegistry is needed in order to spawn pod with proper docker image that will execute aws-cli call
-	var dockerRegistry string
-	{
-		dockerRegistry, err = e.fetchDockerRegistry(ctx, cpClients.K8sClient())
+	err = e.checkKiamPods(ctx, tcClients.K8sClient())
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
+// checkTLSCerts Ensures that kiam  tls certs are created.
+var kiamTlSCertSecretNames = []string{"kiam-agent-tls", "kiam-ca-tls", "kiam-server-tls"}
+
+func (e *Executor) checkTLSCerts(ctx context.Context, tcClient kubernetes.Interface) error {
+	for _, secret := range kiamTlSCertSecretNames {
+		_, err := tcClient.CoreV1().Secrets(kubeSystemNamespace).Get(ctx, secret, metav1.GetOptions{})
+
 		if err != nil {
 			return microerror.Mask(err)
 		}
 	}
 
-	err = e.createAWSApiCallJob(ctx, tcClients.K8sClient(), awsRegion, dockerRegistry)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
 	return nil
 }
 
-// createAWSApiCallJob will spawn a job in k8s tenant cluster to test calling AWS API to ensure kiam works as expected
-func (e *Executor) createAWSApiCallJob(ctx context.Context, tcClient kubernetes.Interface, awsRegion string, dockerRegistry string) error {
-	networkPolicy := jobNetworkPolicy()
-	_, err := tcClient.NetworkingV1().NetworkPolicies(kubeSystemNamespace).Create(ctx, networkPolicy, metav1.CreateOptions{})
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
-	job := awsApiCallJob(dockerRegistry, awsRegion, e.tenantCluster)
-	_, err = tcClient.BatchV1().Jobs(kubeSystemNamespace).Create(ctx, job, metav1.CreateOptions{})
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
-	return nil
-}
-
-func (e *Executor) fetchDockerRegistry(ctx context.Context, cpClient kubernetes.Interface) (string, error) {
-	var dockerRegistry string
-	cm, err := cpClient.CoreV1().ConfigMaps(draughtsmanNamespace).Get(ctx, draughtsmanConfigMapName, metav1.GetOptions{})
-	if err != nil {
-		return "", microerror.Mask(err)
-	}
-
-	var valueReaderService *valuemodifierpath.Service
+// checkKiamPods ensures kiam-agent and kiam-server pods are alive and running
+func (e *Executor) checkKiamPods(ctx context.Context, tcClient kubernetes.Interface) error {
+	// count expected kiam-server and kiam-agent pods
+	var expectedKiamServerPodCount, expectedKiamAgentPodCount int
 	{
-		valueReaderConfig := valuemodifierpath.DefaultConfig()
-		valueReaderConfig.InputBytes = []byte(cm.Data[draughtsmanConfigMapDataKey])
-		valueReaderService, err = valuemodifierpath.New(valueReaderConfig)
+		masterNodes, err := tcClient.CoreV1().Nodes().List(ctx, metav1.ListOptions{LabelSelector: masterNodeLabelSelector})
 		if err != nil {
-			return "", microerror.Mask(err)
+			return microerror.Mask(err)
+		}
+		expectedKiamServerPodCount = len(masterNodes.Items)
+
+		workerNodes, err := tcClient.CoreV1().Nodes().List(ctx, metav1.ListOptions{LabelSelector: workerNodeLabelSelector})
+		if err != nil {
+			return microerror.Mask(err)
+		}
+		expectedKiamAgentPodCount = len(workerNodes.Items)
+	}
+
+	// kiam server
+	{
+		kiamServerPods, err := tcClient.CoreV1().Pods(kubeSystemNamespace).List(ctx, metav1.ListOptions{LabelSelector: kiamServerLabelSelector})
+		if err != nil {
+			return microerror.Mask(err)
 		}
 
-		value, err := valueReaderService.Get(draughtsmanConfigMapDockerRegistryKey)
-		if err != nil {
-			return "", microerror.Mask(err)
+		if len(kiamServerPods.Items) != expectedKiamServerPodCount {
+			return microerror.Maskf(executionFailedError, fmt.Sprintf("wrong kiam-server pod count, expected %d but got %d", expectedKiamServerPodCount, len(kiamServerPods.Items)))
 		}
 
-		var ok bool
-		dockerRegistry, ok = value.(string)
-		if !ok {
-			return "", microerror.Maskf(executionFailedError, "Failed to parse DockerRegistry value from draughtsman configmap on CP.")
+		for _, kiamServerPod := range kiamServerPods.Items {
+			if kiamServerPod.Status.Phase != apiv1.PodRunning {
+				return microerror.Maskf(executionFailedError, fmt.Sprintf("pod %s in namespace %s is not running.", kiamServerPod.Name, kiamServerPod.Namespace))
+			}
 		}
 	}
 
-	return dockerRegistry, nil
+	// kiam agent
+	{
+		kiamAgentPods, err := tcClient.CoreV1().Pods(kubeSystemNamespace).List(ctx, metav1.ListOptions{LabelSelector: kiamAgentLabelSelector})
+		if err != nil {
+			return microerror.Mask(err)
+		}
+
+		if len(kiamAgentPods.Items) != expectedKiamAgentPodCount {
+			return microerror.Maskf(executionFailedError, fmt.Sprintf("wrong kiam-agent pod count, expected %d but got %d", expectedKiamAgentPodCount, len(kiamAgentPods.Items)))
+		}
+
+		for _, kiamAgentPod := range kiamAgentPods.Items {
+			if kiamAgentPod.Status.Phase != apiv1.PodRunning {
+				return microerror.Maskf(executionFailedError, fmt.Sprintf("pod %s in namespace %s is not running.", kiamAgentPod.Name, kiamAgentPod.Namespace))
+			}
+		}
+	}
+
+	return nil
 }

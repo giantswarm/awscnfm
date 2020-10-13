@@ -22,6 +22,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/cl004/ac011"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl004/ac012"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl004/ac013"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl004/ac014"
 )
 
 const (
@@ -244,6 +245,20 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var ac014Cmd *cobra.Command
+	{
+		c := ac014.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac014Cmd, err = ac014.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -276,6 +291,7 @@ func New(config Config) (*cobra.Command, error) {
 	c.AddCommand(ac011Cmd)
 	c.AddCommand(ac012Cmd)
 	c.AddCommand(ac013Cmd)
+	c.AddCommand(ac014Cmd)
 
 	return c, nil
 }

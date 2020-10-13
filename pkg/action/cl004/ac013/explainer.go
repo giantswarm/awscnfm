@@ -6,16 +6,13 @@ import (
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
 	s := `
-Check that all relevant CRs of the tenant cluster management got properly
-cleaned up eventually during the transition of cluster deletion. This check
-considers the following CRs.
+Delete the tenant cluster of the current cluster scope by triggering the
+deletion of the Cluster CR. This should ensure the following.
 
-	* Cluster
-	* AWSCluster
-	* G8sControlPlane
-	* AWSControlPlane
-	* MachineDeployment
-	* AWSMachineDeployment
+	* Trigger deletion to all other CRs associated with the tenant cluster.
+	* Execute cleanup logic in all involved operators.
+	* Remove all cloud provider resources.
+	* Remove all CRs associated with the tenant cluster.
 
 `
 

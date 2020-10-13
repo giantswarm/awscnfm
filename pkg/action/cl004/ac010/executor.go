@@ -2,22 +2,27 @@ package ac010
 
 import (
 	"context"
-	"fmt"
 
+	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
-	batchapiv1 "k8s.io/api/batch/v1"
-	apiv1 "k8s.io/api/core/v1"
+	valuemodifierpath "github.com/giantswarm/valuemodifier/path"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
+	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 const (
 	kubeSystemNamespace = "kube-system"
+
+	draughtsmanNamespace                  = "draughtsman"
+	draughtsmanConfigMapName              = "draughtsman-values-configmap"
+	draughtsmanConfigMapDataKey           = "values"
+	draughtsmanConfigMapDockerRegistryKey = "Installation.V1.Registry.Domain"
 )
 
 func (e *Executor) execute(ctx context.Context) error {
@@ -52,36 +57,96 @@ func (e *Executor) execute(ctx context.Context) error {
 		}
 	}
 
-	err = e.checkKiamAWScallPod(ctx, tcClients.K8sClient())
-	if err != nil {
-		return microerror.Mask(err)
+	// awsRegion is necessary to execute aws-cli call
+	var awsRegion string
+	{
+		var cr infrastructurev1alpha2.AWSCluster
+		{
+			var list infrastructurev1alpha2.AWSClusterList
+			err := cpClients.CtrlClient().List(
+				ctx,
+				&list,
+				k8sruntimeclient.InNamespace(cr.GetNamespace()),
+				k8sruntimeclient.MatchingLabels{label.Cluster: e.tenantCluster},
+			)
+			if err != nil {
+				return microerror.Mask(err)
+			}
+
+			if len(list.Items) == 0 {
+				return microerror.Mask(notFoundError)
+			}
+			if len(list.Items) > 1 {
+				return microerror.Mask(tooManyCRsError)
+			}
+
+			cr = list.Items[0]
+		}
+
+		awsRegion = cr.Spec.Provider.Region
 	}
 
-	return nil
-}
-
-// checkKiamAWScallPod will check if the AWS API call job was successful
-func (e *Executor) checkKiamAWScallPod(ctx context.Context, tcClient kubernetes.Interface) error {
-
-	name := fmt.Sprintf("%s-kiam-test", project.Name())
-
-	job, err := tcClient.BatchV1().Jobs(kubeSystemNamespace).Get(ctx, name, metav1.GetOptions{})
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
-	if !isJobCompleted(job) {
-		return microerror.Mask(jobNotCompleted)
-	}
-
-	return nil
-}
-
-func isJobCompleted(j *batchapiv1.Job) bool {
-	for _, c := range j.Status.Conditions {
-		if c.Type == "Complete" && c.Status == apiv1.ConditionTrue {
-			return true
+	// dockerRegistry is needed in order to spawn pod with proper docker image that will execute aws-cli call
+	var dockerRegistry string
+	{
+		dockerRegistry, err = e.fetchDockerRegistry(ctx, cpClients.K8sClient())
+		if err != nil {
+			return microerror.Mask(err)
 		}
 	}
-	return false
+
+	err = e.createAWSApiCallJob(ctx, tcClients.K8sClient(), awsRegion, dockerRegistry)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
+// createAWSApiCallJob will spawn a job in k8s tenant cluster to test calling AWS API to ensure kiam works as expected
+func (e *Executor) createAWSApiCallJob(ctx context.Context, tcClient kubernetes.Interface, awsRegion string, dockerRegistry string) error {
+	networkPolicy := jobNetworkPolicy()
+	_, err := tcClient.NetworkingV1().NetworkPolicies(kubeSystemNamespace).Create(ctx, networkPolicy, metav1.CreateOptions{})
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	job := awsApiCallJob(dockerRegistry, awsRegion, e.tenantCluster)
+	_, err = tcClient.BatchV1().Jobs(kubeSystemNamespace).Create(ctx, job, metav1.CreateOptions{})
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
+func (e *Executor) fetchDockerRegistry(ctx context.Context, cpClient kubernetes.Interface) (string, error) {
+	var dockerRegistry string
+	cm, err := cpClient.CoreV1().ConfigMaps(draughtsmanNamespace).Get(ctx, draughtsmanConfigMapName, metav1.GetOptions{})
+	if err != nil {
+		return "", microerror.Mask(err)
+	}
+
+	var valueReaderService *valuemodifierpath.Service
+	{
+		valueReaderConfig := valuemodifierpath.DefaultConfig()
+		valueReaderConfig.InputBytes = []byte(cm.Data[draughtsmanConfigMapDataKey])
+		valueReaderService, err = valuemodifierpath.New(valueReaderConfig)
+		if err != nil {
+			return "", microerror.Mask(err)
+		}
+
+		value, err := valueReaderService.Get(draughtsmanConfigMapDockerRegistryKey)
+		if err != nil {
+			return "", microerror.Mask(err)
+		}
+
+		var ok bool
+		dockerRegistry, ok = value.(string)
+		if !ok {
+			return "", microerror.Maskf(executionFailedError, "Failed to parse DockerRegistry value from draughtsman configmap on CP.")
+		}
+	}
+
+	return dockerRegistry, nil
 }

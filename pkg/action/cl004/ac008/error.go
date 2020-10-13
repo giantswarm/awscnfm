@@ -2,43 +2,20 @@ package ac008
 
 import "github.com/giantswarm/microerror"
 
-// executionFailedError is an error type for situations where Resource execution
-// cannot continue and must always fall back to operatorkit.
-//
-// This error should never be matched against and therefore there is no matcher
-// implement. For further information see:
-//
-//     https://github.com/giantswarm/fmt/blob/master/go/errors.md#matching-errors
-//
-var executionFailedError = &microerror.Error{
-	Kind: "executionFailedError",
+var customNetworkPoolMasterUnusedError = &microerror.Error{
+	Kind: "customNetworkPoolMasterUnusedError",
+	Desc: "Custom NetworkPool is not being used on the master subnet.",
 }
 
-// jobNotCompleted is an error indicating that the job in kiam test is not jet finished
-var jobNotCompleted = &microerror.Error{
-	Kind: "jobNotCompleted",
+var customNetworkPoolWorkerUnusedError = &microerror.Error{
+	Kind: "customNetworkPoolWorkerUnusedError",
+	Desc: "Custom NetworkPool is not being used on the worker subnet.",
 }
 
-// IsJobNotCompleted asserts jobNotCompleted error.
-func IsJobNotCompleted(err error) bool {
-	return microerror.Cause(err) == jobNotCompleted
+func IsCustomNetworkPoolMasterUnused(err error) bool {
+	return microerror.Cause(err) == customNetworkPoolMasterUnusedError
 }
 
-var notFoundError = &microerror.Error{
-	Kind: "notFoundError",
-}
-
-// IsNotFound asserts notFoundError.
-func IsNotFound(err error) bool {
-	return microerror.Cause(err) == notFoundError
-}
-
-var tooManyCRsError = &microerror.Error{
-	Kind: "tooManyCRsError",
-	Desc: "There is only a single AWSCluster CR allowed with the current implementation.",
-}
-
-// IsTooManyCRsError asserts tooManyCRsError.
-func IsTooManyCRsError(err error) bool {
-	return microerror.Cause(err) == tooManyCRsError
+func IsCustomNetworkPoolWorkerUnused(err error) bool {
+	return microerror.Cause(err) == customNetworkPoolWorkerUnusedError
 }
