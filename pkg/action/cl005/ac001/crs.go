@@ -14,15 +14,15 @@ import (
 func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, error) {
 	var err error
 
-	var m *release.Minor
+	var m *release.Major
 	{
-		c := release.MinorConfig{
+		c := release.MajorConfig{
 			FromEnv:     env.ReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}
 
-		m, err = release.NewMinor(c)
+		m, err = release.NewMajor(c)
 		if err != nil {
 			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
