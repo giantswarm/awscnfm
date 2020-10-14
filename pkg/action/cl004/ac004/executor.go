@@ -38,7 +38,8 @@ func (e *Executor) execute(ctx context.Context) error {
 			ControlPlane: cpClients,
 			Logger:       e.logger,
 
-			Scope: e.scope,
+			KubeConfig: env.TenantClusterKubeConfig(),
+			Scope:      e.scope,
 		}
 
 		tcClients, err = pkgclient.NewTenantCluster(c)
