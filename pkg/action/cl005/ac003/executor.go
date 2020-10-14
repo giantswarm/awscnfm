@@ -48,15 +48,15 @@ func (e *Executor) execute(ctx context.Context) error {
 		releases = list.Items
 	}
 
-	var m *release.Minor
+	var m *release.Major
 	{
-		c := release.MinorConfig{
+		c := release.MajorConfig{
 			FromEnv:     env.ReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}
 
-		m, err = release.NewMinor(c)
+		m, err = release.NewMajor(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}
