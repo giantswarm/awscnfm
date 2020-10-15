@@ -56,5 +56,9 @@ func KiamTestNetPolName() string {
 
 func RegionFromHost(h string) string {
 	h = strings.Split(DomainFromHost(h), ".")[1]
+	// Domain in giraffe is giraffe.pek.aws.k8s.adidas.com.cn which does not follow the convention
+	if h == "pek" {
+		h = "cn-north-1"
+	}
 	return h
 }
