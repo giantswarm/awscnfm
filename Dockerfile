@@ -1,7 +1,5 @@
-FROM quay.io/giantswarm/alpine:3.11-giantswarm
-
-USER giantswarm
+FROM alpine:3.12
 
 ADD ./awscnfm /usr/local/bin/awscnfm
 
-ENTRYPOINT ["awscnfm"]
+ENTRYPOINT ["/usr/local/bin/awscnfm"]
