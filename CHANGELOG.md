@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix giraffe domain detection
+
 ### Added
 
 - Added `cl004` for testing NetworkPools.
