@@ -18,6 +18,10 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac007"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac008"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac009"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac010"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac011"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac012"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac013"
 )
 
 const (
@@ -184,6 +188,62 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var ac010Cmd *cobra.Command
+	{
+		c := ac010.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac010Cmd, err = ac010.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac011Cmd *cobra.Command
+	{
+		c := ac011.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac011Cmd, err = ac011.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac012Cmd *cobra.Command
+	{
+		c := ac012.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac012Cmd, err = ac012.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac013Cmd *cobra.Command
+	{
+		c := ac013.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac013Cmd, err = ac013.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -212,6 +272,10 @@ func New(config Config) (*cobra.Command, error) {
 	c.AddCommand(ac007Cmd)
 	c.AddCommand(ac008Cmd)
 	c.AddCommand(ac009Cmd)
+	c.AddCommand(ac010Cmd)
+	c.AddCommand(ac011Cmd)
+	c.AddCommand(ac012Cmd)
+	c.AddCommand(ac013Cmd)
 
 	return c, nil
 }

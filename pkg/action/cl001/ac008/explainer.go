@@ -6,13 +6,10 @@ import (
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
 	s := `
-Delete the tenant cluster of the current cluster scope by triggering the
-deletion of the Cluster CR. This should ensure the following.
+Check if Kiam's pods and secrets are present on the tenant cluster. This test should do following:
 
-	* Trigger deletion to all other CRs associated with the tenant cluster.
-	* Execute cleanup logic in all involved operators.
-	* Remove all cloud provider resources.
-	* Remove all CRs associated with the tenant cluster.
+    * Ensure tls certs for Kiam are created.
+    * Ensure kiam-server and kiam-agent pods are running without errors on the tenant cluster.
 
 `
 

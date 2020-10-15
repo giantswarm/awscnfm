@@ -22,21 +22,23 @@ repository, check out the relevant Git Tag, and `go build` the binary yourself.
 You need access to and credentials for a (test)
 installation's Control Plane Kubernetes API.
 
-`awscnfm` assumes you have a kubeconfig file somewhere with the context
-set to that control plane. It looks at the `AWSCNFM_KUBECONFIG` environment
-variable to find out about the path to that file.
+`awscnfm` assumes you have a kubeconfig file somewhere with the context set to
+that control plane. It looks at the `AWSCNFM_CONTROLPLANE_KUBECONFIG`
+environment variable to find out about the path to that file.
 
 Here is an example:
 
 ```bash
-export AWSCNFM_KUBECONFIG=~/.kube/config
+export AWSCNFM_CONTROLPLANE_KUBECONFIG=~/.kube/config
 ```
 
 ## 3. Select a cluster scope
 
-Running the `awscnfm` CLI without any arguments gives you an overview of all the subcommands. Commands in the format `cl***` (e. g. `cl001`) are cluster scopes.
+Running the `awscnfm` CLI without any arguments gives you an overview of all the
+subcommands. Commands in the format `cl***` (e. g. `cl001`) are cluster scopes.
 
-To learn more about each cluster scope available, execute the `explain` subcommand of the first action in the scope.
+To learn more about each cluster scope available, execute the `explain`
+subcommand of the first action in the scope.
 
 For `cl001` that would be:
 

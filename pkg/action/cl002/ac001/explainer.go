@@ -11,6 +11,7 @@ import (
 	"github.com/giantswarm/micrologger/microloggertest"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
@@ -20,6 +21,8 @@ func (e *Explainer) explain(ctx context.Context) (string, error) {
 	{
 		c := client.ControlPlaneConfig{
 			Logger: microloggertest.New(),
+
+			KubeConfig: env.ControlPlaneKubeConfig(),
 		}
 
 		cpClients, err = client.NewControlPlane(c)

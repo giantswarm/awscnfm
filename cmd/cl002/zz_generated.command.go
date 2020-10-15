@@ -8,7 +8,13 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/cmd/cl002/ac000"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl002/ac001"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl002/ac002"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl002/ac003"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl002/ac004"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl002/ac005"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl002/ac006"
 )
 
 const (
@@ -35,6 +41,20 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
+	var ac000Cmd *cobra.Command
+	{
+		c := ac000.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac000Cmd, err = ac000.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	var ac001Cmd *cobra.Command
 	{
 		c := ac001.Config{
@@ -44,6 +64,76 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		ac001Cmd, err = ac001.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac002Cmd *cobra.Command
+	{
+		c := ac002.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac002Cmd, err = ac002.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac003Cmd *cobra.Command
+	{
+		c := ac003.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac003Cmd, err = ac003.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac004Cmd *cobra.Command
+	{
+		c := ac004.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac004Cmd, err = ac004.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac005Cmd *cobra.Command
+	{
+		c := ac005.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac005Cmd, err = ac005.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ac006Cmd *cobra.Command
+	{
+		c := ac006.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		ac006Cmd, err = ac006.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -67,7 +157,13 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
+	c.AddCommand(ac000Cmd)
 	c.AddCommand(ac001Cmd)
+	c.AddCommand(ac002Cmd)
+	c.AddCommand(ac003Cmd)
+	c.AddCommand(ac004Cmd)
+	c.AddCommand(ac005Cmd)
+	c.AddCommand(ac006Cmd)
 
 	return c, nil
 }
