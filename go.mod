@@ -18,7 +18,7 @@ require (
 	github.com/google/go-cmp v0.5.2
 	github.com/jsonmaur/aws-regions/go v0.0.0-20200521181458-43baf1be9a5a
 	github.com/prometheus/client_golang v1.7.1 // indirect
-	github.com/spf13/cobra v1.0.0
+	github.com/spf13/cobra v1.1.0
 	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
