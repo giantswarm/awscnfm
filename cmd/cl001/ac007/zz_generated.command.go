@@ -1,20 +1,24 @@
 package ac007
 
 import (
+	"context"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac007/execute"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl001/ac007/explain"
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/action/cl001/ac007"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 const (
 	name        = "ac007"
-	description = "Action ac007 for cluster 001."
+	description = "Execute action ac007 for cluster cl001."
 )
 
 type Config struct {
@@ -34,36 +38,6 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	var err error
-
-	var executeCmd *cobra.Command
-	{
-		c := execute.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		executeCmd, err = execute.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var explainCmd *cobra.Command
-	{
-		c := explain.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		explainCmd, err = explain.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -76,14 +50,37 @@ func New(config Config) (*cobra.Command, error) {
 	c := &cobra.Command{
 		Use:   name,
 		Short: description,
-		Long:  description,
+		Long:  mustLong(),
 		RunE:  r.Run,
 	}
 
 	f.Init(c)
 
-	c.AddCommand(executeCmd)
-	c.AddCommand(explainCmd)
-
 	return c, nil
+}
+
+func mustLong() string {
+	ctx := context.Background()
+
+	var err error
+
+	var e action.Explainer
+	{
+		c := ac007.ExplainerConfig{
+			Scope:         "cl001",
+			TenantCluster: config.Cluster("cl001", env.TenantCluster()),
+		}
+
+		e, err = ac007.NewExplainer(c)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	s, err := e.Explain(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	return strings.TrimSpace(s)
 }

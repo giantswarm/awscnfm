@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	name        = "execute"
+	name        = "ac000"
 	description = "Execute action ac000 for cluster cl001."
 )
 

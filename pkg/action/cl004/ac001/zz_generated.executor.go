@@ -46,7 +46,7 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 }
 
 func (e *Executor) Execute(ctx context.Context) error {
-	crs, _, err := e.execute(ctx)
+	crs, err := e.execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
