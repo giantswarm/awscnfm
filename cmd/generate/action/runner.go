@@ -16,8 +16,6 @@ import (
 
 	actiontemplate "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template"
 	templatecmd "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/cmd"
-	templatecmdexecute "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/cmd/execute"
-	templatecmdexplain "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/cmd/explain"
 	templatepkgaction "github.com/giantswarm/awscnfm/v12/cmd/generate/action/template/pkg/action"
 	"github.com/giantswarm/awscnfm/v12/pkg/action"
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
@@ -72,16 +70,6 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			// defining map[string]string for the key-value pairs the order of items
 			// changes since go maps are not deterministic.
 			templates := [][]string{
-				{templatecmdexecute.CommandBase, templatecmdexecute.CommandContent},
-				{templatecmdexecute.ErrorBase, templatecmdexecute.ErrorContent},
-				{templatecmdexecute.FlagBase, templatecmdexecute.FlagContent},
-				{templatecmdexecute.RunnerBase, templatecmdexecute.RunnerContent},
-
-				{templatecmdexplain.CommandBase, templatecmdexplain.CommandContent},
-				{templatecmdexplain.ErrorBase, templatecmdexplain.ErrorContent},
-				{templatecmdexplain.FlagBase, templatecmdexplain.FlagContent},
-				{templatecmdexplain.RunnerBase, templatecmdexplain.RunnerContent},
-
 				{templatecmd.CommandBase, templatecmd.CommandContent},
 				{templatecmd.ErrorBase, templatecmd.ErrorContent},
 				{templatecmd.FlagBase, templatecmd.FlagContent},
