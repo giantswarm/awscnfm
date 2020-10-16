@@ -1,6 +1,10 @@
 package client
 
 import (
+	"os/user"
+	"path/filepath"
+	"strings"
+
 	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	releasev1alpha1 "github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
@@ -22,8 +26,17 @@ func NewControlPlane(config ControlPlaneConfig) (k8sclient.Interface, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
+	// We want to default the local kube config path in case it is not given.
+	// The default kube config path is usually prefixed by "~/", which does not
+	// properly resolve on all systems. That is why we trim this particular
+	// prefix before joining the current users' home dir.
 	if config.KubeConfig == "" {
-		config.KubeConfig = env.DefaultControlPlaneKubeConfig
+		u, err := user.Current()
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
+		config.KubeConfig = filepath.Join(u.HomeDir, strings.TrimPrefix(env.DefaultControlPlaneKubeConfig, "~/"))
 	}
 
 	var err error
