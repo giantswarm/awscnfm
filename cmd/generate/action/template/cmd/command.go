@@ -1,26 +1,32 @@
-package cmd
+package execute
 
-import "github.com/giantswarm/awscnfm/v12/pkg/key"
+import (
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
+)
 
 var CommandBase = key.GeneratedWithPrefix("command.go")
 
 var CommandContent = `package {{ .Action }}
 
 import (
+	"context"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/{{ .Cluster }}/{{ .Action }}/execute"
-	"github.com/giantswarm/awscnfm/v12/cmd/{{ .Cluster }}/{{ .Action }}/explain"
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/action/{{ .Cluster }}/{{ .Action }}"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 const (
 	name        = "{{ .Action }}"
-	description = "Action {{ .Action }} for cluster 001."
+	description = "Execute action {{ .Action }} for cluster {{ .Cluster }}."
 )
 
 type Config struct {
@@ -40,36 +46,6 @@ func New(config Config) (*cobra.Command, error) {
 		config.Stdout = os.Stdout
 	}
 
-	var err error
-
-	var executeCmd *cobra.Command
-	{
-		c := execute.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		executeCmd, err = execute.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var explainCmd *cobra.Command
-	{
-		c := explain.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		explainCmd, err = explain.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -82,15 +58,38 @@ func New(config Config) (*cobra.Command, error) {
 	c := &cobra.Command{
 		Use:   name,
 		Short: description,
-		Long:  description,
+		Long:  mustLong(),
 		RunE:  r.Run,
 	}
 
 	f.Init(c)
 
-	c.AddCommand(executeCmd)
-	c.AddCommand(explainCmd)
-
 	return c, nil
+}
+
+func mustLong() string {
+	ctx := context.Background()
+
+	var err error
+
+	var e action.Explainer
+	{
+		c := {{ .Action }}.ExplainerConfig{
+			Scope:         "{{ .Cluster }}",
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
+		}
+
+		e, err = {{ .Action }}.NewExplainer(c)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	s, err := e.Explain(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	return strings.TrimSpace(s)
 }
 `

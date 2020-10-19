@@ -12,7 +12,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
-func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, v1alpha2.NetworkPoolCRs, error) {
+func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, error) {
 	var err error
 
 	var cpClients k8sclient.Interface
@@ -25,7 +25,7 @@ func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, v1alpha2.N
 
 		cpClients, err = client.NewControlPlane(c)
 		if err != nil {
-			return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 	}
 
@@ -37,7 +37,7 @@ func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, v1alpha2.N
 			&list,
 		)
 		if err != nil {
-			return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
 		releases = list.Items
@@ -45,35 +45,35 @@ func (e *Executor) execute(ctx context.Context) (v1alpha2.ClusterCRs, v1alpha2.N
 
 	crs, npcrs, err := newCRs(releases, cpClients.RESTConfig().Host)
 	if err != nil {
-		return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+		return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 	}
 
 	{
 		err = cpClients.CtrlClient().Create(ctx, npcrs.NetworkPool)
 		if err != nil {
-			return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
 		err = cpClients.CtrlClient().Create(ctx, crs.Cluster)
 		if err != nil {
-			return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
 		err = cpClients.CtrlClient().Create(ctx, crs.AWSCluster)
 		if err != nil {
-			return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
 		err = cpClients.CtrlClient().Create(ctx, crs.G8sControlPlane)
 		if err != nil {
-			return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 
 		err = cpClients.CtrlClient().Create(ctx, crs.AWSControlPlane)
 		if err != nil {
-			return v1alpha2.ClusterCRs{}, v1alpha2.NetworkPoolCRs{}, microerror.Mask(err)
+			return v1alpha2.ClusterCRs{}, microerror.Mask(err)
 		}
 	}
 
-	return crs, npcrs, nil
+	return crs, nil
 }

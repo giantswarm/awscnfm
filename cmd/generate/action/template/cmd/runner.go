@@ -1,10 +1,14 @@
-package cmd
+package execute
 
-import "github.com/giantswarm/awscnfm/v12/pkg/key"
+import (
+	"path/filepath"
 
-var RunnerBase = key.GeneratedWithPrefix("runner.go")
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
+)
 
-var RunnerContent = `package {{ .Action }}
+var RunnerBase = filepath.Join("execute", key.GeneratedWithPrefix("runner.go"))
+
+var RunnerContent = `package execute
 
 import (
 	"context"
@@ -13,6 +17,11 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/action/{{ .Cluster }}/{{ .Action }}"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 type runner struct {
@@ -39,7 +48,25 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	err := cmd.Help()
+	var err error
+
+	var e action.Executor
+	{
+		c := {{ .Action }}.ExecutorConfig{
+			Command: cmd,
+			Logger:  r.logger,
+
+			Scope:         "{{ .Cluster }}",
+			TenantCluster: config.Cluster("{{ .Cluster }}", env.TenantCluster()),
+		}
+
+		e, err = {{ .Action }}.NewExecutor(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	err = e.Execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
