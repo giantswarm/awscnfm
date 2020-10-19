@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [12.5.0] - 2020-10-19
+
 ### Fixed
 
 - Fix giraffe domain detection
@@ -56,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include namespace to delete cluster CR's.
 * Skip aws-cni-restarter for host network test on master.
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.1.4...HEAD
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.5.0...HEAD
+[12.5.0]: https://github.com/giantswarm/awscnfm/compare/v12.1.4...v12.5.0
 [12.1.4]: https://github.com/giantswarm/awscnfm/compare/v12.1.1...v12.1.4
 [12.1.1]: https://github.com/giantswarm/awscnfm/compare/v12.1.0...v12.1.1
 [12.1.0]: https://github.com/giantswarm/awscnfm/releases/tag/v12.1.0
