@@ -14,7 +14,7 @@ func (e *Executor) execute(ctx context.Context) error {
 	var planExecutor *plan.Executor
 	{
 		c := plan.ExecutorConfig{
-			Commands: e.command.Parent().Parent().Commands(),
+			Commands: e.command.Parent().Commands(),
 			Logger:   e.logger,
 			Plan:     Plan,
 		}
