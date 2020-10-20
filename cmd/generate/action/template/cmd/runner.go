@@ -1,14 +1,12 @@
 package execute
 
 import (
-	"path/filepath"
-
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
-var RunnerBase = filepath.Join("execute", key.GeneratedWithPrefix("runner.go"))
+var RunnerBase = key.GeneratedWithPrefix("runner.go")
 
-var RunnerContent = `package execute
+var RunnerContent = `package {{ .Action }}
 
 import (
 	"context"

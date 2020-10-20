@@ -1,14 +1,12 @@
 package execute
 
 import (
-	"path/filepath"
-
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
-var FlagBase = filepath.Join("execute", key.GeneratedWithPrefix("flag.go"))
+var FlagBase = key.GeneratedWithPrefix("flag.go")
 
-var FlagContent = `package execute
+var FlagContent = `package {{ .Action }}
 
 import "github.com/spf13/cobra"
 
