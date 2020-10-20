@@ -7,6 +7,11 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/action"
+	"github.com/giantswarm/awscnfm/v12/pkg/action/cl003/ac004"
+	"github.com/giantswarm/awscnfm/v12/pkg/config"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
 type runner struct {
@@ -33,7 +38,25 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
-	err := cmd.Help()
+	var err error
+
+	var e action.Executor
+	{
+		c := ac004.ExecutorConfig{
+			Command: cmd,
+			Logger:  r.logger,
+
+			Scope:         "cl003",
+			TenantCluster: config.Cluster("cl003", env.TenantCluster()),
+		}
+
+		e, err = ac004.NewExecutor(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	err = e.Execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
