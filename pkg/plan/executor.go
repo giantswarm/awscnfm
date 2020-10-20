@@ -72,32 +72,11 @@ func (e *Executor) Execute(ctx context.Context) error {
 func commandForAction(action string, commands []*cobra.Command) (*cobra.Command, error) {
 	// We get all commands of the registered actions and only want to return the
 	// command of the action we want to execute.
-	var act *cobra.Command
 	for _, c := range commands {
 		if c.Name() == action {
-			act = c
-			break
+			return c, nil
 		}
 	}
 
-	if act == nil {
-		return nil, microerror.Maskf(commandNotFoundError, action)
-	}
-
-	// Once we found the action command we need to find its own execute command,
-	// because the execute command wraps the business logic we want to execute
-	// for the test plan.
-	var exe *cobra.Command
-	for _, c := range act.Commands() {
-		if c.Name() == "execute" {
-			exe = c
-			break
-		}
-	}
-
-	if exe == nil {
-		return nil, microerror.Maskf(commandNotFoundError, "%s execute", action)
-	}
-
-	return exe, nil
+	return nil, microerror.Maskf(commandNotFoundError, action)
 }
