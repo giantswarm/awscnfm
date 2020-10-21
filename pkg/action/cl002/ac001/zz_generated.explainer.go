@@ -10,7 +10,7 @@ const (
 	// explainerCommand is for internal documentation purposes only so that
 	// commands can self describe and explain themselves better. This
 	// information might be used in different creative ways.
-	explainerCommand = "awscnfm cl002 ac001 explain"
+	explainerCommand = "awscnfm cl002 ac001"
 )
 
 const (
