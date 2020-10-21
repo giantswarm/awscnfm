@@ -1,14 +1,18 @@
 package pl001
 
 import (
+	"time"
+
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/table"
 )
 
 const (
-	name        = "pl001"
-	description = "Execute plan pl001 automatically."
+	name  = "pl001"
+	short = "Execute plan pl001 automatically."
 )
 
 type Config struct {
@@ -29,12 +33,34 @@ func New(config Config) (*cobra.Command, error) {
 
 	c := &cobra.Command{
 		Use:   name,
-		Short: description,
-		Long:  description,
+		Short: short,
+		Long:  mustLong(),
 		RunE:  r.Run,
 	}
 
 	f.Init(c)
 
 	return c, nil
+}
+
+func mustLong() string {
+	var d time.Duration
+	for _, s := range Plan {
+		d += s.Backoff.Wait()
+	}
+
+	s := "Test plan pl001 launches a basic Tenant Cluster and verifies basic criteria like\n"
+	s += "the correct number of nodes and pods are running. Plan execution might take up\n"
+	s += "to " + d.String() + ".\n\n"
+
+	t := [][]string{{"ACTION", "RETRY", "WAIT"}}
+
+	for _, s := range Plan {
+		t = append(t, []string{s.Action, s.Backoff.Interval().String(), s.Backoff.Wait().String()})
+	}
+
+	colourized := table.Colourize(t)
+	s += table.Format(colourized)
+
+	return s
 }
