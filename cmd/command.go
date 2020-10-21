@@ -15,8 +15,6 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/cl004"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl005"
 	"github.com/giantswarm/awscnfm/v12/cmd/completion"
-	"github.com/giantswarm/awscnfm/v12/cmd/generate"
-	"github.com/giantswarm/awscnfm/v12/cmd/insert"
 	"github.com/giantswarm/awscnfm/v12/cmd/plan"
 	"github.com/giantswarm/awscnfm/v12/cmd/version"
 	"github.com/giantswarm/awscnfm/v12/pkg/project"
@@ -167,34 +165,6 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
-	var generateCmd *cobra.Command
-	{
-		c := generate.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		generateCmd, err = generate.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var insertCmd *cobra.Command
-	{
-		c := insert.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		insertCmd, err = insert.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	var planCmd *cobra.Command
 	{
 		c := plan.Config{
@@ -233,8 +203,6 @@ func New(config Config) (*cobra.Command, error) {
 	m.AddCommand(cl004Cmd)
 	m.AddCommand(cl005Cmd)
 	m.AddCommand(completionCmd)
-	m.AddCommand(generateCmd)
-	m.AddCommand(insertCmd)
 	m.AddCommand(planCmd)
 	m.AddCommand(versionCmd)
 
