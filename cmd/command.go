@@ -8,6 +8,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/cmd/action"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl001"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl002"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl003"
@@ -68,6 +69,18 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
+
+	var actionCmd *cobra.Command
+	{
+		c := action.Config{
+			Logger: config.Logger,
+		}
+
+		actionCmd, err = action.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 
 	var cl001Cmd *cobra.Command
 	{
@@ -200,6 +213,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(m)
 
+	m.AddCommand(actionCmd)
 	m.AddCommand(cl001Cmd)
 	m.AddCommand(cl002Cmd)
 	m.AddCommand(cl003Cmd)
