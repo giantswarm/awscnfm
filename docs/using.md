@@ -37,13 +37,13 @@ export AWSCNFM_CONTROLPLANE_KUBECONFIG=~/.kube/config
 Running the `awscnfm` CLI without any arguments gives you an overview of all the
 subcommands. Commands in the format `cl***` (e. g. `cl001`) are cluster scopes.
 
-To learn more about each cluster scope available, execute the `explain`
-subcommand of the first action in the scope.
+To learn more about each cluster scope available, check the help usage of the
+first action in the scope.
 
 For `cl001` that would be:
 
 ```nohighlight
-awscnfm cl001 ac000 explain
+awscnfm cl001 ac000 -h
 ```
 
 The output will look similar to this
@@ -81,7 +81,7 @@ Running the entire plan, that is all actions defined within the cluster scope, s
 For example, with the cluster scope `cl001`, executing the entire plan would require this command:
 
 ```nohighlight
-awscnfm cl001 ac000 execute
+awscnfm cl001 ac000
 ```
 
 Note that the action name argument `ac000` represents the entire plan.
@@ -93,7 +93,7 @@ It may take some time until you will see some output.
 Instead of setting the action argument to `ac000` for the entire test plan, you can use any other available action identifier with the execute command. Example:
 
 ```nohighlight
-awscnfm cl001 ac007 execute
+awscnfm cl001 ac007
 ```
 
 However, since the cluster creation step will not be executes now, you have to make sure that
