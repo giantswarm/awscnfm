@@ -17,6 +17,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/completion"
 	"github.com/giantswarm/awscnfm/v12/cmd/generate"
 	"github.com/giantswarm/awscnfm/v12/cmd/insert"
+	"github.com/giantswarm/awscnfm/v12/cmd/plan"
 	"github.com/giantswarm/awscnfm/v12/cmd/version"
 	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
@@ -194,6 +195,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var planCmd *cobra.Command
+	{
+		c := plan.Config{
+			Logger: config.Logger,
+		}
+
+		planCmd, err = plan.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	var versionCmd *cobra.Command
 	{
 		c := version.Config{
@@ -222,6 +235,7 @@ func New(config Config) (*cobra.Command, error) {
 	m.AddCommand(completionCmd)
 	m.AddCommand(generateCmd)
 	m.AddCommand(insertCmd)
+	m.AddCommand(planCmd)
 	m.AddCommand(versionCmd)
 
 	return m, nil
