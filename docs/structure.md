@@ -16,21 +16,51 @@ that action `ac001` creates the Tenant Cluster for its own particular cluster
 scope. This implies e.g. to not create a Kubernetes client for the Tenant
 Cluster when executing action `ac001` of a given cluster scope.
 
-The package hierarchy:
+An example package structure looks like below.
 
 ```nohighlight
 ├── cmd
-│   └── cl001
-│       └── ac001
+│   ├── action
+│   │   ├── create
+│   │   │   └── cluster
+│   │   │       ├── default
+│   │   │       └── networkpool
+│   │   ├── delete
+│   │   │   └── cluster
+│   │   └── verify
+│   │       └── cluster
+│   │           ├── created
+│   │           └── deleted
+│   └── plan
+│       ├── pl001
+│       ├── pl002
+│       └── pl003
 └── pkg
-    └── action
-        └── ac001
+    ├── action
+    │   ├── create
+    │   │   └── cluster
+    │   │       ├── default
+    │   │       └── networkpool
+    │   ├── delete
+    │   │   └── cluster
+    │   └── verify
+    │       └── cluster
+    │           ├── created
+    │           └── deleted
+    └── plan
+        ├── pl001
+        ├── pl002
+        └── pl003
 ```
 
-The according subcommand hierarchy:
+An example command structure looks like below.
 
 ```nohighlight
-awscnfm cl001 ac001
-awscnfm cl001 ac002
-awscnfm cl001 ac003
+awscnfm action create cluster default
+awscnfm action create cluster networkpool
+awscnfm action verify cluster created
+awscnfm action verify cluster deleted
+awscnfm plan pl001
+awscnfm plan pl002
+awscnfm plan pl003
 ```
