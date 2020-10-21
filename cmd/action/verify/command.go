@@ -1,17 +1,16 @@
-package action
+package verify
 
 import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster"
 )
 
 const (
-	name        = "action"
-	description = "Execute actions separately against tenant clusters."
+	name        = "verify"
+	description = "Verify state within conformance tests, e.g. if a Tenant Cluster is created."
 )
 
 type Config struct {
@@ -25,25 +24,13 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var createCmd *cobra.Command
+	var clusterCmd *cobra.Command
 	{
-		c := create.Config{
+		c := cluster.Config{
 			Logger: config.Logger,
 		}
 
-		createCmd, err = create.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var verifyCmd *cobra.Command
-	{
-		c := verify.Config{
-			Logger: config.Logger,
-		}
-
-		verifyCmd, err = verify.New(c)
+		clusterCmd, err = cluster.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -65,8 +52,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(createCmd)
-	c.AddCommand(verifyCmd)
+	c.AddCommand(clusterCmd)
 
 	return c, nil
 }
