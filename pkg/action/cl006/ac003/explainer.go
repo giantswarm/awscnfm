@@ -5,5 +5,14 @@ import (
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
-	return "", nil
+	s := `
+Upgrade the Tenant Cluster to HA.
+
+	* Fetch the Cluster CR.
+	* Set replicas to 3.
+	* Update the Cluster CR in the Control Plane.
+
+	`
+
+	return s, nil
 }

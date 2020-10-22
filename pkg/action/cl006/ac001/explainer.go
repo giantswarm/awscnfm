@@ -5,5 +5,7 @@ import (
 )
 
 func (e *Explainer) explain(ctx context.Context) (string, error) {
-	return "", nil
+	s := "Create a basic Tenant Cluster with a single master."
+
+	return s, nil
 }
