@@ -1,4 +1,4 @@
-package onenodepool
+package defaultcontrolplane
 
 import (
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
