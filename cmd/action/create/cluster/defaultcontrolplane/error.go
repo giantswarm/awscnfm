@@ -1,4 +1,4 @@
-package onenodepool
+package defaultcontrolplane
 
 import "github.com/giantswarm/microerror"
 

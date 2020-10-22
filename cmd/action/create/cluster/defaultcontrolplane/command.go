@@ -1,4 +1,4 @@
-package onenodepool
+package defaultcontrolplane
 
 import (
 	"github.com/giantswarm/microerror"
@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	name        = "onenodepool"
-	description = "Create a basic Tenant Cluster with one basic Node Pool."
+	name        = "defaultcontrolplane"
+	description = "Create a default Tenant Cluster Control Plane without Node Pool."
 )
 
 type Config struct {

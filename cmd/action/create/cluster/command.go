@@ -5,7 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster/onenodepool"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster/defaultcontrolplane"
 )
 
 const (
@@ -24,13 +24,13 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var onenodepoolCmd *cobra.Command
+	var defaultcontrolplaneCmd *cobra.Command
 	{
-		c := onenodepool.Config{
+		c := defaultcontrolplane.Config{
 			Logger: config.Logger,
 		}
 
-		onenodepoolCmd, err = onenodepool.New(c)
+		defaultcontrolplaneCmd, err = defaultcontrolplane.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -52,7 +52,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(onenodepoolCmd)
+	c.AddCommand(defaultcontrolplaneCmd)
 
 	return c, nil
 }

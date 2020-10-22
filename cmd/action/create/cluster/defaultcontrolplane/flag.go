@@ -1,4 +1,4 @@
-package onenodepool
+package defaultcontrolplane
 
 import "github.com/spf13/cobra"
 

@@ -10,7 +10,7 @@ import (
 // this test plan.
 var Plan = []plan.Step{
 	{
-		Action:  "create/cluster/onenodepool",
+		Action:  "create/cluster/defaultcontrolplane",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
