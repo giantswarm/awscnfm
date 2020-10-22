@@ -1,4 +1,4 @@
-package ac001
+package onenodepool
 
 import (
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
@@ -33,7 +33,7 @@ func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, erro
 		c := v1alpha2.ClusterCRsConfig{
 			Credential:        key.Credential,
 			Domain:            key.DomainFromHost(host),
-			Description:       explainerCommand,
+			Description:       "awscnfm action create cluster onenodepool",
 			Owner:             key.Organization,
 			Region:            key.RegionFromHost(host),
 			ReleaseComponents: p.Components().Latest(),
