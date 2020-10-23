@@ -7,6 +7,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/master"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/worker"
 )
 
 const (
@@ -49,6 +50,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var workerCmd *cobra.Command
+	{
+		c := worker.Config{
+			Logger: config.Logger,
+		}
+
+		workerCmd, err = worker.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -67,6 +80,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	c.AddCommand(clusterCmd)
 	c.AddCommand(masterCmd)
+	c.AddCommand(workerCmd)
 
 	return c, nil
 }
