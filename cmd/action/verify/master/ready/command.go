@@ -9,7 +9,13 @@ import (
 const (
 	name  = "ready"
 	short = "Verify if all master nodes are ready."
-	long  = "Verify if all master nodes are ready."
+	long  = `
+Check if the desired amount of Tenant Cluster master nodes are up and ready.
+
+	* Fetch all G8sControlPlane CRs spec.replicas so that we know how many masters the Tenant Cluster is supposed to have.
+	* Fetch the Tenant Cluster master nodes.
+	* Compare the current and desired amount of master nodes.
+	`
 )
 
 type Config struct {
