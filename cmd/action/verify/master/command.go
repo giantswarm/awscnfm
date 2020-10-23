@@ -1,17 +1,16 @@
-package verify
+package master
 
 import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/master"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/master/ready"
 )
 
 const (
-	name        = "verify"
-	description = "Verify state within conformance tests, e.g. if a Tenant Cluster is created."
+	name        = "master"
+	description = "Verify certain master node aspects within a Tenant Cluster."
 )
 
 type Config struct {
@@ -25,25 +24,13 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var clusterCmd *cobra.Command
+	var readyCmd *cobra.Command
 	{
-		c := cluster.Config{
+		c := ready.Config{
 			Logger: config.Logger,
 		}
 
-		clusterCmd, err = cluster.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var masterCmd *cobra.Command
-	{
-		c := master.Config{
-			Logger: config.Logger,
-		}
-
-		masterCmd, err = master.New(c)
+		readyCmd, err = ready.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -65,8 +52,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(clusterCmd)
-	c.AddCommand(masterCmd)
+	c.AddCommand(readyCmd)
 
 	return c, nil
 }
