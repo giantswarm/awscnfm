@@ -1,16 +1,15 @@
-package cluster
+package ready
 
 import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/created"
 )
 
 const (
-	name        = "cluster"
-	description = "Verify certain Tenant Cluster aspects within a Control Plane."
+	name  = "ready"
+	short = "Verify if all master nodes are ready."
+	long  = "Verify if all master nodes are ready."
 )
 
 type Config struct {
@@ -22,20 +21,6 @@ func New(config Config) (*cobra.Command, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
-	var err error
-
-	var createdCmd *cobra.Command
-	{
-		c := created.Config{
-			Logger: config.Logger,
-		}
-
-		createdCmd, err = created.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -45,14 +30,12 @@ func New(config Config) (*cobra.Command, error) {
 
 	c := &cobra.Command{
 		Use:   name,
-		Short: description,
-		Long:  description,
+		Short: short,
+		Long:  long,
 		RunE:  r.Run,
 	}
 
 	f.Init(c)
-
-	c.AddCommand(createdCmd)
 
 	return c, nil
 }
