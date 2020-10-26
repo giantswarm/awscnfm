@@ -1,17 +1,16 @@
-package create
+package nodepool
 
 import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create/nodepool"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/create/nodepool/defaultdataplane"
 )
 
 const (
-	name        = "create"
-	description = "Create resources for conformance tests, e.g. Tenant Cluster CRs."
+	name        = "nodepool"
+	description = "Create Node Pools for a Tenant Cluster."
 )
 
 type Config struct {
@@ -25,25 +24,13 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var clusterCmd *cobra.Command
+	var defaultdataplaneCmd *cobra.Command
 	{
-		c := cluster.Config{
+		c := defaultdataplane.Config{
 			Logger: config.Logger,
 		}
 
-		clusterCmd, err = cluster.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var nodepoolCmd *cobra.Command
-	{
-		c := nodepool.Config{
-			Logger: config.Logger,
-		}
-
-		nodepoolCmd, err = nodepool.New(c)
+		defaultdataplaneCmd, err = defaultdataplane.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -65,8 +52,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(clusterCmd)
-	c.AddCommand(nodepoolCmd)
+	c.AddCommand(defaultdataplaneCmd)
 
 	return c, nil
 }
