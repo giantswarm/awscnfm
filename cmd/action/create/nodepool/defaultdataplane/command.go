@@ -7,8 +7,9 @@ import (
 )
 
 const (
-	name        = "defaultdataplane"
-	description = "Create a default Node Pool."
+	name  = "defaultdataplane"
+	short = "Create a basic Node Pool with all its defaults."
+	long  = "Create a basic Node Pool with all its defaults."
 )
 
 type Config struct {
@@ -29,8 +30,8 @@ func New(config Config) (*cobra.Command, error) {
 
 	c := &cobra.Command{
 		Use:   name,
-		Short: description,
-		Long:  description,
+		Short: short,
+		Long:  long,
 		RunE:  r.Run,
 	}
 

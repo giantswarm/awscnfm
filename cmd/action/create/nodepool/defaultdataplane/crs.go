@@ -1,4 +1,4 @@
-package ac005
+package defaultdataplane
 
 import (
 	"context"
@@ -47,7 +47,7 @@ func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host st
 			AvailabilityZones:                   []string{azs[0]},
 			AWSInstanceType:                     "m5.xlarge",
 			ClusterID:                           id,
-			Description:                         "awscnfm cl004 ac005",
+			Description:                         "awscnfm cl001 ac005",
 			NodesMax:                            2,
 			NodesMin:                            1,
 			OnDemandBaseCapacity:                0,
