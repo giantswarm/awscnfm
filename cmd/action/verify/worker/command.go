@@ -5,6 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/worker/hostnetworkpod"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/worker/ready"
 )
 
@@ -23,6 +24,18 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
+
+	var hostnetworkpodCmd *cobra.Command
+	{
+		c := hostnetworkpod.Config{
+			Logger: config.Logger,
+		}
+
+		hostnetworkpodCmd, err = hostnetworkpod.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 
 	var readyCmd *cobra.Command
 	{
@@ -52,6 +65,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
+	c.AddCommand(hostnetworkpodCmd)
 	c.AddCommand(readyCmd)
 
 	return c, nil
