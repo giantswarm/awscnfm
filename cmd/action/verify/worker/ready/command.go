@@ -9,8 +9,7 @@ import (
 const (
 	name  = "ready"
 	short = "Verify if all worker nodes are ready."
-	long  = `
-Check if the desired amount of Tenant Cluster worker nodes are up and ready.
+	long  = `Check if the desired amount of Tenant Cluster worker nodes are up and ready.
 
 	* Fetch all AWSMachineDeployment CRs spec.scaling.min so that we know how many workers the Tenant Cluster is supposed to have.
 	* Fetch the Tenant Cluster worker nodes.

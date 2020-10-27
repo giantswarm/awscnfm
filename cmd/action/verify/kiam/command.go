@@ -1,20 +1,16 @@
-package ready
+package kiam
 
 import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam/podandsecret"
 )
 
 const (
-	name  = "ready"
-	short = "Verify if all master nodes are ready."
-	long  = `Check if the desired amount of Tenant Cluster master nodes are up and ready.
-
-	* Fetch all G8sControlPlane CRs spec.replicas so that we know how many masters the Tenant Cluster is supposed to have.
-	* Fetch the Tenant Cluster master nodes.
-	* Compare the current and desired amount of master nodes.
-	`
+	name        = "kiam"
+	description = "Verify certain kiam app aspects within a Tenant Cluster."
 )
 
 type Config struct {
@@ -26,6 +22,20 @@ func New(config Config) (*cobra.Command, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
+	var err error
+
+	var podandsecretCmd *cobra.Command
+	{
+		c := podandsecret.Config{
+			Logger: config.Logger,
+		}
+
+		podandsecretCmd, err = podandsecret.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -35,12 +45,14 @@ func New(config Config) (*cobra.Command, error) {
 
 	c := &cobra.Command{
 		Use:   name,
-		Short: short,
-		Long:  long,
+		Short: description,
+		Long:  description,
 		RunE:  r.Run,
 	}
 
 	f.Init(c)
+
+	c.AddCommand(podandsecretCmd)
 
 	return c, nil
 }
