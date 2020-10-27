@@ -1,4 +1,4 @@
-package ready
+package podandsecret
 
 import (
 	"github.com/giantswarm/microerror"
@@ -7,13 +7,13 @@ import (
 )
 
 const (
-	name  = "ready"
-	short = "Verify if all master nodes are ready."
-	long  = `Check if the desired amount of Tenant Cluster master nodes are up and ready.
+	name  = "podandsecret"
+	short = "Check if Kiam's pods and secrets are present on the tenant cluster"
+	long  = `Check if Kiam's pods and secrets are present on the tenant cluster. This test
+should do following:
 
-	* Fetch all G8sControlPlane CRs spec.replicas so that we know how many masters the Tenant Cluster is supposed to have.
-	* Fetch the Tenant Cluster master nodes.
-	* Compare the current and desired amount of master nodes.
+    * Ensure tls certs for Kiam are created.
+    * Ensure kiam-server and kiam-agent pods are running without errors on the tenant cluster.
 	`
 )
 
