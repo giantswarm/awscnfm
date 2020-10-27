@@ -47,7 +47,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var cpClients k8sclient.Interface
 	{
 		c := client.ControlPlaneConfig{
-			Logger: e.logger,
+			Logger: r.logger,
 
 			KubeConfig: env.ControlPlaneKubeConfig(),
 		}
@@ -62,7 +62,9 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	{
 		c := client.TenantClusterConfig{
 			ControlPlane: cpClients,
-			Logger:       e.logger,
+			Logger:       r.logger,
+
+			TenantCluster: r.flag.TenantCluster,
 		}
 
 		tcClients, err = client.NewTenantCluster(c)
@@ -70,6 +72,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 			return microerror.Mask(err)
 		}
 	}
+
 	var nodeList *corev1.NodeList
 	{
 		nodeList, err = tcClients.K8sClient().CoreV1().Nodes().List(ctx, metav1.ListOptions{})
