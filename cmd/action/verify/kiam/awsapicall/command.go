@@ -8,8 +8,10 @@ import (
 
 const (
 	name  = "awsapicall"
-	short = "TODO"
-	long  = "TODO"
+	short = "Verify that the kiam test job completed."
+	long  = `Verify that the kiam test job completed. This then means that the pod can
+call "aws route53 list-domains" which ensures kiam works as expected.
+`
 )
 
 type Config struct {
