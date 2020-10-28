@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/delete"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify"
 )
 
@@ -32,6 +33,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		createCmd, err = create.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var deleteCmd *cobra.Command
+	{
+		c := delete.Config{
+			Logger: config.Logger,
+		}
+
+		deleteCmd, err = delete.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -66,6 +79,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(createCmd)
+	c.AddCommand(deleteCmd)
 	c.AddCommand(verifyCmd)
 
 	return c, nil
