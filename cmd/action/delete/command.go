@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/cluster"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/kiam"
 )
 
 const (
@@ -36,6 +37,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var kiamCmd *cobra.Command
+	{
+		c := kiam.Config{
+			Logger: config.Logger,
+		}
+
+		kiamCmd, err = kiam.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -53,6 +66,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(clusterCmd)
+	c.AddCommand(kiamCmd)
 
 	return c, nil
 }

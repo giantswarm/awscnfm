@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/create/kiam"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create/nodepool"
 )
 
@@ -32,6 +33,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		clusterCmd, err = cluster.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var kiamCmd *cobra.Command
+	{
+		c := kiam.Config{
+			Logger: config.Logger,
+		}
+
+		kiamCmd, err = kiam.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -66,6 +79,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(clusterCmd)
+	c.AddCommand(kiamCmd)
 	c.AddCommand(nodepoolCmd)
 
 	return c, nil

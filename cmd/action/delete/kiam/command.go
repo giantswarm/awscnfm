@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam/awsapicall"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam/podandsecret"
 )
 
 const (
@@ -37,18 +36,6 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
-	var podandsecretCmd *cobra.Command
-	{
-		c := podandsecret.Config{
-			Logger: config.Logger,
-		}
-
-		podandsecretCmd, err = podandsecret.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -66,7 +53,6 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(awsapicallCmd)
-	c.AddCommand(podandsecretCmd)
 
 	return c, nil
 }
