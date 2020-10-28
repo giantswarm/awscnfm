@@ -8,8 +8,8 @@ import (
 
 const (
 	name  = "awsapicall"
-	short = "TODO"
-	long  = "TODO"
+	short = "Cleanup kiam test resources from the Tenant Cluster."
+	long  = "Cleanup kiam test resources from the Tenant Cluster."
 )
 
 type Config struct {
