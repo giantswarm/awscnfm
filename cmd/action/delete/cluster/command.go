@@ -7,8 +7,17 @@ import (
 )
 
 const (
-	name        = "cluster"
-	description = "Delete all Tenant Cluster CRs on the Control Plane."
+	name  = "cluster"
+	short = "Delete all Tenant Cluster CRs on the Control Plane."
+	long  = `Delete all Tenant Cluster CRs on the Control Plane by triggering the
+deletion of the Cluster CR. This should ensure the following.
+
+	* Trigger deletion to all other CRs associated with the tenant cluster.
+	* Execute cleanup logic in all involved operators.
+	* Remove all cloud provider resources.
+	* Remove all CRs associated with the tenant cluster.
+
+`
 )
 
 type Config struct {
@@ -29,8 +38,8 @@ func New(config Config) (*cobra.Command, error) {
 
 	c := &cobra.Command{
 		Use:   name,
-		Short: description,
-		Long:  description,
+		Short: short,
+		Long:  long,
 		RunE:  r.Run,
 	}
 
