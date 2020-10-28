@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/created"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/deleted"
 )
 
 const (
@@ -36,6 +37,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var deletedCmd *cobra.Command
+	{
+		c := deleted.Config{
+			Logger: config.Logger,
+		}
+
+		deletedCmd, err = deleted.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -53,6 +66,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(createdCmd)
+	c.AddCommand(deletedCmd)
 
 	return c, nil
 }
