@@ -5,12 +5,12 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam/awsapicall"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/create/kiam/awsapicall"
 )
 
 const (
 	name        = "kiam"
-	description = "Verify certain kiam app aspects within a Tenant Cluster."
+	description = "Create certain kiam test resources."
 )
 
 type Config struct {
