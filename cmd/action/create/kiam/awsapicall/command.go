@@ -8,8 +8,11 @@ import (
 
 const (
 	name  = "awsapicall"
-	short = "TODO"
-	long  = "TODO"
+	short = "Create a pod via a job and let it try to assume an IAM."
+	long  = `Create a pod via a job and let it try to assume the IAM role
+"<cluster-id>-Route53-Manager" so that it can then call "aws route53
+list-domains" to ensure kiam works as expected.
+`
 )
 
 type Config struct {
