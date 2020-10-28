@@ -14,6 +14,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/cl003"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl004"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl005"
+	"github.com/giantswarm/awscnfm/v12/cmd/cl006"
 	"github.com/giantswarm/awscnfm/v12/cmd/completion"
 	"github.com/giantswarm/awscnfm/v12/cmd/plan"
 	"github.com/giantswarm/awscnfm/v12/cmd/version"
@@ -151,6 +152,19 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var cl006Cmd *cobra.Command
+	{
+		c := cl006.Config{
+			Logger: config.Logger,
+			Stderr: config.Stderr,
+			Stdout: config.Stdout,
+		}
+
+		cl006Cmd, err = cl006.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 	var completionCmd *cobra.Command
 	{
 		c := completion.Config{
@@ -202,6 +216,7 @@ func New(config Config) (*cobra.Command, error) {
 	m.AddCommand(cl003Cmd)
 	m.AddCommand(cl004Cmd)
 	m.AddCommand(cl005Cmd)
+	m.AddCommand(cl006Cmd)
 	m.AddCommand(completionCmd)
 	m.AddCommand(planCmd)
 	m.AddCommand(versionCmd)
