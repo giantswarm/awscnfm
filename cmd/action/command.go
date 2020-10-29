@@ -7,6 +7,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/delete"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/update"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify"
 )
 
@@ -50,6 +51,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var updateCmd *cobra.Command
+	{
+		c := update.Config{
+			Logger: config.Logger,
+		}
+
+		updateCmd, err = update.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	var verifyCmd *cobra.Command
 	{
 		c := verify.Config{
@@ -80,6 +93,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	c.AddCommand(createCmd)
 	c.AddCommand(deleteCmd)
+	c.AddCommand(updateCmd)
 	c.AddCommand(verifyCmd)
 
 	return c, nil
