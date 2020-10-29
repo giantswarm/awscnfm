@@ -58,8 +58,12 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		haCmd, err = ha.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 
-  var updatedCmd *cobra.Command
+	var updatedCmd *cobra.Command
 	{
 		c := updated.Config{
 			Logger: config.Logger,
