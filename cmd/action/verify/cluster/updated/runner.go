@@ -1,14 +1,15 @@
-package defaultcontrolplane
+package updated
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
+	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/types"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
@@ -52,48 +53,21 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	var releases []v1alpha1.Release
+	var cl v1alpha2.AWSCluster
 	{
-		var list v1alpha1.ReleaseList
-		err := cpClients.CtrlClient().List(
+		err = cpClients.CtrlClient().Get(
 			ctx,
-			&list,
+			types.NamespacedName{Name: r.flag.TenantCluster, Namespace: v1.NamespaceDefault},
+			&cl,
 		)
 		if err != nil {
 			return microerror.Mask(err)
 		}
-
-		releases = list.Items
 	}
 
-	crs, err := newCRs(releases, cpClients.RESTConfig().Host, r.flag.TenantCluster)
-	if err != nil {
-		return microerror.Mask(err)
+	if cl.Status.Cluster.LatestCondition() == v1alpha2.ClusterStatusConditionUpdated {
+		return nil
 	}
 
-	{
-		r.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("creating crs for tenant cluster %s\n", crs.Cluster.GetName()))
-
-		err = cpClients.CtrlClient().Create(ctx, crs.Cluster)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = cpClients.CtrlClient().Create(ctx, crs.AWSCluster)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = cpClients.CtrlClient().Create(ctx, crs.G8sControlPlane)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = cpClients.CtrlClient().Create(ctx, crs.AWSControlPlane)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-	}
-
-	return nil
+	return microerror.Maskf(wrongClusterStatusConditionError, cl.Status.Cluster.LatestCondition())
 }

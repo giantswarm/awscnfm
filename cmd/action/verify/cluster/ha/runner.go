@@ -1,17 +1,19 @@
-package defaultcontrolplane
+package ha
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	corev1 "k8s.io/api/core/v1"
+
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 type runner struct {
@@ -52,47 +54,47 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	var releases []v1alpha1.Release
+	var tcClients k8sclient.Interface
 	{
-		var list v1alpha1.ReleaseList
-		err := cpClients.CtrlClient().List(
+		c := client.TenantClusterConfig{
+			ControlPlane:  cpClients,
+			Logger:        r.logger,
+			TenantCluster: r.flag.TenantCluster,
+		}
+
+		tcClients, err = client.NewTenantCluster(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	var list corev1.NodeList
+	{
+		err := tcClients.CtrlClient().List(
 			ctx,
 			&list,
 		)
 		if err != nil {
 			return microerror.Mask(err)
 		}
-
-		releases = list.Items
 	}
 
-	crs, err := newCRs(releases, cpClients.RESTConfig().Host, r.flag.TenantCluster)
-	if err != nil {
-		return microerror.Mask(err)
+	var masterNodesReady int
+	for _, node := range list.Items {
+		_, ok := node.Labels[label.MasterNodeRole]
+		if !ok {
+			continue
+		}
+
+		for _, c := range node.Status.Conditions {
+			if c.Type == corev1.NodeReady && c.Status == corev1.ConditionTrue {
+				masterNodesReady++
+			}
+		}
 	}
 
-	{
-		r.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("creating crs for tenant cluster %s\n", crs.Cluster.GetName()))
-
-		err = cpClients.CtrlClient().Create(ctx, crs.Cluster)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = cpClients.CtrlClient().Create(ctx, crs.AWSCluster)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = cpClients.CtrlClient().Create(ctx, crs.G8sControlPlane)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		err = cpClients.CtrlClient().Create(ctx, crs.AWSControlPlane)
-		if err != nil {
-			return microerror.Mask(err)
-		}
+	if masterNodesReady != 3 {
+		return microerror.Maskf(wrongMasterNodesError, fmt.Sprintf("%d/3 healthy master nodes running.", masterNodesReady))
 	}
 
 	return nil

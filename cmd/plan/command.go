@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl001"
+	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl002"
 	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl006"
 )
 
@@ -32,6 +33,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		pl001Cmd, err = pl001.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var pl002Cmd *cobra.Command
+	{
+		c := pl002.Config{
+			Logger: config.Logger,
+		}
+
+		pl002Cmd, err = pl002.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -66,6 +79,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(pl001Cmd)
+	c.AddCommand(pl002Cmd)
 	c.AddCommand(pl006Cmd)
 
 	return c, nil

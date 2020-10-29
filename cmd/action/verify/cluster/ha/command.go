@@ -1,4 +1,4 @@
-package deleted
+package ha
 
 import (
 	"github.com/giantswarm/microerror"
@@ -7,18 +7,12 @@ import (
 )
 
 const (
-	name  = "deleted"
-	short = "Check that all relevant CRs of the Tenant Cluster got properly cleaned up."
-	long  = `Check that all relevant CRs of the tenant cluster got properly cleaned up
-eventually during the transition of cluster deletion. This check considers
-the following CRs.
+	name  = "ha"
+	short = "Check if the Tenant Cluster got successfully upgraded to HA."
+	long  = `Check if the Tenant Cluster got successfully upgraded to HA.
 
-    * Cluster
-    * AWSCluster
-    * G8sControlPlane
-    * AWSControlPlane
-    * MachineDeployment
-    * AWSMachineDeployment
+	* Check if the all 3 master ready are in ready state.
+	* Return an error if we see other than 3 master nodes.
 `
 )
 
