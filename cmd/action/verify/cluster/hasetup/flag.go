@@ -1,4 +1,4 @@
-package ac004
+package hasetup
 
 import "github.com/spf13/cobra"
 

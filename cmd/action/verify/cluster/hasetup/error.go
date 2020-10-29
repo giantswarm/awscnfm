@@ -1,4 +1,4 @@
-package ac004
+package hasetup
 
 import "github.com/giantswarm/microerror"
 
@@ -18,4 +18,14 @@ var invalidFlagsError = &microerror.Error{
 // IsInvalidFlags asserts invalidFlagsError.
 func IsInvalidFlags(err error) bool {
 	return microerror.Cause(err) == invalidFlagsError
+}
+
+var wrongMasterNodesError = &microerror.Error{
+	Kind: "wrongMasterNodesError",
+	Desc: "We want to see the 3 master nodes to verify that the Tenant Cluster HA upgrade was finished successfully.",
+}
+
+// IswrongMasterNodesError asserts wrongMasterNodesError.
+func IswrongWrongMasterNodes(err error) bool {
+	return microerror.Cause(err) == wrongMasterNodesError
 }
