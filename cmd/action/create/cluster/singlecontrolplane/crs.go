@@ -11,7 +11,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
-func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, error) {
+func newCRs(releases []v1alpha1.Release, host string, id string) (v1alpha2.ClusterCRs, error) {
 	var err error
 
 	var p *release.Patch
@@ -31,6 +31,7 @@ func newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, erro
 	var crs v1alpha2.ClusterCRs
 	{
 		c := v1alpha2.ClusterCRsConfig{
+			ClusterID:         id,
 			Credential:        key.Credential,
 			Domain:            key.DomainFromHost(host),
 			Description:       "awscnfm action create cluster single-master onenodepool",
