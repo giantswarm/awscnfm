@@ -1,4 +1,4 @@
-package hasetup
+package ha
 
 import "github.com/giantswarm/microerror"
 

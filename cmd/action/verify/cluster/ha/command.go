@@ -1,4 +1,4 @@
-package hasetup
+package ha
 
 import (
 	"github.com/giantswarm/microerror"
@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	name  = "hasetup"
+	name  = "ha"
 	short = "Check if the Tenant Cluster got successfully upgraded to HA."
 	long  = `Check if the Tenant Cluster got successfully upgraded to HA.
 

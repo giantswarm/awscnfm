@@ -1,4 +1,4 @@
-package hasetup
+package ha
 
 import (
 	"context"
@@ -57,8 +57,8 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var tcClients k8sclient.Interface
 	{
 		c := client.TenantClusterConfig{
-			ControlPlane: cpClients,
-			Logger:       r.logger,
+			ControlPlane:  cpClients,
+			Logger:        r.logger,
 			TenantCluster: r.flag.TenantCluster,
 		}
 
