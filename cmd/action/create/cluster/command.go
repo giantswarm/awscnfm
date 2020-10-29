@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster/defaultcontrolplane"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster/singlecontrolplane"
 )
 
 const (
@@ -36,6 +37,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var singlecontrolplaneCmd *cobra.Command
+	{
+		c := singlecontrolplane.Config{
+			Logger: config.Logger,
+		}
+
+		singlecontrolplaneCmd, err = singlecontrolplane.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -53,6 +66,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(defaultcontrolplaneCmd)
+	c.AddCommand(singlecontrolplaneCmd)
 
 	return c, nil
 }
