@@ -7,6 +7,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/created"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/deleted"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/ha"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/updated"
 )
 
@@ -50,7 +51,15 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
-	var updatedCmd *cobra.Command
+	var haCmd *cobra.Command
+	{
+		c := ha.Config{
+			Logger: config.Logger,
+		}
+
+		haCmd, err = ha.New(c)
+
+  var updatedCmd *cobra.Command
 	{
 		c := updated.Config{
 			Logger: config.Logger,
@@ -80,6 +89,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	c.AddCommand(createdCmd)
 	c.AddCommand(deletedCmd)
+	c.AddCommand(haCmd)
 	c.AddCommand(updatedCmd)
 
 	return c, nil

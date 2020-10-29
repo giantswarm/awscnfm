@@ -1,4 +1,4 @@
-package ac004
+package ha
 
 import (
 	"context"
@@ -6,6 +6,9 @@ import (
 
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/micrologger"
+	"github.com/spf13/cobra"
+
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
@@ -13,13 +16,34 @@ import (
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
-func (e *Executor) execute(ctx context.Context) error {
+type runner struct {
+	flag   *flag
+	logger micrologger.Logger
+}
+
+func (r *runner) Run(cmd *cobra.Command, args []string) error {
+	ctx := context.Background()
+
+	err := r.flag.Validate()
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	err = r.run(ctx, cmd, args)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
+func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
 
 	var cpClients k8sclient.Interface
 	{
 		c := client.ControlPlaneConfig{
-			Logger: e.logger,
+			Logger: r.logger,
 
 			KubeConfig: env.ControlPlaneKubeConfig(),
 		}
@@ -33,8 +57,9 @@ func (e *Executor) execute(ctx context.Context) error {
 	var tcClients k8sclient.Interface
 	{
 		c := client.TenantClusterConfig{
-			ControlPlane: cpClients,
-			Logger:       e.logger,
+			ControlPlane:  cpClients,
+			Logger:        r.logger,
+			TenantCluster: r.flag.TenantCluster,
 		}
 
 		tcClients, err = client.NewTenantCluster(c)
