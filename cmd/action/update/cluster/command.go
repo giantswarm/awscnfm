@@ -13,7 +13,7 @@ import (
 
 const (
 	name        = "cluster"
-	description = "Update Tenant Clusters within a Control Plane from single-master to HA setup."
+	description = "Update Tenant Clusters within a Control Plane."
 )
 
 type Config struct {
