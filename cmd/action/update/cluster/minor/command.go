@@ -7,8 +7,16 @@ import (
 )
 
 const (
-	name        = "minor"
-	description = "Update a Tenant Cluster to the latest minor release."
+	name  = "minor"
+	short = "Upgrade the Tenant Cluster to the latest minor version."
+	long  = `Upgrade the Tenant Cluster to the latest minor version.
+
+	* Fetch the Cluster CR.
+	* Set the desired cluster-operator version in the CR labels.
+	* Set the desired release version in the CR labels.
+	* Update the Cluster CR in the Control Plane.
+
+	`
 )
 
 type Config struct {
@@ -29,8 +37,8 @@ func New(config Config) (*cobra.Command, error) {
 
 	c := &cobra.Command{
 		Use:   name,
-		Short: description,
-		Long:  description,
+		Short: short,
+		Long:  long,
 		RunE:  r.Run,
 	}
 
