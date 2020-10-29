@@ -1,6 +1,8 @@
-package cl005
+package pl005
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/spf13/cobra"
+)
 
 type flag struct {
 }
