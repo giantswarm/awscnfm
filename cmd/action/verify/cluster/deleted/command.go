@@ -7,18 +7,18 @@ import (
 )
 
 const (
-	name  = "created"
+	name  = "deleted"
 	short = "Check that all relevant CRs of the Tenant Cluster got properly cleaned up."
 	long  = `Check that all relevant CRs of the tenant cluster got properly cleaned up
 eventually during the transition of cluster deletion. This check considers
 the following CRs.
 
-	* Cluster
-	* AWSCluster
-	* G8sControlPlane
-	* AWSControlPlane
-	* MachineDeployment
-	* AWSMachineDeployment
+    * Cluster
+    * AWSCluster
+    * G8sControlPlane
+    * AWSControlPlane
+    * MachineDeployment
+    * AWSMachineDeployment
 `
 )
 

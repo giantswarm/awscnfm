@@ -1,11 +1,13 @@
-package ac004
+package updated
 
 import (
 	"context"
 
-	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/apiextensions/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/micrologger"
+	"github.com/spf13/cobra"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 
@@ -13,13 +15,34 @@ import (
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
 )
 
-func (e *Executor) execute(ctx context.Context) error {
+type runner struct {
+	flag   *flag
+	logger micrologger.Logger
+}
+
+func (r *runner) Run(cmd *cobra.Command, args []string) error {
+	ctx := context.Background()
+
+	err := r.flag.Validate()
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	err = r.run(ctx, cmd, args)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
+func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
 
 	var cpClients k8sclient.Interface
 	{
 		c := client.ControlPlaneConfig{
-			Logger: e.logger,
+			Logger: r.logger,
 
 			KubeConfig: env.ControlPlaneKubeConfig(),
 		}
@@ -34,7 +57,7 @@ func (e *Executor) execute(ctx context.Context) error {
 	{
 		err = cpClients.CtrlClient().Get(
 			ctx,
-			types.NamespacedName{Name: e.tenantCluster, Namespace: v1.NamespaceDefault},
+			types.NamespacedName{Name: r.flag.TenantCluster, Namespace: v1.NamespaceDefault},
 			&cl,
 		)
 		if err != nil {
