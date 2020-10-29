@@ -59,6 +59,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		c := client.TenantClusterConfig{
 			ControlPlane: cpClients,
 			Logger:       r.logger,
+			TenantCluster: r.flag.TenantCluster,
 		}
 
 		tcClients, err = client.NewTenantCluster(c)
