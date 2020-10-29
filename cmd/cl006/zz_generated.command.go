@@ -8,7 +8,6 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/cl006/ac000"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl006/ac003"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl006/ac004"
 )
@@ -36,20 +35,6 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
-
-	var ac000Cmd *cobra.Command
-	{
-		c := ac000.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		ac000Cmd, err = ac000.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
 
 	var ac003Cmd *cobra.Command
 	{
@@ -97,7 +82,6 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
-	c.AddCommand(ac000Cmd)
 	c.AddCommand(ac003Cmd)
 	c.AddCommand(ac004Cmd)
 
