@@ -50,6 +50,11 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
+	err = planExecutor.Validate()
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
 	err = planExecutor.Execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
