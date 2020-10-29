@@ -1,30 +1,26 @@
-package ac000
+package pl002
 
 import (
 	"context"
-	"io"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/action"
-	"github.com/giantswarm/awscnfm/v12/pkg/action/cl002/ac000"
-	"github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v12/pkg/plan"
 )
 
 type runner struct {
 	flag   *flag
 	logger micrologger.Logger
-	stdout io.Writer
-	stderr io.Writer
 }
 
 func (r *runner) Run(cmd *cobra.Command, args []string) error {
+	var err error
+
 	ctx := context.Background()
 
-	err := r.flag.Validate()
+	err = r.flag.Validate()
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -40,23 +36,26 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
 	var err error
 
-	var e action.Executor
+	var planExecutor *plan.Executor
 	{
-		c := ac000.ExecutorConfig{
-			Command: cmd,
-			Logger:  r.logger,
-
-			Scope:         "cl002",
-			TenantCluster: config.Cluster("cl002", env.TenantCluster()),
+		c := plan.ExecutorConfig{
+			Commands: cmd.Root().Commands(),
+			Logger:   r.logger,
+			Plan:     Plan,
 		}
 
-		e, err = ac000.NewExecutor(c)
+		planExecutor, err = plan.NewExecutor(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}
 	}
 
-	err = e.Execute(ctx)
+	err = planExecutor.Validate()
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	err = planExecutor.Execute(ctx)
 	if err != nil {
 		return microerror.Mask(err)
 	}
