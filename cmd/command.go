@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl001"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl002"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl003"
 	"github.com/giantswarm/awscnfm/v12/cmd/cl004"
@@ -77,20 +76,6 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		actionCmd, err = action.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var cl001Cmd *cobra.Command
-	{
-		c := cl001.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		cl001Cmd, err = cl001.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -211,7 +196,6 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(m)
 
 	m.AddCommand(actionCmd)
-	m.AddCommand(cl001Cmd)
 	m.AddCommand(cl002Cmd)
 	m.AddCommand(cl003Cmd)
 	m.AddCommand(cl004Cmd)
