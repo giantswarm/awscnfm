@@ -83,7 +83,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(ac000Cmd)
-	c.AddCommand(ac003Cmd)
+	c.AddCommand(ac004Cmd)
 
 	return c, nil
 }

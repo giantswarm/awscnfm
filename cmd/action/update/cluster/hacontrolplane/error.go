@@ -1,4 +1,4 @@
-package ac003
+package hacontrolplane
 
 import "github.com/giantswarm/microerror"
 

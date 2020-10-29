@@ -5,6 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/hacontrolplane"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/major"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/minor"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/patch"
@@ -62,6 +63,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var haCmd *cobra.Command
+	{
+		c := hacontrolplane.Config{
+			Logger: config.Logger,
+		}
+
+		haCmd, err = hacontrolplane.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -78,6 +91,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
+	c.AddCommand(haCmd)
 	c.AddCommand(majorCmd)
 	c.AddCommand(minorCmd)
 	c.AddCommand(patchCmd)
