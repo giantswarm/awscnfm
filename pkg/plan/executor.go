@@ -44,18 +44,9 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 }
 
 func (e *Executor) Execute(ctx context.Context) error {
-	var cmds []*cobra.Command
-	{
-		for _, c := range e.commands {
-			if c.Name() == "action" {
-				cmds = c.Commands()
-				break
-			}
-		}
-
-		if cmds == nil {
-			return microerror.Maskf(commandNotFoundError, "action")
-		}
+	cmds, err := commandsForAction("action", e.commands)
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
 	for _, p := range e.plan {
@@ -76,6 +67,22 @@ func (e *Executor) Execute(ctx context.Context) error {
 		}
 
 		err = backoff.Retry(o, p.Backoff.Wrapped())
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	return nil
+}
+
+func (e *Executor) Validate() error {
+	cmds, err := commandsForAction("action", e.commands)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	for _, p := range e.plan {
+		_, err := commandForAction(p.Action, cmds)
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -105,4 +112,22 @@ func commandForAction(action string, commands []*cobra.Command) (*cobra.Command,
 	}
 
 	return cmd, nil
+}
+
+func commandsForAction(action string, commands []*cobra.Command) ([]*cobra.Command, error) {
+	var cmds []*cobra.Command
+	{
+		for _, c := range commands {
+			if c.Name() == action {
+				cmds = c.Commands()
+				break
+			}
+		}
+
+		if cmds == nil {
+			return nil, microerror.Maskf(commandNotFoundError, action)
+		}
+	}
+
+	return cmds, nil
 }
