@@ -71,7 +71,10 @@ func (e *Executor) Execute(ctx context.Context) error {
 		// implies that all commands must provide the same flag to allow the
 		// propagation of the cluster ID.
 		f := c.LocalNonPersistentFlags()
-		f.Set("tenant-cluster", e.tenantCluster)
+		err = f.Set("tenant-cluster", e.tenantCluster)
+		if err != nil {
+			return microerror.Mask(err)
+		}
 
 		e.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("executing action %#q", p.Action))
 
