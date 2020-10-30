@@ -2,6 +2,7 @@ package created
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
@@ -38,6 +39,9 @@ func (r *runner) Run(cmd *cobra.Command, args []string) error {
 }
 
 func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) error {
+	fmt.Printf("%#v\n", r.flag.TenantCluster)
+	return nil
+
 	var err error
 
 	var cpClients k8sclient.Interface
