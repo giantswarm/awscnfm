@@ -14,13 +14,17 @@ import (
 type ExecutorConfig struct {
 	Commands []*cobra.Command
 	Logger   micrologger.Logger
-	Plan     []Step
+
+	Plan          []Step
+	TenantCluster string
 }
 
 type Executor struct {
 	commands []*cobra.Command
 	logger   micrologger.Logger
-	plan     []Step
+
+	plan          []Step
+	tenantCluster string
 }
 
 func NewExecutor(config ExecutorConfig) (*Executor, error) {
@@ -30,14 +34,20 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
+
 	if config.Plan == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Plan must not be empty", config)
+	}
+	if config.TenantCluster == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
 	}
 
 	e := &Executor{
 		commands: config.Commands,
 		logger:   config.Logger,
-		plan:     config.Plan,
+
+		plan:          config.Plan,
+		tenantCluster: config.TenantCluster,
 	}
 
 	return e, nil
@@ -51,6 +61,17 @@ func (e *Executor) Execute(ctx context.Context) error {
 
 	for _, p := range e.plan {
 		c, err := commandForAction(p.Action, cmds)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+
+		// Here we inject the generated cluster ID to each command. That
+		// mechanism ensures that all commands throughout plan exection operate
+		// on the same cluster from cluster creation to cluster deletion. That
+		// implies that all commands must provide the same flag to allow the
+		// propagation of the cluster ID.
+		f := c.LocalNonPersistentFlags()
+		err = f.Set("tenant-cluster", e.tenantCluster)
 		if err != nil {
 			return microerror.Mask(err)
 		}

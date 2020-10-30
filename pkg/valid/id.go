@@ -7,14 +7,14 @@ import (
 )
 
 var (
-	startsWithLetter   = regexp.MustCompile(`^[a-z]`)
+	containsLetter     = regexp.MustCompile(`[a-z]`)
 	containsNumber     = regexp.MustCompile(`[0-9]`)
 	containsWhitespace = regexp.MustCompile(`[\s]`)
 )
 
 func ID(id string) error {
-	if !startsWithLetter.MatchString(id) {
-		return microerror.Maskf(invalidIDError, "must start with letter")
+	if !containsLetter.MatchString(id) {
+		return microerror.Maskf(invalidIDError, "must contain letter")
 	}
 
 	if !containsNumber.MatchString(id) {

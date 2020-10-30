@@ -7,6 +7,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/pkg/generate"
 	"github.com/giantswarm/awscnfm/v12/pkg/plan"
 )
 
@@ -41,7 +42,9 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		c := plan.ExecutorConfig{
 			Commands: cmd.Root().Commands(),
 			Logger:   r.logger,
-			Plan:     Plan,
+
+			Plan:          Plan,
+			TenantCluster: generate.ID(),
 		}
 
 		planExecutor, err = plan.NewExecutor(c)
