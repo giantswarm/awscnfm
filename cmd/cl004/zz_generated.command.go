@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/cl004/ac000"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl004/ac008"
 )
 
 const (
@@ -50,20 +49,6 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
-	var ac008Cmd *cobra.Command
-	{
-		c := ac008.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		ac008Cmd, err = ac008.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
 	f := &flag{}
 
 	r := &runner{
@@ -83,7 +68,6 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(ac000Cmd)
-	c.AddCommand(ac008Cmd)
 
 	return c, nil
 }

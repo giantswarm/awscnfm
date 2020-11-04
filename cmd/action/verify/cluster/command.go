@@ -8,6 +8,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/created"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/deleted"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/ha"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/networkpool"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster/updated"
 )
 
@@ -75,6 +76,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var networkpoolCmd *cobra.Command
+	{
+		c := networkpool.Config{
+			Logger: config.Logger,
+		}
+
+		networkpoolCmd, err = networkpool.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -94,6 +107,7 @@ func New(config Config) (*cobra.Command, error) {
 	c.AddCommand(createdCmd)
 	c.AddCommand(deletedCmd)
 	c.AddCommand(haCmd)
+	c.AddCommand(networkpoolCmd)
 	c.AddCommand(updatedCmd)
 
 	return c, nil
