@@ -7,6 +7,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/cluster"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/kiam"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/networkpool"
 )
 
 const (
@@ -49,6 +50,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var networkpoolCmd *cobra.Command
+	{
+		c := networkpool.Config{
+			Logger: config.Logger,
+		}
+
+		networkpoolCmd, err = networkpool.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -67,6 +80,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	c.AddCommand(clusterCmd)
 	c.AddCommand(kiamCmd)
+	c.AddCommand(networkpoolCmd)
 
 	return c, nil
 }

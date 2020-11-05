@@ -39,6 +39,8 @@ func newCRs(releases []v1alpha1.Release, host string, id string) (v1alpha2.Clust
 			Region:            key.RegionFromHost(host),
 			ReleaseComponents: p.Components().Latest(),
 			ReleaseVersion:    p.Version().Latest(),
+			NetworkPool:       "custom",
+			PodsCIDR:          "192.168.0.0/18",
 		}
 
 		crs, err = v1alpha2.NewClusterCRs(c)
