@@ -30,12 +30,16 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
 	},
 	{
+		Action:  "verify/apps/installed",
+		Backoff: plan.NewBackoff(20*time.Minute, 1*time.Minute),
+	},
+	{
 		Action:  "verify/master/hostnetworkpod",
-		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
+		Backoff: plan.NewBackoff(20*time.Second, 2*time.Second),
 	},
 	{
 		Action:  "verify/worker/hostnetworkpod",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(20*time.Second, 2*time.Second),
 	},
 	{
 		Action:  "verify/kiam/podandsecret",
