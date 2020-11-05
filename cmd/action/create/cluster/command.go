@@ -5,6 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster/customnetworkpool"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster/defaultcontrolplane"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster/singlecontrolplane"
 )
@@ -24,6 +25,18 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
+
+	var customnetworkpoolCmd *cobra.Command
+	{
+		c := customnetworkpool.Config{
+			Logger: config.Logger,
+		}
+
+		customnetworkpoolCmd, err = customnetworkpool.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 
 	var defaultcontrolplaneCmd *cobra.Command
 	{
@@ -65,6 +78,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
+	c.AddCommand(customnetworkpoolCmd)
 	c.AddCommand(defaultcontrolplaneCmd)
 	c.AddCommand(singlecontrolplaneCmd)
 
