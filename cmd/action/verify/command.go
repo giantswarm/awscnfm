@@ -5,6 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/apps"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/master"
@@ -26,6 +27,18 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
+
+	var appsCmd *cobra.Command
+	{
+		c := apps.Config{
+			Logger: config.Logger,
+		}
+
+		appsCmd, err = apps.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 
 	var clusterCmd *cobra.Command
 	{
@@ -91,6 +104,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
+	c.AddCommand(appsCmd)
 	c.AddCommand(clusterCmd)
 	c.AddCommand(kiamCmd)
 	c.AddCommand(masterCmd)

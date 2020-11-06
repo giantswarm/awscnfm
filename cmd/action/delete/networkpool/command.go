@@ -8,8 +8,8 @@ import (
 
 const (
 	name  = "networkpool"
-	short = "Check NetworkPool CIDR is used."
-	long  = `Check that masters and nodepools all belong to the custom NetworkPool CIDR.`
+	short = "Deletes custom NetworkPool."
+	long  = `Deletes custom NetworkPool CR.`
 )
 
 type Config struct {

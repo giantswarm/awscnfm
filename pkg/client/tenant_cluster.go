@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 
+	applicationv1alpha1 "github.com/giantswarm/apiextensions/v2/pkg/apis/application/v1alpha1"
 	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/certs/v3/pkg/certs"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
@@ -116,6 +117,9 @@ func clientsFromAPISecret(ctx context.Context, config TenantClusterConfig) (k8sc
 
 		{
 			c := k8sclient.ClientsConfig{
+				SchemeBuilder: k8sclient.SchemeBuilder{
+					applicationv1alpha1.AddToScheme,
+				},
 				Logger:     config.Logger,
 				RestConfig: rest.CopyConfig(restConfig),
 			}

@@ -1,4 +1,4 @@
-package networkpool
+package installed
 
 import (
 	"github.com/giantswarm/microerror"
@@ -7,9 +7,11 @@ import (
 )
 
 const (
-	name  = "networkpool"
-	short = "Check NetworkPool CIDR is used."
-	long  = `Check that masters and nodepools all belong to the custom NetworkPool CIDR.`
+	name  = "installed"
+	short = "Verify that the kiam test job completed."
+	long  = `Verify that the kiam test job completed. This then means that the pod can
+call "aws route53 list-domains" which ensures kiam works as expected.
+`
 )
 
 type Config struct {
