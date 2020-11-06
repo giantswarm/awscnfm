@@ -1,4 +1,4 @@
-package ac000
+package pl003
 
 import (
 	"time"
@@ -7,36 +7,42 @@ import (
 )
 
 // Plan describes in which order and with which tolerance to execute actions of
-// this cluster scope.
+// this test plan.
 var Plan = []plan.Step{
 	{
-		Action:  "ac001",
+		Action:  "create/cluster/defaultcontrolplane",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "create cluster CRs",
 	},
 	{
-		Action:  "ac002",
+		Action:  "verify/cluster/created",
 		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
-		Comment: "check cluster access",
 	},
 	{
-		Action:  "ac003",
+		Action:  "verify/master/ready",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "trigger patch upgrade",
 	},
 	{
-		Action:  "ac004",
+		Action:  "create/nodepool/defaultdataplane",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "verify/worker/ready",
+		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
+	},
+	{
+		Action:  "update/cluster/minor",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "verify/cluster/updated",
 		Backoff: plan.NewBackoff(120*time.Minute, 10*time.Minute),
-		Comment: "check upgrade successful",
 	},
 	{
-		Action:  "ac005",
+		Action:  "delete/cluster",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "delete cluster CRs",
 	},
 	{
-		Action:  "ac006",
+		Action:  "verify/cluster/deleted",
 		Backoff: plan.NewBackoff(90*time.Minute, 9*time.Minute),
-		Comment: "check CRs deleted",
 	},
 }
