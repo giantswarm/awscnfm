@@ -36,9 +36,6 @@ func NewTenantCluster(config TenantClusterConfig) (k8sclient.Interface, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
 	}
 
-	// If there is no kube config provided we try to look it up via Control
-	// Plane resources. Therefore the Control Plane client is necessary as well
-	// as the cluster scope so that we can lookup the actual Tenant Cluster ID.
 	clients, err := clientsFromAPISecret(context.Background(), config)
 	if err != nil {
 		return nil, microerror.Mask(err)
