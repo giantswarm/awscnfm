@@ -8,13 +8,6 @@ import (
 )
 
 const (
-	// GeneratePrefix is a file name prefix we add to generated files by
-	// convention. This should show everyone that this file should not be
-	// modified as any changes will be overwritten on next generation anyway.
-	GeneratePrefix = "zz_generated."
-)
-
-const (
 	// Credential is the default credential we use for most of our conformance
 	// test clusters. These credentials define which AWS Account to use.
 	Credential = "credential-default"
@@ -36,14 +29,6 @@ func DomainFromHost(h string) string {
 	h = strings.Replace(h, "g8s.", "", 1)
 	h = strings.Replace(h, ":443", "", 1)
 	return h
-}
-
-func GeneratedWithPrefix(s string) string {
-	return fmt.Sprintf("%s%s", GeneratePrefix, s)
-}
-
-func HasGeneratedPrefix(s string) bool {
-	return strings.Contains(s, GeneratePrefix)
 }
 
 func KiamTestJobName() string {
