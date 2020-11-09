@@ -7,29 +7,29 @@ Check the recording in which we show how
 [the project structure] looks like and [how code generation works]:
 https://drive.google.com/file/d/1qGGoTOkTOW0pt4boPlOqeS-TG9n39yaP/view?usp=sharing.
 
-## What is a "cluster scope"?
+## What is a "test plan"?
 
-A cluster scope represents a very specific **tenant cluster configuration**.
+A test plan represents a very specific **tenant cluster configuration**.
 
-Each cluster scope has a unique name, e.g. `cl001`.
+Each test plan has a unique name, e.g. `cl001`.
 
-For example, one cluster scope might want to test single master clusters, where another
-cluster scope might want to test a HA Masters cluster.
+For example, one test plan might want to test single master clusters, where another
+test plan might want to test a HA Masters cluster.
 
-In addition, a cluster scope defines a
+In addition, a test plan defines a
 **list of actions** you can execute against a tenant cluster aligning with the
-defininition of the cluster scope.
+defininition of the test plan.
 
 Note that you cannot expect an action of one
-cluster scope to successfully run against a tenant cluster of another cluster
+test plan to successfully run against a tenant cluster of another cluster
 scope.
 
-Also note that most code for a cluster scope is generated. You can find more
+Also note that most code for a test plan is generated. You can find more
 information about this in our docs explaining [how code generation works].
 
 ```nohighlight
 $ awscnfm cl001
-Conformance tests for cluster scope cl001.
+Conformance tests for test plan cl001.
 
 Usage:
   awscnfm cl001 [flags]
@@ -59,11 +59,11 @@ An action can:
 - implement behavior to setup some test, e.g. cluster creation or cluster deletion
 - implement the testing behavior itself, e.g. checking how many k8s nodes are ready
 
-You decide what an action does and how actions are designed per cluster scope.
+You decide what an action does and how actions are designed per test plan.
 
 By convention
 
-- `ac000` is the test plan executing all actions of a cluster scope
+- `ac000` is the test plan executing all actions of a test plan
 - `ac001` is the action creating a cluster based on a custom
 definition.
 - every action implements the same two interfaces according to their intentional use case:
@@ -73,7 +73,7 @@ definition.
 Note that most code for an action is generated. You can find more information
 about this in our docs explaining [how code generation works].
 
-Example output when calling an action in a cluster scope, not specifying the `execute` or `explain` subcommand:
+Example output when calling an action in a test plan, not specifying the `execute` or `explain` subcommand:
 
 ```nohighlight
 awscnfm cl001 ac005
@@ -96,15 +96,15 @@ Use "awscnfm cl001 ac005 [command] --help" for more information about a command.
 ## Test plans
 
 A test plan by convention is defined by action `ac000`. This special action
-within a cluster scope defines the list of actions being executed sequentially.
+within a test plan defines the list of actions being executed sequentially.
 Executing the test plan without any errors means that the tenant cluster defined
-for the executed cluster scope is conform to our currently implemented
+for the executed test plan is conform to our currently implemented
 definition. Note that a test plan takes hours to execute due to the nature of
 infrastructure and several cluster transitions we want to go through.
 
 ```nohighlight
 $ awscnfm cl001 ac000 explain
-Execute the conformance test plan of this cluster scope. Actions below are
+Execute the conformance test plan of this test plan. Actions below are
 executed in order. A tenant cluster is conform if the plan executes without
 errors. Plan execution might take up to 1h54m30s.
 
