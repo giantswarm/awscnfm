@@ -20,12 +20,10 @@ var Plan = []plan.Step{
 	{
 		Action:  "update/cluster/ha",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "trigger upgrade to HA",
 	},
 	{
 		Action:  "verify/cluster/ha",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-		Comment: "check HA upgrade",
 	},
 	{
 		Action:  "delete/cluster",
