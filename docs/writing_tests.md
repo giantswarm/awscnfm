@@ -1,4 +1,4 @@
-# Writing new tests
+# Writing Tests
 
 Here you learn how to add tests for `awscnfm`, and what to consider when adding
 tests.

@@ -1,4 +1,4 @@
-# Repository Structure
+# Structure
 
 The `awscnfm` tool should be structured so that any action can be executed
 separately against our Tenant Clusters. There might be many cluster definitions
