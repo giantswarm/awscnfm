@@ -1,4 +1,4 @@
-# Using awscnfm
+# Usage
 
 This article assumes that all you want to do is using existing test plans
 and actions.

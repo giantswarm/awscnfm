@@ -1,6 +1,9 @@
-# Shell completion
+# Completion
 
-To make calling `awscnfm` actions easier and quicker, tab completion for shell commands is supported.
+To make calling `awscnfm` actions easier and quicker, tab completion for shell
+commands is supported.
+
+
 
 ## ZSH
 
