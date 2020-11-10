@@ -7,13 +7,13 @@ line flag.
 -c/--tenant-cluster
 ```
 
-```nohighlight
+```
 AWSCNFM_TENANTCLUSTER
 ```
 
 The release version can always be provided via an environment variable.
 
-```nohighlight
+```
 AWSCNFM_RELEASEVERSION
 ```
 
