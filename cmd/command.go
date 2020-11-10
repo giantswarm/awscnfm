@@ -8,15 +8,9 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/cl001"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl002"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl003"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl004"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl005"
-	"github.com/giantswarm/awscnfm/v12/cmd/cl006"
+	"github.com/giantswarm/awscnfm/v12/cmd/action"
 	"github.com/giantswarm/awscnfm/v12/cmd/completion"
-	"github.com/giantswarm/awscnfm/v12/cmd/generate"
-	"github.com/giantswarm/awscnfm/v12/cmd/insert"
+	"github.com/giantswarm/awscnfm/v12/cmd/plan"
 	"github.com/giantswarm/awscnfm/v12/cmd/version"
 	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
@@ -70,89 +64,18 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var cl001Cmd *cobra.Command
+	var actionCmd *cobra.Command
 	{
-		c := cl001.Config{
+		c := action.Config{
 			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
 		}
 
-		cl001Cmd, err = cl001.New(c)
+		actionCmd, err = action.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	}
 
-	var cl002Cmd *cobra.Command
-	{
-		c := cl002.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		cl002Cmd, err = cl002.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var cl003Cmd *cobra.Command
-	{
-		c := cl003.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		cl003Cmd, err = cl003.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var cl004Cmd *cobra.Command
-	{
-		c := cl004.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		cl004Cmd, err = cl004.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var cl005Cmd *cobra.Command
-	{
-		c := cl005.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		cl005Cmd, err = cl005.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var cl006Cmd *cobra.Command
-	{
-		c := cl006.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		cl006Cmd, err = cl006.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
 	var completionCmd *cobra.Command
 	{
 		c := completion.Config{
@@ -167,29 +90,13 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
-	var generateCmd *cobra.Command
+	var planCmd *cobra.Command
 	{
-		c := generate.Config{
+		c := plan.Config{
 			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
 		}
 
-		generateCmd, err = generate.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var insertCmd *cobra.Command
-	{
-		c := insert.Config{
-			Logger: config.Logger,
-			Stderr: config.Stderr,
-			Stdout: config.Stdout,
-		}
-
-		insertCmd, err = insert.New(c)
+		planCmd, err = plan.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -214,15 +121,9 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(m)
 
-	m.AddCommand(cl001Cmd)
-	m.AddCommand(cl002Cmd)
-	m.AddCommand(cl003Cmd)
-	m.AddCommand(cl004Cmd)
-	m.AddCommand(cl005Cmd)
-	m.AddCommand(cl006Cmd)
+	m.AddCommand(actionCmd)
 	m.AddCommand(completionCmd)
-	m.AddCommand(generateCmd)
-	m.AddCommand(insertCmd)
+	m.AddCommand(planCmd)
 	m.AddCommand(versionCmd)
 
 	return m, nil

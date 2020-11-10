@@ -3,19 +3,16 @@ package client
 import (
 	"context"
 
+	applicationv1alpha1 "github.com/giantswarm/apiextensions/v2/pkg/apis/application/v1alpha1"
 	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
-	releasev1alpha1 "github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/certs/v3/pkg/certs"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/giantswarm/tenantcluster/v3/pkg/tenantcluster"
 	"k8s.io/client-go/rest"
-	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	pkgconfig "github.com/giantswarm/awscnfm/v12/pkg/config"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
@@ -24,8 +21,7 @@ type TenantClusterConfig struct {
 	ControlPlane k8sclient.Interface
 	Logger       micrologger.Logger
 
-	KubeConfig string
-	Scope      string
+	TenantCluster string
 }
 
 func NewTenantCluster(config TenantClusterConfig) (k8sclient.Interface, error) {
@@ -36,26 +32,11 @@ func NewTenantCluster(config TenantClusterConfig) (k8sclient.Interface, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
-	if config.Scope == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Scope must not be empty", config)
+	if config.TenantCluster == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
 	}
 
-	// If a kube config is provided we prefer it. Usually it should be given via
-	// environment variables. That might be most often the case when running in
-	// some CI system.
-	if config.KubeConfig != "" {
-		clients, err := clientsFromKubeConfig(config)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-
-		return clients, nil
-	}
-
-	// If there is no kube config provided we try to look it up via Control
-	// Plane resources. Therefore the Control Plane client is necessary as well
-	// as the cluster scope so that we can lookup the actual Tenant Cluster ID.
-	clients, err := clientsFromAPISecret(config)
+	clients, err := clientsFromAPISecret(context.Background(), config)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
@@ -63,11 +44,8 @@ func NewTenantCluster(config TenantClusterConfig) (k8sclient.Interface, error) {
 	return clients, nil
 }
 
-func clientsFromAPISecret(config TenantClusterConfig) (k8sclient.Interface, error) {
+func clientsFromAPISecret(ctx context.Context, config TenantClusterConfig) (k8sclient.Interface, error) {
 	var err error
-
-	ctx := context.Background()
-	id := pkgconfig.Cluster(config.Scope, env.TenantCluster())
 
 	var clients *k8sclient.Clients
 	{
@@ -78,7 +56,7 @@ func clientsFromAPISecret(config TenantClusterConfig) (k8sclient.Interface, erro
 				ctx,
 				&list,
 				client.InNamespace(cr.GetNamespace()),
-				client.MatchingLabels{label.Cluster: id},
+				client.MatchingLabels{label.Cluster: config.TenantCluster},
 			)
 			if err != nil {
 				return nil, microerror.Mask(err)
@@ -126,8 +104,8 @@ func clientsFromAPISecret(config TenantClusterConfig) (k8sclient.Interface, erro
 		{
 			restConfig, err = tenantCluster.NewRestConfig(
 				ctx,
-				id,
-				key.APIEndpoint(id, cr.Spec.Cluster.DNS.Domain),
+				config.TenantCluster,
+				key.APIEndpoint(config.TenantCluster, cr.Spec.Cluster.DNS.Domain),
 			)
 			if err != nil {
 				return nil, microerror.Mask(err)
@@ -136,6 +114,9 @@ func clientsFromAPISecret(config TenantClusterConfig) (k8sclient.Interface, erro
 
 		{
 			c := k8sclient.ClientsConfig{
+				SchemeBuilder: k8sclient.SchemeBuilder{
+					applicationv1alpha1.AddToScheme,
+				},
 				Logger:     config.Logger,
 				RestConfig: rest.CopyConfig(restConfig),
 			}
@@ -144,31 +125,6 @@ func clientsFromAPISecret(config TenantClusterConfig) (k8sclient.Interface, erro
 			if err != nil {
 				return nil, microerror.Mask(err)
 			}
-		}
-	}
-
-	return clients, nil
-}
-
-func clientsFromKubeConfig(config TenantClusterConfig) (k8sclient.Interface, error) {
-	var err error
-
-	var clients *k8sclient.Clients
-	{
-		c := k8sclient.ClientsConfig{
-			SchemeBuilder: k8sclient.SchemeBuilder{
-				apiv1alpha2.AddToScheme,
-				infrastructurev1alpha2.AddToScheme,
-				releasev1alpha1.AddToScheme,
-			},
-			Logger: config.Logger,
-
-			KubeConfigPath: config.KubeConfig,
-		}
-
-		clients, err = k8sclient.NewClients(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
 		}
 	}
 
