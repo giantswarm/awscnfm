@@ -39,4 +39,4 @@ the same version. That way we keep the release and test lifecycles synchronized.
 
 
 [execute the entire test plan]: https://github.com/giantswarm/awscnfm/blob/master/docs/using.md
-[documentation in the `docs`]: https://github.com/giantswarm/awscnfm/tree/master/docs)
+[documentation in the `docs`]: https://github.com/giantswarm/awscnfm/tree/master/docs
