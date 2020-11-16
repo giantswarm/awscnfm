@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add action to create network policy test resources.
+
 ## [12.6.0] - 2020-11-10
 
 

@@ -9,7 +9,12 @@ import (
 const (
 	name  = "defaultnetpol"
 	short = "Create a default network policy 'deny-from-all' and test pod which will be used to test the network policy."
-	long  = `Create a default network policy that denies traffic from any other namespaces in default namespace and a simple pod running in default namespace that can be used for testing if the network policy work.
+	long  = `Create a test resources for a default network policy that denies traffic from other namespaces.
+Created resources:
+* namespace 'test'
+* network policy 'deny-from-other-namespaces' in namespace 'test'
+* nginx pod running in 'test' namespace
+* service for the nginx to test the connection to the pod
 `
 )
 
