@@ -2,7 +2,6 @@ package curlrequest
 
 import (
 	"context"
-	"github.com/giantswarm/awscnfm/v12/pkg/key"
 
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
@@ -10,9 +9,9 @@ import (
 	"github.com/spf13/cobra"
 	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
-
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 )
 
 type runner struct {
@@ -89,13 +88,11 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 // one job in namespace `test` to ensure that the traffic from pods inside of the namespace `test` is working
 // one job in namespace `default` to ensure that the traffic from from pods in other namespace is blocked by the network policy
 func (r *runner) createNetPolTestJobs(ctx context.Context, tcClient k8sruntimeclient.Client, dockerRegistry string) error {
-
 	jobSuccess := testNetworkPolicyJob(dockerRegistry, key.NetPolTestNamespaceName)
 	err := tcClient.Create(ctx, jobSuccess)
 	if err != nil {
 		return microerror.Mask(err)
 	}
-
 
 	jobFailure := testNetworkPolicyJob(dockerRegistry, key.NetPolDefaultNamespaceName)
 	err = tcClient.Create(ctx, jobFailure)
@@ -105,4 +102,3 @@ func (r *runner) createNetPolTestJobs(ctx context.Context, tcClient k8sruntimecl
 
 	return nil
 }
-
