@@ -2,13 +2,13 @@ package curlrequest
 
 import (
 	"fmt"
-	"github.com/giantswarm/awscnfm/v12/pkg/key"
 
 	batchapiv1 "k8s.io/api/batch/v1"
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/giantswarm/awscnfm/v12/pkg/key"
 	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
 
@@ -25,7 +25,7 @@ func testNetworkPolicyJob(dockerRegistry string, namespace string) *batchapiv1.J
 	cpu := resource.MustParse("50m")
 	memory := resource.MustParse("50Mi")
 
-	jobName:= key.NetPolTestJobName(namespace)
+	jobName := key.NetPolTestJobName(namespace)
 
 	j := &batchapiv1.Job{
 		TypeMeta: apismetav1.TypeMeta{
