@@ -8,8 +8,8 @@ import (
 
 const (
 	name  = "curlrequest"
-	short = "Cleanup curl request resources for testing network policy from the tenant Cluster."
-	long  = "Cleanup curl request resources for testing network policy from the tenant Cluster."
+	short = "Cleanup curl request resources for testing network policy from the Tenant Cluster."
+	long  = "Cleanup curl request resources for testing network policy from the Tenant Cluster."
 )
 
 type Config struct {
