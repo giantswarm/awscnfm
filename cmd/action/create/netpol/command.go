@@ -5,6 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/awscnfm/v12/cmd/action/create/netpol/curlrequest"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/create/netpol/defaultnetpol"
 )
 
@@ -23,6 +24,18 @@ func New(config Config) (*cobra.Command, error) {
 	}
 
 	var err error
+
+	var curlrequestCmd *cobra.Command
+	{
+		c := curlrequest.Config{
+			Logger: config.Logger,
+		}
+
+		curlrequestCmd, err = curlrequest.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
 
 	var defaultnetpolCmd *cobra.Command
 	{
@@ -52,6 +65,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	f.Init(c)
 
+	c.AddCommand(curlrequestCmd)
 	c.AddCommand(defaultnetpolCmd)
 
 	return c, nil
