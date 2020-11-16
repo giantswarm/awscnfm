@@ -9,6 +9,7 @@ import (
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/master"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/netpol"
 	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/worker"
 )
 
@@ -76,6 +77,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var netpolCommand *cobra.Command
+	{
+		c := netpol.Config{
+			Logger: config.Logger,
+		}
+
+		netpolCommand, err = netpol.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	var workerCmd *cobra.Command
 	{
 		c := worker.Config{
@@ -108,6 +121,7 @@ func New(config Config) (*cobra.Command, error) {
 	c.AddCommand(clusterCmd)
 	c.AddCommand(kiamCmd)
 	c.AddCommand(masterCmd)
+	c.AddCommand(netpolCommand)
 	c.AddCommand(workerCmd)
 
 	return c, nil
