@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add action to create network policy test resources.
 - Add action to create curl jobs to test network policy.
 - Add action to verify curl jobs to test network policy
+- Add action to delete curl jobs to test network policy
 
 ## [12.6.0] - 2020-11-10
 
