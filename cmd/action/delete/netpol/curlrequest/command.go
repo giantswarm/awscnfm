@@ -1,4 +1,4 @@
-package awsapicall
+package curlrequest
 
 import (
 	"github.com/giantswarm/microerror"
@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	name  = "awsapicall"
-	short = "Cleanup kiam test resources from the Tenant Cluster."
-	long  = "Cleanup kiam test resources from the Tenant Cluster."
+	name  = "curlrequest"
+	short = "Cleanup curl request resources for testing network policy from the tenant Cluster."
+	long  = "Cleanup curl request resources for testing network policy from the tenant Cluster."
 )
 
 type Config struct {

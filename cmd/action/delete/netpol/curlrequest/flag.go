@@ -1,4 +1,4 @@
-package awsapicall
+package curlrequest
 
 import (
 	"github.com/giantswarm/microerror"

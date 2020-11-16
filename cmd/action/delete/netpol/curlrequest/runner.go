@@ -1,4 +1,4 @@
-package awsapicall
+package curlrequest
 
 import (
 	"context"
@@ -7,8 +7,9 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
+	batchapiv1 "k8s.io/api/batch/v1"
+	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
@@ -68,7 +69,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	err = r.cleanupKiamTestResources(ctx, tcClients.K8sClient())
+	err = r.cleanupCurlRequestJobs(ctx, tcClients.CtrlClient())
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -76,14 +77,36 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	return nil
 }
 
-// cleanupKiamTestResources will cleanup kiam test resources
-func (r *runner) cleanupKiamTestResources(ctx context.Context, tcClient kubernetes.Interface) error {
-	err := tcClient.BatchV1().Jobs(key.KiamTestNamespace).Delete(ctx, key.KiamTestJobName(), metav1.DeleteOptions{})
+// cleanupCurlRequestJobs will cleanup curl request test resources
+func (r *runner) cleanupCurlRequestJobs(ctx context.Context, tcClient k8sruntimeclient.Client) error {
+	successJob := &batchapiv1.Job{
+		TypeMeta: apismetav1.TypeMeta{
+			Kind:       "Job",
+			APIVersion: batchapiv1.GroupName,
+		},
+		ObjectMeta: apismetav1.ObjectMeta{
+			Name:      key.NetPolTestJobName(key.NetPolTestNamespaceName),
+			Namespace: key.NetPolTestNamespaceName,
+		},
+	}
+
+	err := tcClient.Delete(ctx, successJob)
 	if err != nil {
 		return microerror.Mask(err)
 	}
 
-	err = tcClient.NetworkingV1().NetworkPolicies(key.KiamTestNamespace).Delete(ctx, key.KiamTestNetPolName(), metav1.DeleteOptions{})
+	failJob := &batchapiv1.Job{
+		TypeMeta: apismetav1.TypeMeta{
+			Kind:       "Job",
+			APIVersion: batchapiv1.GroupName,
+		},
+		ObjectMeta: apismetav1.ObjectMeta{
+			Name:      key.NetPolTestJobName(key.NetPolDefaultNamespaceName),
+			Namespace: key.NetPolDefaultNamespaceName,
+		},
+	}
+
+	err = tcClient.Delete(ctx, failJob)
 	if err != nil {
 		return microerror.Mask(err)
 	}
