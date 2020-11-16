@@ -9,7 +9,7 @@ import (
 const (
 	name  = "curlrequest"
 	short = "Create a resources to test the network policy 'deny-from-all-namespaces'."
-	long  = `Create a job in a 'test' namespace in a default namespace and test the network policy 'deny-from-all-namespaces'.'.
+	long  = `Create a curl request job in the 'test' namespace and same job in the default namespace and test the network policy 'deny-from-all-namespaces' by connecting to the nginx test pod. The job in the 'test' namespace should successfully connect to the nginx test pod and the job in 'default' namespace should fail to connect to the nginx test pod.
 `
 )
 
