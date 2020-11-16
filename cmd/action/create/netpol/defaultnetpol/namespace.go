@@ -11,7 +11,7 @@ import (
 func netPolTestNamespace() *apiv1.Namespace {
 	ns := &apiv1.Namespace{
 		ObjectMeta: apismetav1.ObjectMeta{
-			Name:      key.NetPolTestNamespaceName,
+			Name: key.NetPolTestNamespaceName,
 		},
 	}
 	return ns

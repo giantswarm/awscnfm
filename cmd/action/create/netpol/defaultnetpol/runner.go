@@ -107,7 +107,6 @@ func (r *runner) createTestNamespace(ctx context.Context, ctrlClient k8sruntimec
 	return nil
 }
 
-
 // createDefaultNetpol will create a default network policy 'deny-from-all' in the test namespace
 func (r *runner) createDefaultNetpol(ctx context.Context, ctrlClient k8sruntimeclient.Client) error {
 	networkPolicy := defaultNetworkPolicy()
