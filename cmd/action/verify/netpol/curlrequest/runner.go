@@ -77,7 +77,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	return nil
 }
 
-// checkKiamAWScallPod will check if the AWS API call job was successful
+// checkCurlRequestJobs will check if the curl test job finished as expected
 func (r *runner) checkCurlRequestJobs(ctx context.Context, tcClient k8sruntimeclient.Client) error {
 	// ensure job in `test` namespace succeeded
 	successJob := &batchapiv1.Job{}
