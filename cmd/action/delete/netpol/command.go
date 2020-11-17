@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/netpol/curlrequest"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/netpol/defaultnetpol"
 )
 
 const (
@@ -36,6 +37,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var defaultnetpolCmd *cobra.Command
+	{
+		c := defaultnetpol.Config{
+			Logger: config.Logger,
+		}
+
+		defaultnetpolCmd, err = defaultnetpol.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -53,6 +66,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(curlrequestCmd)
+	c.AddCommand(defaultnetpolCmd)
 
 	return c, nil
 }
