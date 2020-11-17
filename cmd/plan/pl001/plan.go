@@ -54,6 +54,26 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
+		Action:  "create/netpol/defaultnetpol",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "create/netpol/curlrequest",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "verify/netpol/curlrequest",
+		Backoff: plan.NewBackoff(15*time.Minute, time.Minute),
+	},
+	{
+		Action:  "delete/netpol/curlrequest",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "delete/netpol/defaultnetpol",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
 		Action:  "delete/cluster",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
