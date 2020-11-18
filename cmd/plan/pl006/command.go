@@ -56,7 +56,7 @@ func mustLong() string {
 	t := [][]string{{"ACTION", "RETRY", "WAIT"}}
 
 	for _, s := range Plan {
-		t = append(t, []string{s.Action, s.Backoff.Interval().String(), s.Backoff.Wait().String()})
+		t = append(t, []string{s.Action.String(), s.Backoff.Interval().String(), s.Backoff.Wait().String()})
 	}
 
 	colourized := table.Colourize(t)
