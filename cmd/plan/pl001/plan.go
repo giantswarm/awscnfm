@@ -14,15 +14,15 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
+		Action:  "create/nodepool/defaultdataplane",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
 		Action:  "verify/cluster/created",
 		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
 	},
 	{
 		Action:  "verify/master/ready",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-	},
-	{
-		Action:  "create/nodepool/defaultdataplane",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
@@ -35,11 +35,11 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/worker/hostnetworkpod",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
 	},
 	{
 		Action:  "verify/kiam/podandsecret",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
 	},
 	{
 		Action:  "create/kiam/awsapicall",
@@ -63,7 +63,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/netpol/curlrequest",
-		Backoff: plan.NewBackoff(15*time.Minute, time.Minute),
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
 	},
 	{
 		Action:  "delete/netpol/curlrequest",
@@ -71,7 +71,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "delete/netpol/defaultnetpol",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(30*time.Second, 4*time.Second),
 	},
 	{
 		Action:  "delete/cluster",
