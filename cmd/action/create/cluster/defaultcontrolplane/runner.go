@@ -72,7 +72,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	{
-		r.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("creating crs for tenant cluster %s\n", crs.Cluster.GetName()))
+		r.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("creating crs for tenant cluster %s", crs.Cluster.GetName()))
 
 		err = cpClients.CtrlClient().Create(ctx, crs.Cluster)
 		if err != nil {
