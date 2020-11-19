@@ -3,17 +3,18 @@ package awsapicall
 import (
 	"context"
 	"fmt"
-	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 	batchapiv1 "k8s.io/api/batch/v1"
 	apiv1 "k8s.io/api/core/v1"
+	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
 
 const (
