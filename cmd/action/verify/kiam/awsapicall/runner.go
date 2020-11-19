@@ -3,19 +3,17 @@ package awsapicall
 import (
 	"context"
 	"fmt"
+	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/giantswarm/awscnfm/v12/pkg/client"
+	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/k8sclient/v4/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 	batchapiv1 "k8s.io/api/batch/v1"
 	apiv1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-
-	"github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
 )
 
 const (
@@ -75,7 +73,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	err = r.checkKiamAWScallPod(ctx, tcClients.K8sClient())
+	err = r.checkKiamAWScallPod(ctx, tcClients.CtrlClient())
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -84,11 +82,19 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 }
 
 // checkKiamAWScallPod will check if the AWS API call job was successful
-func (r *runner) checkKiamAWScallPod(ctx context.Context, tcClient kubernetes.Interface) error {
-
+func (r *runner) checkKiamAWScallPod(ctx context.Context, tcClient k8sruntimeclient.Client) error {
 	name := fmt.Sprintf("%s-kiam-test", project.Name())
 
-	job, err := tcClient.BatchV1().Jobs(kubeSystemNamespace).Get(ctx, name, metav1.GetOptions{})
+	job := &batchapiv1.Job{}
+
+	err := tcClient.Get(
+		ctx,
+		k8sruntimeclient.ObjectKey{
+			Namespace: kubeSystemNamespace,
+			Name:      name,
+		},
+		job,
+	)
 	if err != nil {
 		return microerror.Mask(err)
 	}
