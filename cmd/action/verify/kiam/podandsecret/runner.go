@@ -9,21 +9,19 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 	apiv1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
+	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v12/pkg/label"
 )
 
 const (
 	kubeSystemNamespace = "kube-system"
 
-	kiamServerLabelSelector = "app=kiam,component=kiam-server"
-	kiamAgentLabelSelector  = "app=kiam,component=kiam-agent"
-
-	masterNodeLabelSelector = "kubernetes.io/role=master"
-	workerNodeLabelSelector = "kubernetes.io/role=worker"
+	kiamApp             = "kiam"
+	componentKiamAgent  = "kiam-agent"
+	componentKiamServer = "kiam-server"
 )
 
 // checkTLSCerts Ensures that kiam  tls certs are created.
@@ -82,12 +80,12 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	err = r.checkTLSCerts(ctx, tcClients.K8sClient())
+	err = r.checkTLSCerts(ctx, tcClients.CtrlClient())
 	if err != nil {
 		return microerror.Mask(err)
 	}
 
-	err = r.checkKiamPods(ctx, tcClients.K8sClient())
+	err = r.checkKiamPods(ctx, tcClients.CtrlClient())
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -95,9 +93,17 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	return nil
 }
 
-func (r *runner) checkTLSCerts(ctx context.Context, tcClient kubernetes.Interface) error {
+func (r *runner) checkTLSCerts(ctx context.Context, tcClient k8sruntimeclient.Client) error {
 	for _, secret := range kiamTlSCertSecretNames {
-		_, err := tcClient.CoreV1().Secrets(kubeSystemNamespace).Get(ctx, secret, metav1.GetOptions{})
+
+		s := &apiv1.Secret{}
+
+		err := tcClient.Get(ctx,
+			k8sruntimeclient.ObjectKey{
+				Namespace: kubeSystemNamespace,
+				Name:      secret,
+			},
+			s)
 
 		if err != nil {
 			return microerror.Mask(err)
@@ -108,17 +114,27 @@ func (r *runner) checkTLSCerts(ctx context.Context, tcClient kubernetes.Interfac
 }
 
 // checkKiamPods ensures kiam-agent and kiam-server pods are alive and running
-func (r *runner) checkKiamPods(ctx context.Context, tcClient kubernetes.Interface) error {
+func (r *runner) checkKiamPods(ctx context.Context, tcClient k8sruntimeclient.Client) error {
 	// count expected kiam-server and kiam-agent pods
 	var expectedKiamServerPodCount, expectedKiamAgentPodCount int
 	{
-		masterNodes, err := tcClient.CoreV1().Nodes().List(ctx, metav1.ListOptions{LabelSelector: masterNodeLabelSelector})
+		masterNodes := &apiv1.NodeList{}
+
+		err := tcClient.List(
+			ctx,
+			masterNodes,
+			k8sruntimeclient.MatchingLabels{label.MasterNodeRole: ""})
 		if err != nil {
 			return microerror.Mask(err)
 		}
 		expectedKiamServerPodCount = len(masterNodes.Items)
 
-		workerNodes, err := tcClient.CoreV1().Nodes().List(ctx, metav1.ListOptions{LabelSelector: workerNodeLabelSelector})
+		workerNodes := &apiv1.NodeList{}
+
+		err = tcClient.List(
+			ctx,
+			workerNodes,
+			k8sruntimeclient.MatchingLabels{label.WorkerNodeRole: ""})
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -127,7 +143,16 @@ func (r *runner) checkKiamPods(ctx context.Context, tcClient kubernetes.Interfac
 
 	// kiam server
 	{
-		kiamServerPods, err := tcClient.CoreV1().Pods(kubeSystemNamespace).List(ctx, metav1.ListOptions{LabelSelector: kiamServerLabelSelector})
+		kiamServerPods := &apiv1.PodList{}
+
+		err := tcClient.List(
+			ctx,
+			kiamServerPods,
+			k8sruntimeclient.InNamespace(kubeSystemNamespace),
+			k8sruntimeclient.MatchingLabels{
+				label.App:       kiamApp,
+				label.Component: componentKiamServer,
+			})
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -145,7 +170,17 @@ func (r *runner) checkKiamPods(ctx context.Context, tcClient kubernetes.Interfac
 
 	// kiam agent
 	{
-		kiamAgentPods, err := tcClient.CoreV1().Pods(kubeSystemNamespace).List(ctx, metav1.ListOptions{LabelSelector: kiamAgentLabelSelector})
+		kiamAgentPods := &apiv1.PodList{}
+
+		err := tcClient.List(
+			ctx,
+			kiamAgentPods,
+			k8sruntimeclient.InNamespace(kubeSystemNamespace),
+			k8sruntimeclient.MatchingLabels{
+				label.App:       kiamApp,
+				label.Component: componentKiamAgent,
+			})
+
 		if err != nil {
 			return microerror.Mask(err)
 		}

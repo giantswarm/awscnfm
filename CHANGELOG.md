@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [12.7.0] - 2020-11-19
+
 ### Added
 
 - Add action to create network policy test resources.
@@ -16,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add action to verify curl jobs to test network policy.
 - Add action to delete curl jobs to test network policy.
 - Add action to delete network policy test resources.
+- Add actions to test network policy to plan 001.
+
 
 ## [12.6.0] - 2020-11-10
 
@@ -76,7 +80,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include namespace to delete cluster CR's.
 * Skip aws-cni-restarter for host network test on master.
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.6.0...HEAD
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v12.7.0...HEAD
+[12.7.0]: https://github.com/giantswarm/awscnfm/compare/v12.6.0...v12.7.0
 [12.6.0]: https://github.com/giantswarm/awscnfm/compare/v12.5.0...v12.6.0
 [12.5.0]: https://github.com/giantswarm/awscnfm/compare/v12.1.4...v12.5.0
 [12.1.4]: https://github.com/giantswarm/awscnfm/compare/v12.1.1...v12.1.4
