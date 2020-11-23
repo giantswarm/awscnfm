@@ -18,7 +18,7 @@ import (
 )
 
 // expectedPods are all host network pods which we expect to run on a master node
-var expectedPods = []string{"aws-node", "calico-node", "cert-exporter", "k8s-api-healthz", "k8s-api-server", "k8s-controller-manager", "k8s-scheduler", "kube-proxy", "node-exporter"}
+var expectedPods = []string{"aws-node", "calico-node", "k8s-api-healthz", "k8s-api-server", "k8s-controller-manager", "k8s-scheduler", "kube-proxy", "node-exporter"}
 
 type runner struct {
 	flag   *flag
