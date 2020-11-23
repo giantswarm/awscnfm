@@ -2,7 +2,6 @@ package plan
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/giantswarm/backoff"
 	"github.com/giantswarm/microerror"
@@ -112,11 +111,11 @@ func (e *Executor) Validate() error {
 	return nil
 }
 
-func commandForAction(action string, commands []*cobra.Command) (*cobra.Command, error) {
+func commandForAction(action StepAction, commands []*cobra.Command) (*cobra.Command, error) {
 	var cmd *cobra.Command
 
 	cmds := append([]*cobra.Command{}, commands...)
-	acts := strings.Split(action, "/")
+	acts := action.Split()
 
 	for _, a := range acts {
 		for _, c := range cmds {
@@ -129,7 +128,7 @@ func commandForAction(action string, commands []*cobra.Command) (*cobra.Command,
 	}
 
 	if cmd == nil {
-		return nil, microerror.Maskf(commandNotFoundError, action)
+		return nil, microerror.Maskf(commandNotFoundError, string(action))
 	}
 
 	return cmd, nil
