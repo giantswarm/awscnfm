@@ -11,7 +11,7 @@ const (
 	short = "Check if the Tenant Cluster got successfully upgraded."
 	long  = `Check if the Tenant Cluster got successfully upgraded. Note that this
 particular action is not meant to be reliably used for other purposes than
-for the plan exection. Executing this action against a Tenant Cluster that
+for the plan execution. Executing this action against a Tenant Cluster that
 got already upgraded may lead to wrong results in case you want to assert an
 additional Tenant Cluster upgrade.
 

@@ -14,20 +14,20 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
-		Action:  "verify/cluster/created",
-		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
-	},
-	{
-		Action:  "verify/master/ready",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
-	},
-	{
 		Action:  "create/nodepool/defaultdataplane",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
+		Action:  "verify/cluster/created",
+		Backoff: plan.NewBackoff(30*time.Minute, 1*time.Minute),
+	},
+	{
+		Action:  "verify/master/ready",
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
+	},
+	{
 		Action:  "verify/worker/ready",
-		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
 	},
 	{
 		Action:  "update/cluster/minor",

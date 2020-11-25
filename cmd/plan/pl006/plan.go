@@ -23,7 +23,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/cluster/ha",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(25*time.Minute, 1*time.Minute),
 	},
 	{
 		Action:  "delete/cluster",
