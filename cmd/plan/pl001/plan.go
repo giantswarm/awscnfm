@@ -23,11 +23,15 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/master/ready",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
 	},
 	{
 		Action:  "verify/worker/ready",
-		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
+	},
+	{
+		Action:  "verify/apps/installed",
+		Backoff: plan.NewBackoff(20*time.Minute, 1*time.Minute),
 	},
 	{
 		Action:  "verify/master/hostnetworkpod",
@@ -47,7 +51,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/kiam/awsapicall",
-		Backoff: plan.NewBackoff(60*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(2*time.Minute, 5*time.Second),
 	},
 	{
 		Action:  "delete/kiam/awsapicall",

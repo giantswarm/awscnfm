@@ -22,12 +22,16 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
 	},
 	{
-		Action:  "verify/master/ready",
+		Action:  "verify/cluster/networkpool",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
+		Action:  "verify/master/ready",
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
+	},
+	{
 		Action:  "verify/worker/ready",
-		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
 	},
 	{
 		Action:  "verify/apps/installed",
@@ -35,15 +39,15 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/master/hostnetworkpod",
-		Backoff: plan.NewBackoff(20*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
 	},
 	{
 		Action:  "verify/worker/hostnetworkpod",
-		Backoff: plan.NewBackoff(20*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
 	},
 	{
 		Action:  "verify/kiam/podandsecret",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
 	},
 	{
 		Action:  "create/kiam/awsapicall",
@@ -51,15 +55,31 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/kiam/awsapicall",
-		Backoff: plan.NewBackoff(60*time.Second, 2*time.Second),
+		Backoff: plan.NewBackoff(2*time.Minute, 5*time.Second),
 	},
 	{
 		Action:  "delete/kiam/awsapicall",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
-		Action:  "verify/cluster/networkpool",
+		Action:  "create/netpol/defaultnetpol",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "create/netpol/curlrequest",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "verify/netpol/curlrequest",
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
+	},
+	{
+		Action:  "delete/netpol/curlrequest",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "delete/netpol/defaultnetpol",
+		Backoff: plan.NewBackoff(30*time.Second, 4*time.Second),
 	},
 	{
 		Action:  "delete/cluster",

@@ -8,9 +8,8 @@ import (
 
 const (
 	name  = "installed"
-	short = "Verify that the kiam test job completed."
-	long  = `Verify that the kiam test job completed. This then means that the pod can
-call "aws route53 list-domains" which ensures kiam works as expected.
+	short = "Verify that the all expected apps and charts are installed."
+	long  = `Verify that the all expected apps and charts are installed.
 `
 )
 

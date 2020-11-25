@@ -49,7 +49,7 @@ func mustLong() string {
 		d += s.Backoff.Wait()
 	}
 
-	s := "Test plan pl004 launches a Tenant Cluster with a custom NetwrokPool\n"
+	s := "Test plan pl004 launches a Tenant Cluster with a custom NetworkPool\n"
 	s += "and checks all nodes are in the specified CIDR. Plan execution might take up\n"
 	s += "to " + d.String() + ".\n\n"
 
