@@ -19,7 +19,7 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "verify/cluster/created",
-		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
+		Backoff: plan.NewBackoff(30*time.Minute, 1*time.Minute),
 	},
 	{
 		Action:  "verify/master/ready",
