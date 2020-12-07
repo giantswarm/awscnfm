@@ -11,10 +11,11 @@ line flag.
 AWSCNFM_TENANTCLUSTER
 ```
 
-The release version can always be provided via an environment variable.
+The release version for creating Tenant Clusters can always be provided via an
+environment variable.
 
 ```
-AWSCNFM_RELEASEVERSION
+AWSCNFM_CREATE_RELEASEVERSION
 ```
 
 The kube config for the control plane can always be provided via an environment

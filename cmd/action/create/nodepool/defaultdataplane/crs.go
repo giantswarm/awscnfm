@@ -20,7 +20,7 @@ func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host st
 	var p *release.Patch
 	{
 		c := release.PatchConfig{
-			FromEnv:     env.ReleaseVersion(),
+			FromEnv:     env.CreateReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}

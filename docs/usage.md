@@ -12,8 +12,8 @@ releases for AWS. Both the major and the minor version must match. Assuming
 `v11.5.1` is the latest patch release of `v11.5.x`, you should use the latest
 `awsncfm` release in minor version `v11.5.x`. If you want to specifically test
 `v11.5.1` even though there does `v11.5.3` exist, you need to specify the
-release version using the environment variable `AWSCNFM_RELEASEVERSION`. That
-way you can then also test any test releases like `v100.0.0-xh3b4sd`.
+release version using the environment variable `AWSCNFM_CREATE_RELEASEVERSION`.
+That way you can then also test any test releases like `v100.0.0-xh3b4sd`.
 
 In order to find a particular release, either download and unpack the
 [release](https://github.com/giantswarm/awscnfm/releases) or clone the source

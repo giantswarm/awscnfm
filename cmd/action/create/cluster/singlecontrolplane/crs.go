@@ -17,7 +17,7 @@ func newCRs(releases []v1alpha1.Release, host string, id string) (v1alpha2.Clust
 	var p *release.Patch
 	{
 		c := release.PatchConfig{
-			FromEnv:     env.ReleaseVersion(),
+			FromEnv:     env.CreateReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}
