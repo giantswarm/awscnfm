@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add support for `AWSCNFM_UPDATE_RELEASEVERSION`.
 - Add action to create network policy test resources.
 - Add action to create curl jobs to test network policy.
 - Add action to verify curl jobs to test network policy.
