@@ -74,7 +74,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var m *release.Minor
 	{
 		c := release.MinorConfig{
-			FromEnv:     env.CreateReleaseVersion(),
+			FromEnv:     env.UpdateReleaseVersion(),
 			FromProject: project.Version(),
 			Releases:    releases,
 		}
