@@ -18,6 +18,13 @@ environment variable.
 AWSCNFM_CREATE_RELEASEVERSION
 ```
 
+The release version for updating Tenant Clusters can always be provided via an
+environment variable.
+
+```
+AWSCNFM_UPDATE_RELEASEVERSION
+```
+
 The kube config for the control plane can always be provided via an environment
 variable.
 
