@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add action to delete network policy test resources.
 - Add actions to test network policy to plan 001.
 
+### Changed
+
+- Renamed `AWSCNFM_RELEASEVERSION` to `AWSCNFM_CREATE_RELEASEVERSION`.
+
 
 ## [12.6.0] - 2020-11-10
 
