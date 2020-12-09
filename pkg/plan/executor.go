@@ -64,9 +64,9 @@ func (e *Executor) Execute(ctx context.Context) error {
 	}
 
 	for _, p := range e.plan {
-		e.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("executing action %#q", p.Action))
-
 		o := func() error {
+			e.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("executing action %#q", p.Action))
+
 			cmds, err := commandsForAction("action", e.commands)
 			if err != nil {
 				return microerror.Mask(err)
