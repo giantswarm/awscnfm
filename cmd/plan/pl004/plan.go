@@ -82,15 +82,18 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(30*time.Second, 4*time.Second),
 	},
 	{
-		Action:  "delete/cluster",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Action:    "delete/cluster",
+		Backoff:   plan.NewBackoff(10*time.Second, 2*time.Second),
+		Condition: plan.ConditionAlwaysExecute,
 	},
 	{
-		Action:  "delete/networkpool",
-		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+		Action:    "delete/networkpool",
+		Backoff:   plan.NewBackoff(10*time.Second, 2*time.Second),
+		Condition: plan.ConditionAlwaysExecute,
 	},
 	{
-		Action:  "verify/cluster/deleted",
-		Backoff: plan.NewBackoff(90*time.Minute, 9*time.Minute),
+		Action:    "verify/cluster/deleted",
+		Backoff:   plan.NewBackoff(90*time.Minute, 9*time.Minute),
+		Condition: plan.ConditionAlwaysExecute,
 	},
 }

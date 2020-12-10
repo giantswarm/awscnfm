@@ -53,32 +53,42 @@ func NewExecutor(config ExecutorConfig) (*Executor, error) {
 }
 
 func (e *Executor) Execute(ctx context.Context) error {
-	cmds, err := commandsForAction("action", e.commands)
-	if err != nil {
-		return microerror.Mask(err)
+	var err error
+	var failed bool
+	var cleanup bool
+
+	for _, p := range e.plan {
+		if p.Condition == ConditionAlwaysExecute {
+			cleanup = true
+		}
 	}
 
 	for _, p := range e.plan {
-		c, err := commandForAction(p.Action, cmds)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		// Here we inject the generated cluster ID to each command. That
-		// mechanism ensures that all commands throughout plan exection operate
-		// on the same cluster from cluster creation to cluster deletion. That
-		// implies that all commands must provide the same flag to allow the
-		// propagation of the cluster ID.
-		f := c.LocalNonPersistentFlags()
-		err = f.Set("tenant-cluster", e.tenantCluster)
-		if err != nil {
-			return microerror.Mask(err)
-		}
-
-		e.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("executing action %#q", p.Action))
-
 		o := func() error {
-			err := c.RunE(c, nil)
+			e.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("executing action %#q", p.Action))
+
+			cmds, err := commandsForAction("action", e.commands)
+			if err != nil {
+				return microerror.Mask(err)
+			}
+
+			c, err := commandForAction(p.Action, cmds)
+			if err != nil {
+				return microerror.Mask(err)
+			}
+
+			// Here we inject the generated cluster ID to each command. That
+			// mechanism ensures that all commands throughout plan exection operate
+			// on the same cluster from cluster creation to cluster deletion. That
+			// implies that all commands must provide the same flag to allow the
+			// propagation of the cluster ID.
+			f := c.LocalNonPersistentFlags()
+			err = f.Set("tenant-cluster", e.tenantCluster)
+			if err != nil {
+				return microerror.Mask(err)
+			}
+
+			err = c.RunE(c, nil)
 			if err != nil {
 				return microerror.Mask(err)
 			}
@@ -86,9 +96,19 @@ func (e *Executor) Execute(ctx context.Context) error {
 			return nil
 		}
 
-		err = backoff.Retry(o, p.Backoff.Wrapped())
-		if err != nil {
-			return microerror.Mask(err)
+		if cleanup {
+			if !failed || failed && p.Condition == ConditionAlwaysExecute {
+				err = backoff.Retry(o, p.Backoff.Wrapped())
+				if err != nil {
+					failed = true
+					e.logger.LogCtx(ctx, "level", "error", "message", fmt.Sprintf("failed executing action %#q", p.Action))
+				}
+			}
+		} else {
+			err = backoff.Retry(o, p.Backoff.Wrapped())
+			if err != nil {
+				return microerror.Mask(err)
+			}
 		}
 	}
 
