@@ -15,7 +15,6 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/pkg/client"
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
@@ -71,15 +70,14 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		releases = list.Items
 	}
 
-	var m *release.Major
+	var re *release.Release
 	{
-		c := release.MajorConfig{
-			FromEnv:     env.UpdateReleaseVersion(),
-			FromProject: project.Version(),
-			Releases:    releases,
+		c := release.Config{
+			FromEnv:  env.UpdateReleaseVersion(),
+			Releases: releases,
 		}
 
-		m, err = release.NewMajor(c)
+		re, err = release.New(c)
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -97,8 +95,8 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	cl.Labels[label.ClusterOperatorVersion] = m.Components().Latest()["cluster-operator"]
-	cl.Labels[label.ReleaseVersion] = m.Version().Latest()
+	cl.Labels[label.ClusterOperatorVersion] = re.Components()["cluster-operator"]
+	cl.Labels[label.ReleaseVersion] = re.Version()
 
 	{
 		err = cpClients.CtrlClient().Update(ctx, &cl)

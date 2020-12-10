@@ -10,22 +10,20 @@ import (
 
 	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
 func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host string) (v1alpha2.NodePoolCRs, error) {
 	var err error
 
-	var p *release.Patch
+	var re *release.Release
 	{
-		c := release.PatchConfig{
-			FromEnv:     env.CreateReleaseVersion(),
-			FromProject: project.Version(),
-			Releases:    releases,
+		c := release.Config{
+			FromEnv:  env.CreateReleaseVersion(),
+			Releases: releases,
 		}
 
-		p, err = release.NewPatch(c)
+		re, err = release.New(c)
 		if err != nil {
 			return v1alpha2.NodePoolCRs{}, microerror.Mask(err)
 		}
@@ -53,8 +51,8 @@ func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host st
 			OnDemandBaseCapacity:                0,
 			OnDemandPercentageAboveBaseCapacity: 0,
 			Owner:                               "giantswarm",
-			ReleaseComponents:                   p.Components().Latest(),
-			ReleaseVersion:                      p.Version().Latest(),
+			ReleaseComponents:                   re.Components(),
+			ReleaseVersion:                      re.Version(),
 			UseAlikeInstanceTypes:               true,
 		}
 
