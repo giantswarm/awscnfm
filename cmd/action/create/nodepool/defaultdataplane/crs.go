@@ -1,25 +1,22 @@
 package defaultdataplane
 
 import (
-	"context"
-
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
 	"github.com/jsonmaur/aws-regions/go/regions"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
 )
 
-func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host string) (v1alpha2.NodePoolCRs, error) {
+func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.NodePoolCRs, error) {
 	var err error
 
 	var re *release.Release
 	{
 		c := release.Config{
-			FromEnv:  env.CreateReleaseVersion(),
+			FromEnv:  r.flag.ReleaseVersion,
 			Releases: releases,
 		}
 
@@ -44,7 +41,7 @@ func newCRs(ctx context.Context, releases []v1alpha1.Release, id string, host st
 		c := v1alpha2.NodePoolCRsConfig{
 			AvailabilityZones:                   []string{azs[0]},
 			AWSInstanceType:                     "m5.xlarge",
-			ClusterID:                           id,
+			ClusterID:                           r.flag.TenantCluster,
 			Description:                         "awscnfm cl001 ac005",
 			NodesMax:                            2,
 			NodesMin:                            1,

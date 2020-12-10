@@ -73,7 +73,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var re *release.Release
 	{
 		c := release.Config{
-			FromEnv:  env.UpdateReleaseVersion(),
+			FromEnv:  r.flag.ReleaseVersion,
 			Releases: releases,
 		}
 

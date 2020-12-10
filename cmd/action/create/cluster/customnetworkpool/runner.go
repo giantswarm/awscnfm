@@ -65,7 +65,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		releases = list.Items
 	}
 
-	crs, npcrs, err := newCRs(releases, cpClients.RESTConfig().Host, r.flag.TenantCluster)
+	crs, npcrs, err := r.newCRs(releases, cpClients.RESTConfig().Host)
 	if err != nil {
 		return microerror.Mask(err)
 	}
