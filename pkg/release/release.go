@@ -1,6 +1,8 @@
 package release
 
 import (
+	"strings"
+
 	"github.com/giantswarm/apiextensions/v2/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
 )
@@ -37,15 +39,23 @@ func New(config Config) (*Release, error) {
 
 func (r *Release) Components() map[string]string {
 	m := map[string]string{}
-	for _, r := range r.releases {
-		for _, c := range r.Spec.Components {
+	for _, re := range r.releases {
+		if re.GetName() != r.fromEnv {
+			continue
+		}
+
+		for _, c := range re.Spec.Components {
 			m[c.Name] = c.Version
 		}
+	}
+
+	if len(m) == 0 {
+		panic("components must not be empty")
 	}
 
 	return m
 }
 
 func (r *Release) Version() string {
-	return r.fromEnv
+	return strings.TrimPrefix(r.fromEnv, "v")
 }
