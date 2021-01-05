@@ -30,13 +30,5 @@ Find all [documentation in the `docs`] folder of this repo.
 
 
 
-## Release versions
-
-The code used for testing conformity is aligned with every Giant Swarm release
-version. When publishing a `v11.4.0` Giant Swarm release we tag `awscnfm` with
-the same version. That way we keep the release and test lifecycles synchronized.
-
-
-
 [execute the entire test plan]: https://github.com/giantswarm/awscnfm/blob/master/docs/using.md
 [documentation in the `docs`]: https://github.com/giantswarm/awscnfm/tree/master/docs
