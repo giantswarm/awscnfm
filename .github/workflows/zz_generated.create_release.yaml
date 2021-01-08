@@ -1,6 +1,6 @@
 # DO NOT EDIT. Generated with:
 #
-#    devctl gen workflows
+#    devctl@4.0.2-dev
 #
 name: Create Release
 on:
@@ -82,8 +82,19 @@ jobs:
     needs:
       - gather_facts
     steps:
-      - name: Install tools
-        uses: giantswarm/install-tools-action@v0.3.0
+      - name: Install architect
+        uses: giantswarm/install-binary-action@v1.0.0
+        with:
+          binary: "architect"
+          version: "3.0.5"
+      - name: Install semver
+        uses: giantswarm/install-binary-action@v1.0.0
+        with:
+          binary: "semver"
+          version: "3.0.0"
+          download_url: "https://github.com/fsaintjacques/${binary}-tool/archive/${version}.tar.gz"
+          tarball_binary_path: "*/src/${binary}"
+          smoke_test: "${binary} --version"
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Update project.go
@@ -168,8 +179,14 @@ jobs:
       - gather_facts
     if: ${{ needs.gather_facts.outputs.version }}
     steps:
-      - name: Install tools
-        uses: giantswarm/install-tools-action@v0.3.0
+      - name: Install semver
+        uses: giantswarm/install-binary-action@v1.0.0
+        with:
+          binary: "semver"
+          version: "3.0.0"
+          download_url: "https://github.com/fsaintjacques/${binary}-tool/archive/${version}.tar.gz"
+          tarball_binary_path: "*/src/${binary}"
+          smoke_test: "${binary} --version"
       - name: Check out the repository
         uses: actions/checkout@v2
         with:
@@ -179,8 +196,14 @@ jobs:
       - name: Create long-lived release branch
         run: |
           current_version="${{ needs.gather_facts.outputs.version }}"
-          parent_version="$(git describe --tags --abbrev=0 HEAD^)"
+          parent_version="$(git describe --tags --abbrev=0 HEAD^ || true)"
           parent_version="${parent_version#v}" # Strip "v" prefix.
+
+          if [[ -z "$parent_version" ]] ; then
+            echo "Unable to find a parent tag version. No branch to create."
+            exit 0
+          fi
+
           echo "current_version=$current_version parent_version=$parent_version"
 
           current_major=$(semver get major $current_version)
@@ -226,8 +249,11 @@ jobs:
       - create_release
       - gather_facts
     steps:
-      - name: Install tools
-        uses: giantswarm/install-tools-action@v0.3.0
+      - name: Install architect
+        uses: giantswarm/install-binary-action@v1.0.0
+        with:
+          binary: "architect"
+          version: "3.0.5"
       - name: Set up Go ${{ env.GO_VERSION }}
         uses: actions/setup-go@v2.1.3
         with:
@@ -243,7 +269,6 @@ jobs:
         env:
           FILE_NAME: ${{ github.event.repository.name }}-${{ env.TAG }}-${{ matrix.platform }}-amd64.tar.gz
         with:
-          path: ${{ env.ARTIFACT_DIR }}
           upload_url: ${{ needs.create_release.outputs.upload_url }}
           asset_path: ${{ env.ARTIFACT_DIR }}/${{ env.FILE_NAME }}
           asset_name: ${{ env.FILE_NAME }}
