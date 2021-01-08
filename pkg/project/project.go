@@ -10,7 +10,7 @@ var (
 	// conformance testing. Please make sure that at least major and minor
 	// levels of this version aligns with each new release so that we stay
 	// synchronized with the latest AWS release we publish.
-	version = "13.0.1-dev"
+	version = "12.7.2"
 )
 
 func Description() string {
