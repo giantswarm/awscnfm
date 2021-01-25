@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/fatih/color v1.10.0
-	github.com/giantswarm/apiextensions/v3 v3.14.1
+	github.com/giantswarm/apiextensions/v3 v3.15.0
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.0
 	github.com/giantswarm/columnize v2.0.2+incompatible
@@ -21,7 +21,7 @@ require (
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
 	k8s.io/client-go v0.18.9
-	sigs.k8s.io/cluster-api v0.3.11
+	sigs.k8s.io/cluster-api v0.3.13
 	sigs.k8s.io/controller-runtime v0.6.4
 )
 
