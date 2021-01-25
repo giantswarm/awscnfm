@@ -14,8 +14,9 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
-		Action:  "verify/cluster/created",
-		Backoff: plan.NewBackoff(30*time.Minute, 3*time.Minute),
+		Action:   "verify/cluster/created",
+		Backoff:  plan.NewBackoff(30*time.Minute, 3*time.Minute),
+		CoolDown: 30 * time.Minute,
 	},
 	{
 		Action:  "verify/master/ready",

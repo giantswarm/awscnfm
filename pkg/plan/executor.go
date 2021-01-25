@@ -2,6 +2,7 @@ package plan
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/giantswarm/backoff"
 	"github.com/giantswarm/microerror"
@@ -109,6 +110,8 @@ func (e *Executor) Execute(ctx context.Context) error {
 			if err != nil {
 				return microerror.Mask(err)
 			}
+
+			time.Sleep(p.CoolDown)
 		}
 	}
 

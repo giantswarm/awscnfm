@@ -46,17 +46,31 @@ func New(config Config) (*cobra.Command, error) {
 func mustLong() string {
 	var d time.Duration
 	for _, s := range Plan {
-		d += s.Backoff.Wait()
+		d += s.Backoff.Wait() + s.CoolDown
 	}
 
 	s := "Test plan pl004 launches a Tenant Cluster with a custom NetworkPool\n"
 	s += "and checks all nodes are in the specified CIDR. Plan execution might take up\n"
 	s += "to " + d.String() + ".\n\n"
 
-	t := [][]string{{"ACTION", "RETRY", "WAIT"}}
+	t := [][]string{{"ACTION", "RETRY", "WAIT", "COOLDOWN"}}
 
+	var h bool
 	for _, s := range Plan {
-		t = append(t, []string{s.Action.String(), s.Backoff.Interval().String(), s.Backoff.Wait().String()})
+		a := s.Action.String()
+		i := s.Backoff.Interval().String()
+		w := s.Backoff.Wait().String()
+		c := ""
+		if s.CoolDown != 0 {
+			c = s.CoolDown.String()
+			h = true
+		}
+
+		t = append(t, []string{a, i, w, c})
+	}
+
+	if !h {
+		t[0][3] = ""
 	}
 
 	colourized := table.Colourize(t)
