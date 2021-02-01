@@ -1,4 +1,4 @@
-package pl003
+package pl007
 
 import (
 	"time"
@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	name  = "pl003"
-	short = "Execute plan pl003 automatically."
+	name  = "pl007"
+	short = "Execute plan pl007 automatically."
 )
 
 type Config struct {
@@ -49,9 +49,10 @@ func mustLong() string {
 		d += s.Backoff.Wait() + s.CoolDown
 	}
 
-	s := "Test plan pl003 launches a basic Tenant Cluster in the previous minor release\n"
-	s += "and upgrades the Tenant Cluster to the latest patch release once it is up. Plan\n"
-	s += "execution might take up to " + d.String() + ".\n\n"
+	s := "Test plan pl007 launches a basic Tenant Cluster with a single master.\n"
+	s += "Once created a node pool is added to the cluster in order to verify\n"
+	s += "certain applications are running properly. Plan execution might take\n"
+	s += "up to " + d.String() + ".\n\n"
 
 	t := [][]string{{"ACTION", "RETRY", "WAIT", "COOLDOWN"}}
 
