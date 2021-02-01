@@ -110,7 +110,10 @@ func (e *Executor) Execute(ctx context.Context) error {
 			if err != nil {
 				return microerror.Mask(err)
 			}
+		}
 
+		if !failed && p.CoolDown != 0 {
+			e.logger.LogCtx(ctx, "level", "info", "message", fmt.Sprintf("cooling down for %s", p.CoolDown))
 			time.Sleep(p.CoolDown)
 		}
 	}
