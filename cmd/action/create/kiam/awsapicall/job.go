@@ -58,8 +58,7 @@ func jobNetworkPolicy() *networkingv1.NetworkPolicy {
 
 // awsApiCallJob will will spawn a pod which will do simple AWS api call to test Kiam functionality
 func awsApiCallJob(dockerRegistry string, awsRegion string, clusterID string) *batchapiv1.Job {
-	activeDeadlineSeconds := int64(60)
-	backOffLimit := int32(10)
+	backOffLimit := int32(20)
 	completions := int32(1)
 	parallelism := int32(1)
 	name := fmt.Sprintf("%s-kiam-test", project.Name())
@@ -130,7 +129,6 @@ func awsApiCallJob(dockerRegistry string, awsRegion string, clusterID string) *b
 					PriorityClassName: jobPriorityClass,
 				},
 			},
-			ActiveDeadlineSeconds: &activeDeadlineSeconds,
 		},
 	}
 
