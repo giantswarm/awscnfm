@@ -174,8 +174,8 @@ github.com/giantswarm/micrologger v0.5.0 h1:/f2knkyf4bZw3L5F48R7VENiEKPb3Sjnzrg4
 github.com/giantswarm/micrologger v0.5.0/go.mod h1:J/jbt7A8eixqE40yq4JY8Hdbs/qeboe2FjHlq05UWjA=
 github.com/giantswarm/tenantcluster/v3 v3.0.0 h1:Vrx0LnItmvIUjvkJ10bkz+M8cEFOjrWl5HQv04VmJKg=
 github.com/giantswarm/tenantcluster/v3 v3.0.0/go.mod h1:gTVnGDFVG+lHzoD1ATDJtQ3zgoYcgFbFlJ8go3jvxeM=
-github.com/giantswarm/valuemodifier v0.3.0 h1:cdnRY/Svnl9YrriBer+CZb5bab55/qHpIAWO8KenByA=
-github.com/giantswarm/valuemodifier v0.3.0/go.mod h1:cdzb3R4extcJeqCfjZQMa8kR2nkB2n9ifFzQnIbZdXk=
+github.com/giantswarm/valuemodifier v0.3.1 h1:jBPP4eerg7jQFfluYlzeNjjbIf49BeVMjHzjgmuvwRk=
+github.com/giantswarm/valuemodifier v0.3.1/go.mod h1:cdzb3R4extcJeqCfjZQMa8kR2nkB2n9ifFzQnIbZdXk=
 github.com/globalsign/mgo v0.0.0-20180905125535-1ca0a4f7cbcb/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
 github.com/go-acme/lego v2.5.0+incompatible/go.mod h1:yzMNe9CasVUhkquNvti5nAtPmG94USbYxYrZfTkIn0M=
