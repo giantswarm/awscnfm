@@ -14,15 +14,44 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
-		Action:  "verify/cluster/created",
-		Backoff: plan.NewBackoff(30*time.Minute, 1*time.Minute),
+		Action:   "verify/cluster/created",
+		Backoff:  plan.NewBackoff(30*time.Minute, 3*time.Minute),
+		CoolDown: 30 * time.Minute,
 	},
 	{
-		Action:  "update/cluster/major",
+		Action:  "verify/master/ready",
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
+	},
+	{
+		Action:  "create/nodepool/defaultdataplane",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
-		Action:  "verify/cluster/updated",
+		Action:  "verify/worker/ready",
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
+	},
+	{
+		Action:  "verify/master/hostnetworkpod",
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
+	},
+	{
+		Action:  "verify/worker/hostnetworkpod",
+		Backoff: plan.NewBackoff(15*time.Minute, 1*time.Minute),
+	},
+	{
+		Action:  "verify/kiam/podandsecret",
+		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
+	},
+	{
+		Action:  "create/kiam/awsapicall",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "verify/kiam/awsapicall",
+		Backoff: plan.NewBackoff(2*time.Minute, 5*time.Second),
+	},
+	{
+		Action:  "delete/kiam/awsapicall",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{
