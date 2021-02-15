@@ -30,7 +30,7 @@ var Plan = []plan.Step{
 		Backoff: plan.NewBackoff(10*time.Minute, 30*time.Second),
 	},
 	{
-		Action:  "update/cluster/patch",
+		Action:  "update/cluster/version",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{

@@ -49,9 +49,9 @@ func mustLong() string {
 		d += s.Backoff.Wait() + s.CoolDown
 	}
 
-	s := "Test plan pl004 launches a Tenant Cluster with a custom NetworkPool\n"
-	s += "and checks all nodes are in the specified CIDR. Plan execution might take up\n"
-	s += "to " + d.String() + ".\n\n"
+	s := "Test plan pl004 launches a basic Tenant Cluster with a single master\n"
+	s += "and upgrades the Tenant Cluster to HA once it is up. Plan\n"
+	s += "execution might take up to " + d.String() + ".\n\n"
 
 	t := [][]string{{"ACTION", "RETRY", "WAIT", "COOLDOWN"}}
 

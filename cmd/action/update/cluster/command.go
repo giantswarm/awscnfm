@@ -6,9 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/hacontrolplane"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/major"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/minor"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/patch"
+	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/version"
 )
 
 const (
@@ -27,37 +25,13 @@ func New(config Config) (*cobra.Command, error) {
 
 	var err error
 
-	var majorCmd *cobra.Command
+	var versionCmd *cobra.Command
 	{
-		c := major.Config{
+		c := version.Config{
 			Logger: config.Logger,
 		}
 
-		majorCmd, err = major.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var minorCmd *cobra.Command
-	{
-		c := minor.Config{
-			Logger: config.Logger,
-		}
-
-		minorCmd, err = minor.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-	}
-
-	var patchCmd *cobra.Command
-	{
-		c := patch.Config{
-			Logger: config.Logger,
-		}
-
-		patchCmd, err = patch.New(c)
+		versionCmd, err = version.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -92,9 +66,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(haCmd)
-	c.AddCommand(majorCmd)
-	c.AddCommand(minorCmd)
-	c.AddCommand(patchCmd)
+	c.AddCommand(versionCmd)
 
 	return c, nil
 }

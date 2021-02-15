@@ -49,8 +49,9 @@ func mustLong() string {
 		d += s.Backoff.Wait() + s.CoolDown
 	}
 
-	s := "Test plan pl002 launches a basic Tenant Cluster in the previous patch release\n"
-	s += "and upgrades the Tenant Cluster to the latest patch release once it is up. Plan\n"
+	s := "Test plan pl002 launches a basic Tenant Cluster and upgrades it according\n"
+	s += "to the provided release versions. With this plan Tenant Clusters may be\n"
+	s += "up or downgraded using major, minor or patch version changes. Plan\n"
 	s += "execution might take up to " + d.String() + ".\n\n"
 
 	t := [][]string{{"ACTION", "RETRY", "WAIT", "COOLDOWN"}}

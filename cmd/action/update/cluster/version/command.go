@@ -1,4 +1,4 @@
-package patch
+package version
 
 import (
 	"github.com/giantswarm/microerror"
@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	name  = "patch"
-	short = "Upgrade the Tenant Cluster to the latest patch version."
-	long  = `Upgrade the Tenant Cluster to the latest patch version.
+	name  = "version"
+	short = "Upgrade the Tenant Cluster to another version."
+	long  = `Upgrade the Tenant Cluster to another version.
 
     * Fetch the Cluster CR.
     * Set the desired cluster-operator version in the CR labels.

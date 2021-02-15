@@ -1,4 +1,4 @@
-package minor
+package version
 
 import (
 	"github.com/giantswarm/microerror"
