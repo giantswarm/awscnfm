@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/fatih/color v1.10.0
-	github.com/giantswarm/apiextensions/v3 v3.18.1
+	github.com/giantswarm/apiextensions/v3 v3.18.2
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.1
 	github.com/giantswarm/columnize v2.0.2+incompatible
@@ -17,7 +17,7 @@ require (
 	github.com/jsonmaur/aws-regions/go v0.0.0-20200521181458-43baf1be9a5a
 	github.com/prometheus/client_golang v1.7.1 // indirect
 	github.com/spf13/cobra v1.1.3
-	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7
+	golang.org/x/net v0.0.0-20201021035429-f5854403a974
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
 	k8s.io/client-go v0.18.9
