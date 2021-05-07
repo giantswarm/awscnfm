@@ -1,7 +1,7 @@
 package generate
 
 import (
-	"math/rand" // #nosec G404
+	"math/rand"
 	"regexp"
 	"strconv"
 	"time"
@@ -19,7 +19,7 @@ const (
 var (
 	// Use local instance of RNG. Can be overwritten with fixed seed in tests
 	// if needed.
-	localRng = rand.New(rand.NewSource(time.Now().UnixNano()))
+	localRng = rand.New(rand.NewSource(time.Now().UnixNano())) // #nosec G404
 )
 
 func ID() string {
