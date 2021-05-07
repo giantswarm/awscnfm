@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13.5
 
 ADD ./awscnfm /usr/local/bin/awscnfm
 
