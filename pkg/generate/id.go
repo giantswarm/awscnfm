@@ -1,7 +1,7 @@
 package generate
 
 import (
-	"math/rand"
+	"math/rand" // #nosec G404
 	"regexp"
 	"strconv"
 	"time"
