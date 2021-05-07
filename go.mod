@@ -20,7 +20,7 @@ require (
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
 	k8s.io/api v0.18.18
 	k8s.io/apimachinery v0.18.18
-	k8s.io/client-go v0.18.9
+	k8s.io/client-go v0.18.18
 	sigs.k8s.io/cluster-api v0.3.16
 	sigs.k8s.io/controller-runtime v0.6.4
 )
