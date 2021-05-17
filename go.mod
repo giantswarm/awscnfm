@@ -3,7 +3,7 @@ module github.com/giantswarm/awscnfm/v12
 go 1.15
 
 require (
-	github.com/fatih/color v1.10.0
+	github.com/fatih/color v1.11.0
 	github.com/giantswarm/apiextensions/v3 v3.23.0
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.1
