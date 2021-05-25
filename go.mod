@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/fatih/color v1.10.0
-	github.com/giantswarm/apiextensions/v3 v3.23.0
+	github.com/giantswarm/apiextensions/v3 v3.26.0
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.1
 	github.com/giantswarm/columnize v2.0.2+incompatible
