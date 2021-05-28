@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [14.2.1] - 2021-05-28
+
 ## [14.1.1] - 2021-04-13
 
 ## [13.0.1] - 2021-01-08
@@ -91,7 +93,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include namespace to delete cluster CR's.
 * Skip aws-cni-restarter for host network test on master.
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v14.1.1...HEAD
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v14.2.1...HEAD
+[14.2.1]: https://github.com/giantswarm/awscnfm/compare/v14.1.1...v14.2.1
 [14.1.1]: https://github.com/giantswarm/awscnfm/compare/v13.0.1...v14.1.1
 [13.0.1]: https://github.com/giantswarm/awscnfm/compare/v13.0.0...v13.0.1
 [13.0.0]: https://github.com/giantswarm/awscnfm/compare/v12.7.0...v13.0.0
