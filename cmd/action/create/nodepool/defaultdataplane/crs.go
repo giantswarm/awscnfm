@@ -4,7 +4,7 @@ import (
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
-	"github.com/jsonmaur/aws-regions/v2"
+	regions "github.com/jsonmaur/aws-regions/v2"
 
 	"github.com/giantswarm/awscnfm/v12/pkg/key"
 	"github.com/giantswarm/awscnfm/v12/pkg/release"
