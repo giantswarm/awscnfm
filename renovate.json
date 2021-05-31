@@ -16,6 +16,6 @@
       "groupName": "etc modules"
     }
   ],
-  "reviewers": ["team:giantswarm/team-firecracker-engineers"],
+  "reviewers": ["team:team-firecracker-engineers"],
   "postUpdateOptions": ["gomodTidy", "gomodUpdateImportPaths"]
 }
