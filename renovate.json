@@ -10,7 +10,7 @@
     {
       "matchPackagePatterns": ["^k8s.io", "^sigs.k8s.io"],
       "groupName": "k8s modules",
-      "allowedVersions": "<=0.19.0"
+      "allowedVersions": "<0.19.0"
     },
     {
       "excludePackagePatterns": [".*giantswarm.*" ,"^k8s.io", "^sigs.k8s.io"],
