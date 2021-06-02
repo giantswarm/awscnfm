@@ -3,7 +3,7 @@ package pl005
 import (
 	"time"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/plan"
+	"github.com/giantswarm/awscnfm/v14/pkg/plan"
 )
 
 // Plan describes in which order and with which tolerance to execute actions of

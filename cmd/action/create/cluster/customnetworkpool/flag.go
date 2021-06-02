@@ -5,8 +5,8 @@ import (
 
 	"github.com/giantswarm/microerror"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/valid"
+	"github.com/giantswarm/awscnfm/v14/pkg/env"
+	"github.com/giantswarm/awscnfm/v14/pkg/valid"
 )
 
 type flag struct {

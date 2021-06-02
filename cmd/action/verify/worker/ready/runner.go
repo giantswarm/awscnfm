@@ -12,9 +12,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/label"
+	pkgclient "github.com/giantswarm/awscnfm/v14/pkg/client"
+	"github.com/giantswarm/awscnfm/v14/pkg/env"
+	"github.com/giantswarm/awscnfm/v14/pkg/label"
 )
 
 type runner struct {

@@ -9,8 +9,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v14/pkg/client"
+	"github.com/giantswarm/awscnfm/v14/pkg/env"
 )
 
 type runner struct {

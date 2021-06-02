@@ -11,9 +11,9 @@ import (
 	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/key"
+	"github.com/giantswarm/awscnfm/v14/pkg/client"
+	"github.com/giantswarm/awscnfm/v14/pkg/env"
+	"github.com/giantswarm/awscnfm/v14/pkg/key"
 )
 
 type runner struct {

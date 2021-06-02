@@ -5,10 +5,10 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/cluster"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/kiam"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/netpol"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/delete/networkpool"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/delete/cluster"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/delete/kiam"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/delete/netpol"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/delete/networkpool"
 )
 
 const (

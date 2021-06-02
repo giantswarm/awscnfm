@@ -10,7 +10,7 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
+	"github.com/giantswarm/awscnfm/v14/pkg/project"
 )
 
 const (

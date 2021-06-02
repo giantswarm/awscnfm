@@ -4,8 +4,8 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/key"
-	"github.com/giantswarm/awscnfm/v12/pkg/project"
+	"github.com/giantswarm/awscnfm/v14/pkg/key"
+	"github.com/giantswarm/awscnfm/v14/pkg/project"
 )
 
 // nginxTestPodService will create a service pointing to nginx test pod

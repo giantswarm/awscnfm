@@ -5,12 +5,12 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/apps"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/master"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/netpol"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/worker"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/apps"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/cluster"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/kiam"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/master"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/netpol"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/worker"
 )
 
 const (

@@ -5,10 +5,11 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create/cluster"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create/kiam"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create/netpol"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create/nodepool"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/create/cluster"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/create/ebs"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/create/kiam"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/create/netpol"
+	"github.com/giantswarm/awscnfm/v14/cmd/action/create/nodepool"
 )
 
 const (
@@ -46,6 +47,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		kiamCmd, err = kiam.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ebsCmd *cobra.Command
+	{
+		c := ebs.Config{
+			Logger: config.Logger,
+		}
+
+		ebsCmd, err = ebs.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -93,6 +106,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	c.AddCommand(clusterCmd)
 	c.AddCommand(kiamCmd)
+	c.AddCommand(ebsCmd)
 	c.AddCommand(netpolCmd)
 	c.AddCommand(nodepoolCmd)
 
