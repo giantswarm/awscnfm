@@ -78,36 +78,44 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 
 // cleanupEBSTestResources will cleanup EBS volume test resources
 func (r *runner) cleanupEBSTestResources(ctx context.Context, tcClient kubernetes.Interface) error {
+	// in case we have errors, lets collect them to ensure other resources get deleted in case they exists
+	var errSlice []error
+
 	err := tcClient.BatchV1().Jobs("default").Delete(ctx, key.EBSTestJobName(), metav1.DeleteOptions{})
 	if err != nil {
-		return microerror.Mask(err)
+		errSlice = append(errSlice, err)
 	}
 
 	err = tcClient.RbacV1().ClusterRoles().Delete(ctx, "enable-ebs-psp", metav1.DeleteOptions{})
 	if err != nil {
-		return microerror.Mask(err)
+		errSlice = append(errSlice, err)
 	}
 
 	err = tcClient.RbacV1().RoleBindings("default").Delete(ctx, "ebs-rolebinding", metav1.DeleteOptions{})
 	if err != nil {
-		return microerror.Mask(err)
+		errSlice = append(errSlice, err)
 	}
 
 	err = tcClient.CoreV1().PersistentVolumeClaims("default").Delete(ctx, "ebs-claim", metav1.DeleteOptions{})
 	if err != nil {
-		return microerror.Mask(err)
+		errSlice = append(errSlice, err)
 	}
 
 	pods, err := tcClient.CoreV1().Pods("default").List(ctx, metav1.ListOptions{
 		LabelSelector: "app=awscnfm-ebs-volume-test",
 	})
 	if err != nil {
-		return microerror.Mask(err)
+		errSlice = append(errSlice, err)
 	}
 
 	err = tcClient.CoreV1().Pods("default").Delete(ctx, pods.Items[0].GetName(), metav1.DeleteOptions{})
 	if err != nil {
-		return microerror.Mask(err)
+		errSlice = append(errSlice, err)
+	}
+
+	// return the first error
+	if len(errSlice) > 0 {
+		return errSlice[0]
 	}
 
 	return nil
