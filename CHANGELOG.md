@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add action to create EBS Volume job to test CSI driver.
+- Add action to verify EBS Volume job to test CSI driver.
+- Add action to delete EBS Volume job to test CSI driver.
+
 ## [14.2.1] - 2021-05-28
 
 ## [14.1.1] - 2021-04-13
