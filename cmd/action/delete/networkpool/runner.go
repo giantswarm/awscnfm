@@ -11,8 +11,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	pkgclient "github.com/giantswarm/awscnfm/v15/pkg/client"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
 )
 
 type runner struct {

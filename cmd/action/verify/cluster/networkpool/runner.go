@@ -11,9 +11,9 @@ import (
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	pkgclient "github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/label"
+	pkgclient "github.com/giantswarm/awscnfm/v15/pkg/client"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/label"
 )
 
 type runner struct {

@@ -4,7 +4,7 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
 )
 
 type flag struct {

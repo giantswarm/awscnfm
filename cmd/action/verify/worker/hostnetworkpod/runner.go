@@ -12,9 +12,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/client"
-	"github.com/giantswarm/awscnfm/v12/pkg/env"
-	"github.com/giantswarm/awscnfm/v12/pkg/label"
+	"github.com/giantswarm/awscnfm/v15/pkg/client"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/label"
 )
 
 // expectedPods are all host network pods which we expect to run on a worker node

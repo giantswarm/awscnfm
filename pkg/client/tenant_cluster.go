@@ -13,8 +13,8 @@ import (
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/key"
-	"github.com/giantswarm/awscnfm/v12/pkg/label"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
+	"github.com/giantswarm/awscnfm/v15/pkg/label"
 )
 
 type TenantClusterConfig struct {

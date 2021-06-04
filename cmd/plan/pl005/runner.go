@@ -7,7 +7,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/plan"
+	"github.com/giantswarm/awscnfm/v15/pkg/plan"
 )
 
 type runner struct {

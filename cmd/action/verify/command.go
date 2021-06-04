@@ -5,12 +5,13 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/apps"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/cluster"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/kiam"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/master"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/netpol"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/worker"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/apps"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/cluster"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/ebs"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/kiam"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/master"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/netpol"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/worker"
 )
 
 const (
@@ -48,6 +49,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 
 		clusterCmd, err = cluster.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var ebsCmd *cobra.Command
+	{
+		c := ebs.Config{
+			Logger: config.Logger,
+		}
+
+		ebsCmd, err = ebs.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -119,6 +132,7 @@ func New(config Config) (*cobra.Command, error) {
 
 	c.AddCommand(appsCmd)
 	c.AddCommand(clusterCmd)
+	c.AddCommand(ebsCmd)
 	c.AddCommand(kiamCmd)
 	c.AddCommand(masterCmd)
 	c.AddCommand(netpolCommand)

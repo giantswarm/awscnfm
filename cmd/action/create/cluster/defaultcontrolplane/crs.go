@@ -5,8 +5,8 @@ import (
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/key"
-	"github.com/giantswarm/awscnfm/v12/pkg/release"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
+	"github.com/giantswarm/awscnfm/v15/pkg/release"
 )
 
 func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.ClusterCRs, error) {

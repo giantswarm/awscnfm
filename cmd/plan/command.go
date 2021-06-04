@@ -5,11 +5,11 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl001"
-	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl002"
-	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl003"
-	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl004"
-	"github.com/giantswarm/awscnfm/v12/cmd/plan/pl005"
+	"github.com/giantswarm/awscnfm/v15/cmd/plan/pl001"
+	"github.com/giantswarm/awscnfm/v15/cmd/plan/pl002"
+	"github.com/giantswarm/awscnfm/v15/cmd/plan/pl003"
+	"github.com/giantswarm/awscnfm/v15/cmd/plan/pl004"
+	"github.com/giantswarm/awscnfm/v15/cmd/plan/pl005"
 )
 
 const (

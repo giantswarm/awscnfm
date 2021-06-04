@@ -3,7 +3,7 @@ package pl001
 import (
 	"time"
 
-	"github.com/giantswarm/awscnfm/v12/pkg/plan"
+	"github.com/giantswarm/awscnfm/v15/pkg/plan"
 )
 
 // Plan describes in which order and with which tolerance to execute actions of
@@ -55,6 +55,18 @@ var Plan = []plan.Step{
 	},
 	{
 		Action:  "delete/kiam/awsapicall",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "create/ebs/volume",
+		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
+	},
+	{
+		Action:  "verify/ebs/volume",
+		Backoff: plan.NewBackoff(2*time.Minute, 5*time.Second),
+	},
+	{
+		Action:  "delete/ebs/volume",
 		Backoff: plan.NewBackoff(10*time.Second, 2*time.Second),
 	},
 	{

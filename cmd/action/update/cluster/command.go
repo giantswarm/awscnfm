@@ -5,8 +5,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/hacontrolplane"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/update/cluster/version"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/update/cluster/hacontrolplane"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/update/cluster/version"
 )
 
 const (

@@ -5,10 +5,10 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/create"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/delete"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/update"
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/delete"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/update"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify"
 )
 
 const (

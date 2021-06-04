@@ -5,7 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v12/cmd/action/verify/apps/installed"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/apps/installed"
 )
 
 const (
