@@ -2,7 +2,6 @@ package volume
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
@@ -14,7 +13,7 @@ import (
 
 	"github.com/giantswarm/awscnfm/v15/pkg/client"
 	"github.com/giantswarm/awscnfm/v15/pkg/env"
-	"github.com/giantswarm/awscnfm/v15/pkg/project"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
 )
 
 type runner struct {
@@ -80,15 +79,13 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 
 // checkEBSVolumePod will check if the EBS volume job was successful
 func (r *runner) checkEBSVolumePod(ctx context.Context, tcClient k8sruntimeclient.Client) error {
-	name := fmt.Sprintf("%s-ebs-volume-test", project.Name())
-
 	job := &batchapiv1.Job{}
 
 	err := tcClient.Get(
 		ctx,
 		k8sruntimeclient.ObjectKey{
 			Namespace: "default",
-			Name:      name,
+			Name:      key.EBSTestJobName(),
 		},
 		job,
 	)

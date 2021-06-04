@@ -14,10 +14,6 @@ import (
 	"github.com/giantswarm/awscnfm/v15/pkg/key"
 )
 
-const (
-	kubeSystemNamespace = "kube-system"
-)
-
 type runner struct {
 	flag   *flag
 	logger micrologger.Logger

@@ -10,6 +10,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
 	"github.com/giantswarm/awscnfm/v15/pkg/project"
 )
 
@@ -91,7 +92,7 @@ func ensureEBSVolume(dockerRegistry string, clusterID string) *batchapiv1.Job {
 	backOffLimit := int32(20)
 	completions := int32(1)
 	parallelism := int32(1)
-	name := fmt.Sprintf("%s-ebs-volume-test", project.Name())
+	name := key.EBSTestJobName()
 	cpu := resource.MustParse("50m")
 	memory := resource.MustParse("50Mi")
 
@@ -101,7 +102,7 @@ func ensureEBSVolume(dockerRegistry string, clusterID string) *batchapiv1.Job {
 			APIVersion: batchapiv1.GroupName,
 		},
 		ObjectMeta: apismetav1.ObjectMeta{
-			Name:      name,
+			Name:      key.EBSTestJobName(),
 			Namespace: "default",
 			Labels: map[string]string{
 				"app":        name,
