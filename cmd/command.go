@@ -8,11 +8,11 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v14/cmd/action"
-	"github.com/giantswarm/awscnfm/v14/cmd/completion"
-	"github.com/giantswarm/awscnfm/v14/cmd/plan"
-	"github.com/giantswarm/awscnfm/v14/cmd/version"
-	"github.com/giantswarm/awscnfm/v14/pkg/project"
+	"github.com/giantswarm/awscnfm/v15/cmd/action"
+	"github.com/giantswarm/awscnfm/v15/cmd/completion"
+	"github.com/giantswarm/awscnfm/v15/cmd/plan"
+	"github.com/giantswarm/awscnfm/v15/cmd/version"
+	"github.com/giantswarm/awscnfm/v15/pkg/project"
 )
 
 var (

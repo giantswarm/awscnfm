@@ -10,10 +10,10 @@ import (
 	"github.com/spf13/cobra"
 	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/client"
-	"github.com/giantswarm/awscnfm/v14/pkg/env"
-	"github.com/giantswarm/awscnfm/v14/pkg/key"
-	"github.com/giantswarm/awscnfm/v14/pkg/label"
+	"github.com/giantswarm/awscnfm/v15/pkg/client"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
+	"github.com/giantswarm/awscnfm/v15/pkg/label"
 )
 
 const (

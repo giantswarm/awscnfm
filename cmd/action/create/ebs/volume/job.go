@@ -6,10 +6,11 @@ import (
 	batchapiv1 "k8s.io/api/batch/v1"
 	apiv1 "k8s.io/api/core/v1"
 	v1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/project"
+	"github.com/giantswarm/awscnfm/v15/pkg/project"
 )
 
 const (
@@ -23,7 +24,8 @@ func ensurePersistentVolumeClaim() *apiv1.PersistentVolumeClaim {
 			APIVersion: apiv1.GroupName,
 		},
 		ObjectMeta: apismetav1.ObjectMeta{
-			Name: "ebs-claim",
+			Name:      "ebs-claim",
+			Namespace: "default",
 		},
 		Spec: apiv1.PersistentVolumeClaimSpec{
 			AccessModes: []apiv1.PersistentVolumeAccessMode{
@@ -37,6 +39,51 @@ func ensurePersistentVolumeClaim() *apiv1.PersistentVolumeClaim {
 		},
 	}
 
+}
+
+func ensureClusterRole() *rbacv1.ClusterRole {
+	return &rbacv1.ClusterRole{
+		TypeMeta: apismetav1.TypeMeta{
+			Kind:       "ClusterRole",
+			APIVersion: rbacv1.GroupName,
+		},
+		ObjectMeta: apismetav1.ObjectMeta{
+			Name: "enable-ebs-psp",
+		},
+		Rules: []rbacv1.PolicyRule{
+			{
+				APIGroups:     []string{"policy"},
+				Resources:     []string{"podsecuritypolicies"},
+				ResourceNames: []string{"privileged"},
+				Verbs:         []string{"use"},
+			},
+		},
+	}
+}
+
+func ensureRoleBinding() *rbacv1.RoleBinding {
+	return &rbacv1.RoleBinding{
+		TypeMeta: apismetav1.TypeMeta{
+			Kind:       "RoleBinding",
+			APIVersion: rbacv1.GroupName,
+		},
+		ObjectMeta: apismetav1.ObjectMeta{
+			Name:      "ebs-rolebinding",
+			Namespace: "default",
+		},
+		RoleRef: rbacv1.RoleRef{
+			APIGroup: rbacv1.GroupName,
+			Kind:     "ClusterRole",
+			Name:     "enable-ebs-psp",
+		},
+		Subjects: []rbacv1.Subject{
+			{
+				Kind:      "ServiceAccount",
+				Name:      "default",
+				Namespace: "default",
+			},
+		},
+	}
 }
 
 // ensureEBSVolume will will spawn a pod which to ensure EBS volume attachment works.
@@ -55,7 +102,7 @@ func ensureEBSVolume(dockerRegistry string, clusterID string) *batchapiv1.Job {
 		},
 		ObjectMeta: apismetav1.ObjectMeta{
 			Name:      name,
-			Namespace: kubeSystemNamespace,
+			Namespace: "default",
 			Labels: map[string]string{
 				"app":        name,
 				"managed-by": project.Name(),

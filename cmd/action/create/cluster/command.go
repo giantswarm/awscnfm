@@ -5,9 +5,9 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v14/cmd/action/create/cluster/customnetworkpool"
-	"github.com/giantswarm/awscnfm/v14/cmd/action/create/cluster/defaultcontrolplane"
-	"github.com/giantswarm/awscnfm/v14/cmd/action/create/cluster/singlecontrolplane"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create/cluster/customnetworkpool"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create/cluster/defaultcontrolplane"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create/cluster/singlecontrolplane"
 )
 
 const (

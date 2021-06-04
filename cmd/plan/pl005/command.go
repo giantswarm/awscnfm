@@ -7,7 +7,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/table"
+	"github.com/giantswarm/awscnfm/v15/pkg/table"
 )
 
 const (

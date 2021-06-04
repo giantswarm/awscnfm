@@ -3,8 +3,8 @@ package pl005
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/env"
-	"github.com/giantswarm/awscnfm/v14/pkg/generate"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/generate"
 )
 
 type flag struct {

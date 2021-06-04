@@ -6,8 +6,8 @@ import (
 	"github.com/giantswarm/microerror"
 	regions "github.com/jsonmaur/aws-regions/v2"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/key"
-	"github.com/giantswarm/awscnfm/v14/pkg/release"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
+	"github.com/giantswarm/awscnfm/v15/pkg/release"
 )
 
 func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.NodePoolCRs, error) {

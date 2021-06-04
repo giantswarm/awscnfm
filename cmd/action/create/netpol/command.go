@@ -5,8 +5,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v14/cmd/action/create/netpol/curlrequest"
-	"github.com/giantswarm/awscnfm/v14/cmd/action/create/netpol/defaultnetpol"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create/netpol/curlrequest"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create/netpol/defaultnetpol"
 )
 
 const (

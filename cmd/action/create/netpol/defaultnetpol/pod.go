@@ -7,8 +7,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/key"
-	"github.com/giantswarm/awscnfm/v14/pkg/project"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
+	"github.com/giantswarm/awscnfm/v15/pkg/project"
 )
 
 // nginxTestPod will create a test pod running nginx in the test namespace

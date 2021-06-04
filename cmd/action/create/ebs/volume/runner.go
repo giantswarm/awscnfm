@@ -9,9 +9,9 @@ import (
 	"github.com/spf13/cobra"
 	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/client"
-	"github.com/giantswarm/awscnfm/v14/pkg/env"
-	"github.com/giantswarm/awscnfm/v14/pkg/key"
+	"github.com/giantswarm/awscnfm/v15/pkg/client"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
 )
 
 const (
@@ -91,8 +91,19 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 // createAWSApiCallJob will spawn a job in k8s tenant cluster to test calling AWS API to ensure kiam works as expected
 func (r *runner) createEBSVolume(ctx context.Context, tcClient k8sruntimeclient.Client, dockerRegistry string) error {
 	pvClaim := ensurePersistentVolumeClaim()
-
 	err := tcClient.Create(ctx, pvClaim)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	clusterRole := ensureClusterRole()
+	err = tcClient.Create(ctx, clusterRole)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	roleBinding := ensureRoleBinding()
+	err = tcClient.Create(ctx, roleBinding)
 	if err != nil {
 		return microerror.Mask(err)
 	}

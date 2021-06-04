@@ -13,9 +13,9 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/client"
-	"github.com/giantswarm/awscnfm/v14/pkg/env"
-	"github.com/giantswarm/awscnfm/v14/pkg/release"
+	"github.com/giantswarm/awscnfm/v15/pkg/client"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/release"
 )
 
 type runner struct {

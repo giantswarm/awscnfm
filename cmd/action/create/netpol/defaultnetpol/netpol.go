@@ -4,8 +4,8 @@ import (
 	networkingv1 "k8s.io/api/networking/v1"
 	apismetav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/awscnfm/v14/pkg/key"
-	"github.com/giantswarm/awscnfm/v14/pkg/project"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
+	"github.com/giantswarm/awscnfm/v15/pkg/project"
 )
 
 // defaultNetworkPolicy will create a 'deny-from-all-namespaces' network policy

@@ -5,8 +5,8 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/master/hostnetworkpod"
-	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/master/ready"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/master/hostnetworkpod"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/master/ready"
 )
 
 const (

@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	name  = "test"
+	name  = "volume"
 	short = "Create a test pod via a job and let it try to attach EBS volume."
 	long  = `Create a test pod via a job and let it try to attach EBS volume
 to ensure ebs-csi-driver works as expected.

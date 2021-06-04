@@ -11,9 +11,9 @@ import (
 	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	pkgclient "github.com/giantswarm/awscnfm/v14/pkg/client"
-	"github.com/giantswarm/awscnfm/v14/pkg/env"
-	"github.com/giantswarm/awscnfm/v14/pkg/label"
+	pkgclient "github.com/giantswarm/awscnfm/v15/pkg/client"
+	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/label"
 )
 
 type runner struct {

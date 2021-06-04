@@ -5,7 +5,7 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 
-	"github.com/giantswarm/awscnfm/v14/cmd/action/verify/netpol/curlrequest"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/netpol/curlrequest"
 )
 
 const (
