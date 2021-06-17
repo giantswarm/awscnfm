@@ -18,7 +18,7 @@ import (
 )
 
 // expectedPods are all host network pods which we expect to run on a worker node
-var expectedPods = []string{"aws-node", "calico-node", "kiam-agent", "kube-proxy", "node-exporter"}
+var expectedPods = []string{"aws-node", "calico-node", "ebs-csi-node", "kiam-agent", "kube-proxy", "node-exporter"}
 
 type runner struct {
 	flag   *flag
