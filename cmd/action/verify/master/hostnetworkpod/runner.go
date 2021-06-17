@@ -110,6 +110,10 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		if strings.Contains(pod.Name, "aws-cni-restarter") {
 			continue
 		}
+		// currently only one pod is running on a master, to avoid flaky tests we skip it. we have a separate test.
+		if strings.Contains(pod.Name, "ebs-csi-controller") {
+			continue
+		}
 		if pod.Spec.HostNetwork {
 			masterPods = append(masterPods, pod.Name)
 		}

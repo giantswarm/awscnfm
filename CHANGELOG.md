@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Updated expected worker pod list to include aws-ebs-csi-driver.
+
 ## [15.0.1] - 2021-06-17
 
 ### Changed
