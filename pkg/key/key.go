@@ -19,7 +19,7 @@ const (
 	Credential = "credential-default"
 	// Organization is the Giant Swarm specific organization we create our
 	// conformance test clusters in.
-	Organization = "giantswarm"
+	Organization = "conformance-testing"
 )
 
 const (

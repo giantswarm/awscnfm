@@ -47,7 +47,7 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.Node
 			NodesMin:                            1,
 			OnDemandBaseCapacity:                0,
 			OnDemandPercentageAboveBaseCapacity: 0,
-			Owner:                               "giantswarm",
+			Owner:                               key.Organization,
 			ReleaseComponents:                   re.Components(),
 			ReleaseVersion:                      re.Version(),
 			UseAlikeInstanceTypes:               true,
