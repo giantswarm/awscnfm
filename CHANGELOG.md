@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [15.0.4] - 2021-07-16
+
 ### Changed
 
 - Shift organization to `conformance-testing`.
@@ -123,7 +125,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include namespace to delete cluster CR's.
 * Skip aws-cni-restarter for host network test on master.
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v15.0.3...HEAD
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v15.0.4...HEAD
+[15.0.4]: https://github.com/giantswarm/awscnfm/compare/v15.0.3...v15.0.4
 [15.0.3]: https://github.com/giantswarm/awscnfm/compare/v15.0.2...v15.0.3
 [15.0.2]: https://github.com/giantswarm/awscnfm/compare/v15.0.1...v15.0.2
 [15.0.1]: https://github.com/giantswarm/awscnfm/compare/v15.0.0...v15.0.1
