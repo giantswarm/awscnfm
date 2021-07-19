@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Write cluster-id into path for pl001.
+
 ## [15.0.5] - 2021-07-16
 
 ## [15.0.4] - 2021-07-16
