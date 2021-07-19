@@ -6,9 +6,10 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/giantswarm/microerror"
+
 	"github.com/giantswarm/awscnfm/v15/pkg/env"
 	"github.com/giantswarm/awscnfm/v15/pkg/generate"
-	"github.com/giantswarm/microerror"
 )
 
 type flag struct {
