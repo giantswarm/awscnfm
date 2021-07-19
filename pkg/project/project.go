@@ -10,7 +10,7 @@ var (
 	// conformance testing. Please make sure that at least major and minor
 	// levels of this version aligns with each new release so that we stay
 	// synchronized with the latest AWS release we publish.
-	version = "15.0.6-dev"
+	version = "15.1.0"
 )
 
 func Description() string {
