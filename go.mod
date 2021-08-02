@@ -15,14 +15,13 @@ require (
 	github.com/giantswarm/valuemodifier v0.3.1
 	github.com/google/go-cmp v0.5.6
 	github.com/jsonmaur/aws-regions/v2 v2.2.1
-	github.com/prometheus/client_golang v1.7.1 // indirect
 	github.com/spf13/cobra v1.2.1
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
-	k8s.io/api v0.18.19
-	k8s.io/apimachinery v0.18.19
-	k8s.io/client-go v0.18.19
+	k8s.io/api v0.21.3
+	k8s.io/apimachinery v0.21.3
+	k8s.io/client-go v0.21.3
 	sigs.k8s.io/cluster-api v0.4.0
-	sigs.k8s.io/controller-runtime v0.6.4
+	sigs.k8s.io/controller-runtime v0.9.5
 )
 
 replace (
