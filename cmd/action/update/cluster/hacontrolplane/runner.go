@@ -3,7 +3,7 @@ package hacontrolplane
 import (
 	"context"
 
-	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
+	infrastructurev1alpha3 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/apiextensions/v3/pkg/label"
 	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
@@ -54,7 +54,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	var cpl infrastructurev1alpha2.G8sControlPlaneList
+	var cpl infrastructurev1alpha3.G8sControlPlaneList
 	{
 		err = cpClients.CtrlClient().List(
 			ctx,
@@ -66,7 +66,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	var cp infrastructurev1alpha2.G8sControlPlane
+	var cp infrastructurev1alpha3.G8sControlPlane
 	{
 		cp = cpl.Items[0]
 		cp.Spec.Replicas = 3

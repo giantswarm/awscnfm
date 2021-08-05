@@ -3,7 +3,7 @@ package awsapicall
 import (
 	"context"
 
-	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
+	infrastructurev1alpha3 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -76,9 +76,9 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	// awsRegion is necessary to execute aws-cli call
 	var awsRegion string
 	{
-		var cr infrastructurev1alpha2.AWSCluster
+		var cr infrastructurev1alpha3.AWSCluster
 		{
-			var list infrastructurev1alpha2.AWSClusterList
+			var list infrastructurev1alpha3.AWSClusterList
 			err := cpClients.CtrlClient().List(
 				ctx,
 				&list,

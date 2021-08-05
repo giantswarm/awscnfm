@@ -1,7 +1,7 @@
 package defaultdataplane
 
 import (
-	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/release/v1alpha1"
 	"github.com/giantswarm/microerror"
 	regions "github.com/jsonmaur/aws-regions/v2"
@@ -10,7 +10,7 @@ import (
 	"github.com/giantswarm/awscnfm/v15/pkg/release"
 )
 
-func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.NodePoolCRs, error) {
+func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.NodePoolCRs, error) {
 	var err error
 
 	var re *release.Release
@@ -22,7 +22,7 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.Node
 
 		re, err = release.New(c)
 		if err != nil {
-			return v1alpha2.NodePoolCRs{}, microerror.Mask(err)
+			return v1alpha3.NodePoolCRs{}, microerror.Mask(err)
 		}
 	}
 
@@ -30,15 +30,15 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.Node
 	{
 		region, err := regions.LookupByCode(key.RegionFromHost(host))
 		if err != nil {
-			return v1alpha2.NodePoolCRs{}, microerror.Mask(err)
+			return v1alpha3.NodePoolCRs{}, microerror.Mask(err)
 		}
 
 		azs = region.Zones
 	}
 
-	var crs v1alpha2.NodePoolCRs
+	var crs v1alpha3.NodePoolCRs
 	{
-		c := v1alpha2.NodePoolCRsConfig{
+		c := v1alpha3.NodePoolCRsConfig{
 			AvailabilityZones:                   []string{azs[0]},
 			AWSInstanceType:                     "m5.xlarge",
 			ClusterID:                           r.flag.TenantCluster,
@@ -53,9 +53,9 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha2.Node
 			UseAlikeInstanceTypes:               true,
 		}
 
-		crs, err = v1alpha2.NewNodePoolCRs(c)
+		crs, err = v1alpha3.NewNodePoolCRs(c)
 		if err != nil {
-			return v1alpha2.NodePoolCRs{}, microerror.Mask(err)
+			return v1alpha3.NodePoolCRs{}, microerror.Mask(err)
 		}
 	}
 

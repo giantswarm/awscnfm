@@ -4,7 +4,7 @@ import (
 	"context"
 
 	applicationv1alpha1 "github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
-	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
+	infrastructurev1alpha3 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/certs/v3/pkg/certs"
 	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
@@ -49,9 +49,9 @@ func clientsFromAPISecret(ctx context.Context, config TenantClusterConfig) (k8sc
 
 	var clients *k8sclient.Clients
 	{
-		var cr infrastructurev1alpha2.AWSCluster
+		var cr infrastructurev1alpha3.AWSCluster
 		{
-			var list infrastructurev1alpha2.AWSClusterList
+			var list infrastructurev1alpha3.AWSClusterList
 			err := config.ControlPlane.CtrlClient().List(
 				ctx,
 				&list,
