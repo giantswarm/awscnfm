@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [15.2.0] - 2021-08-06
+
 ### Added
 
 - Changed API version to `v1alpha3`.
@@ -141,7 +143,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include namespace to delete cluster CR's.
 * Skip aws-cni-restarter for host network test on master.
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v15.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v15.2.0...HEAD
+[15.2.0]: https://github.com/giantswarm/awscnfm/compare/v15.1.0...v15.2.0
 [15.1.0]: https://github.com/giantswarm/awscnfm/compare/v15.0.5...v15.1.0
 [15.0.5]: https://github.com/giantswarm/awscnfm/compare/v15.0.4...v15.0.5
 [15.0.4]: https://github.com/giantswarm/awscnfm/compare/v15.0.3...v15.0.4
