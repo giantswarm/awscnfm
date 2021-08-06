@@ -3,12 +3,12 @@ package deleted
 import (
 	"context"
 
-	infrastructurev1alpha2 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
+	infrastructurev1alpha3 "github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
+	apiv1alpha3 "sigs.k8s.io/cluster-api/api/v1alpha3"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pkgclient "github.com/giantswarm/awscnfm/v15/pkg/client"
@@ -55,7 +55,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	{
-		var list apiv1alpha2.ClusterList
+		var list apiv1alpha3.ClusterList
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
@@ -71,7 +71,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	{
-		var list infrastructurev1alpha2.AWSClusterList
+		var list infrastructurev1alpha3.AWSClusterList
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
@@ -87,7 +87,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	{
-		var list infrastructurev1alpha2.G8sControlPlaneList
+		var list infrastructurev1alpha3.G8sControlPlaneList
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
@@ -103,7 +103,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	{
-		var list infrastructurev1alpha2.AWSControlPlaneList
+		var list infrastructurev1alpha3.AWSControlPlaneList
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
@@ -119,7 +119,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	{
-		var list apiv1alpha2.MachineDeploymentList
+		var list apiv1alpha3.MachineDeploymentList
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,
@@ -135,7 +135,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	{
-		var list infrastructurev1alpha2.AWSMachineDeploymentList
+		var list infrastructurev1alpha3.AWSMachineDeploymentList
 		err := cpClients.CtrlClient().List(
 			ctx,
 			&list,

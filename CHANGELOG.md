@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Changed API version to `v1alpha3`.
+
 ## [15.1.0] - 2021-07-19
 
 ### Added

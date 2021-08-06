@@ -3,7 +3,7 @@ package created
 import (
 	"context"
 
-	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -76,7 +76,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		return microerror.Mask(err)
 	}
 
-	var cl v1alpha2.AWSCluster
+	var cl v1alpha3.AWSCluster
 	{
 		err = cpClients.CtrlClient().Get(
 			ctx,
@@ -92,7 +92,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	// cluster creation as far as the system is concerned. We want to check of
 	// the Created status condition is properly set. Only then we assume the
 	// Tenant Cluster got successfully created.
-	if cl.Status.Cluster.LatestCondition() == v1alpha2.ClusterStatusConditionCreated {
+	if cl.Status.Cluster.LatestCondition() == v1alpha3.ClusterStatusConditionCreated {
 		return nil
 	}
 

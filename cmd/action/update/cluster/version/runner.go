@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
-	apiv1alpha2 "sigs.k8s.io/cluster-api/api/v1alpha2"
+	apiv1alpha3 "sigs.k8s.io/cluster-api/api/v1alpha3"
 
 	"github.com/giantswarm/awscnfm/v15/pkg/client"
 	"github.com/giantswarm/awscnfm/v15/pkg/env"
@@ -83,7 +83,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	var cl apiv1alpha2.Cluster
+	var cl apiv1alpha3.Cluster
 	{
 		err = cpClients.CtrlClient().Get(
 			ctx,

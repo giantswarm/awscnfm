@@ -3,7 +3,7 @@ package updated
 import (
 	"context"
 
-	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha2"
+	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -53,7 +53,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	var cl v1alpha2.AWSCluster
+	var cl v1alpha3.AWSCluster
 	{
 		err = cpClients.CtrlClient().Get(
 			ctx,
@@ -65,7 +65,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		}
 	}
 
-	if cl.Status.Cluster.LatestCondition() == v1alpha2.ClusterStatusConditionUpdated {
+	if cl.Status.Cluster.LatestCondition() == v1alpha3.ClusterStatusConditionUpdated {
 		return nil
 	}
 
