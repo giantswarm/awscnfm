@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/fatih/color v1.12.0
-	github.com/giantswarm/apiextensions/v3 v3.32.0
+	github.com/giantswarm/apiextensions/v3 v3.33.0
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.1
 	github.com/giantswarm/columnize v2.0.2+incompatible
@@ -12,12 +12,12 @@ require (
 	github.com/giantswarm/microerror v0.3.0
 	github.com/giantswarm/micrologger v0.5.0
 	github.com/giantswarm/tenantcluster/v4 v4.1.0
-	github.com/giantswarm/valuemodifier v0.3.1
+	github.com/giantswarm/valuemodifier v0.4.0
 	github.com/google/go-cmp v0.5.6
 	github.com/jsonmaur/aws-regions/v2 v2.2.1
 	github.com/prometheus/client_golang v1.7.1 // indirect
 	github.com/spf13/cobra v1.2.1
-	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
+	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d
 	k8s.io/api v0.18.19
 	k8s.io/apimachinery v0.18.19
 	k8s.io/client-go v0.18.19
