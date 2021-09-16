@@ -17,7 +17,7 @@ require (
 	github.com/jsonmaur/aws-regions/v2 v2.2.1
 	github.com/prometheus/client_golang v1.7.1 // indirect
 	github.com/spf13/cobra v1.2.1
-	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d
+	golang.org/x/net v0.0.0-20210916014120-12bc252f5db8
 	k8s.io/api v0.18.19
 	k8s.io/apimachinery v0.18.19
 	k8s.io/client-go v0.18.19
