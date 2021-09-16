@@ -6,11 +6,12 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/apps/installed"
+	"github.com/giantswarm/awscnfm/v15/cmd/action/verify/apps/running"
 )
 
 const (
 	name        = "apps"
-	description = "Verify apps are installed correctly in the Tenant Cluster."
+	description = "Verify apps are installed and running correctly in the Tenant Cluster."
 )
 
 type Config struct {
@@ -36,6 +37,18 @@ func New(config Config) (*cobra.Command, error) {
 		}
 	}
 
+	var runningCmd *cobra.Command
+	{
+		c := running.Config{
+			Logger: config.Logger,
+		}
+
+		runningCmd, err = running.New(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	f := &flag{}
 
 	r := &runner{
@@ -53,6 +66,7 @@ func New(config Config) (*cobra.Command, error) {
 	f.Init(c)
 
 	c.AddCommand(installedCmd)
+	c.AddCommand(runningCmd)
 
 	return c, nil
 }

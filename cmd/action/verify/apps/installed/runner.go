@@ -22,7 +22,20 @@ type runner struct {
 	logger micrologger.Logger
 }
 
-var expectedApps = []string{"aws-ebs-csi-driver", "cert-exporter", "cert-manager", "chart-operator", "cluster-autoscaler", "coredns", "etcd-cluster-migrator", "external-dns", "kiam", "kube-state-metrics", "metrics-server", "net-exporter", "node-exporter"}
+var expectedApps = []string{
+	"aws-ebs-csi-driver",
+	"cert-exporter",
+	"cert-manager",
+	"chart-operator",
+	"cluster-autoscaler",
+	"coredns",
+	"external-dns",
+	"kiam",
+	"kube-state-metrics",
+	"metrics-server",
+	"net-exporter",
+	"node-exporter",
+}
 
 func (r *runner) Run(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
