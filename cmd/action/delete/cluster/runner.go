@@ -8,7 +8,6 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	apiv1alpha3 "sigs.k8s.io/cluster-api/api/v1alpha3"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -59,7 +58,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		err := cpClients.CtrlClient().DeleteAllOf(
 			ctx,
 			&apiv1alpha3.Cluster{},
-			client.InNamespace(metav1.NamespaceDefault),
+			client.InNamespace("org-conformance-testing"),
 			client.MatchingLabels{label.Cluster: r.flag.TenantCluster},
 		)
 		if errors.IsNotFound(err) {

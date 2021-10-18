@@ -57,7 +57,18 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Node
 		if err != nil {
 			return v1alpha3.NodePoolCRs{}, microerror.Mask(err)
 		}
+
+		if key.IsOrgNamespaceVersion(c.ReleaseVersion) {
+			crs = moveCRsToOrgNamespace(crs, key.Organization)
+		}
 	}
 
 	return crs, nil
+}
+
+func moveCRsToOrgNamespace(crs v1alpha3.NodePoolCRs, namespace string) v1alpha3.NodePoolCRs {
+	crs.MachineDeployment.SetNamespace(namespace)
+	crs.MachineDeployment.Spec.Template.Spec.InfrastructureRef.Namespace = namespace
+	crs.AWSMachineDeployment.SetNamespace(namespace)
+	return crs
 }

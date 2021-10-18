@@ -56,7 +56,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	{
 		np := &v1alpha3.NetworkPool{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: metav1.NamespaceDefault,
+				Namespace: "org-conformance-testing",
 				Name:      "custom",
 			},
 		}
