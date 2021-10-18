@@ -3,7 +3,7 @@ module github.com/giantswarm/awscnfm/v15
 go 1.15
 
 require (
-	github.com/blang/semver v3.5.1+incompatible // indirect
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/fatih/color v1.12.0
 	github.com/giantswarm/apiextensions/v3 v3.34.0
 	github.com/giantswarm/backoff v0.2.0
