@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [16.0.0] - 2021-10-19
+
 ### Added
 
 - Verify running apps.
@@ -157,7 +159,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include namespace to delete cluster CR's.
 * Skip aws-cni-restarter for host network test on master.
 
-[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v15.2.1...HEAD
+[Unreleased]: https://github.com/giantswarm/awscnfm/compare/v16.0.0...HEAD
+[16.0.0]: https://github.com/giantswarm/awscnfm/compare/v15.2.1...v16.0.0
 [15.2.1]: https://github.com/giantswarm/awscnfm/compare/v15.2.0...v15.2.1
 [15.2.0]: https://github.com/giantswarm/awscnfm/compare/v15.1.0...v15.2.0
 [15.1.0]: https://github.com/giantswarm/awscnfm/compare/v15.0.5...v15.1.0
