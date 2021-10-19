@@ -29,7 +29,6 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Clus
 	{
 		c := v1alpha3.ClusterCRsConfig{
 			ClusterID:         r.flag.TenantCluster,
-			Credential:        key.Credential,
 			Domain:            key.DomainFromHost(host),
 			Description:       "awscnfm action create cluster onenodepool",
 			Owner:             key.Organization,
@@ -44,6 +43,11 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Clus
 		if err != nil {
 			return v1alpha3.ClusterCRs{}, v1alpha3.NetworkPoolCRs{}, microerror.Mask(err)
 		}
+
+		if key.IsOrgNamespaceVersion(c.ReleaseVersion) {
+			crs = key.MoveClusterCRsToOrgNamespace(crs, key.Organization)
+		}
+
 	}
 
 	var npcrs v1alpha3.NetworkPoolCRs

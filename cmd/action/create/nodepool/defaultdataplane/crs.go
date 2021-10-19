@@ -57,6 +57,10 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Node
 		if err != nil {
 			return v1alpha3.NodePoolCRs{}, microerror.Mask(err)
 		}
+
+		if key.IsOrgNamespaceVersion(c.ReleaseVersion) {
+			crs = key.MoveNodePoolCRsToOrgNamespace(crs, key.Organization)
+		}
 	}
 
 	return crs, nil

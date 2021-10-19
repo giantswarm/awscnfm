@@ -5,18 +5,18 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/blang/semver"
+	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/microerror"
 	valuemodifierpath "github.com/giantswarm/valuemodifier/path"
 	apiv1 "k8s.io/api/core/v1"
 	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/giantswarm/awscnfm/v15/pkg/normalize"
 	"github.com/giantswarm/awscnfm/v15/pkg/project"
 )
 
 const (
-	// Credential is the default credential we use for most of our conformance
-	// test clusters. These credentials define which AWS Account to use.
-	Credential = "credential-default"
 	// Organization is the Giant Swarm specific organization we create our
 	// conformance test clusters in.
 	Organization = "conformance-testing"
@@ -44,6 +44,15 @@ const (
 
 	LabelApp       = "app"
 	LabelManagedBy = "managed-by"
+)
+
+const (
+	organizationNamespaceFormat = "org-%s"
+)
+
+const (
+	// FirstOrgNamespaceRelease is the first GS release that creates Clusters in Org Namespaces by default
+	FirstAWSOrgNamespaceRelease = "16.0.0"
 )
 
 func APIEndpoint(id string, base string) string {
@@ -125,4 +134,41 @@ func FetchDockerRegistry(ctx context.Context, cpCtrlClient k8sruntimeclient.Clie
 	}
 
 	return dockerRegistry, nil
+}
+
+func OrganizationNamespaceFromName(name string) string {
+	name = normalize.AsDNSLabelName(fmt.Sprintf(organizationNamespaceFormat, name))
+
+	return name
+}
+
+// IsOrgNamespaceVersion returns whether a given AWS GS Release Version is based on clusters in Org Namespace
+func IsOrgNamespaceVersion(version string) bool {
+	// TODO: this has to return true as soon as v16.0.0 is the newest version
+	// Background: in case the release version is not set, aws-admission-controller mutates to the the latest AWS version,
+	// see https://github.com/giantswarm/aws-admission-controller/blob/ef83d90fc856fbc0484bec967064834c0b8d2c1e/pkg/aws/v1alpha3/cluster/mutate_cluster.go#L191-L202
+	// so as soon as the latest version is >=16.0.0 we are going to need the org-namespace as default here.
+	if version == "" {
+		return true
+	}
+	OrgNamespaceVersion, _ := semver.New(FirstAWSOrgNamespaceRelease)
+	releaseVersion, _ := semver.New(version)
+	return releaseVersion.GE(*OrgNamespaceVersion)
+}
+
+func MoveClusterCRsToOrgNamespace(crs v1alpha3.ClusterCRs, organization string) v1alpha3.ClusterCRs {
+	crs.Cluster.SetNamespace(OrganizationNamespaceFromName(organization))
+	crs.Cluster.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(organization)
+	crs.AWSCluster.SetNamespace(OrganizationNamespaceFromName(organization))
+	crs.G8sControlPlane.SetNamespace(OrganizationNamespaceFromName(organization))
+	crs.G8sControlPlane.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(organization)
+	crs.AWSControlPlane.SetNamespace(OrganizationNamespaceFromName(organization))
+	return crs
+}
+
+func MoveNodePoolCRsToOrgNamespace(crs v1alpha3.NodePoolCRs, namespace string) v1alpha3.NodePoolCRs {
+	crs.MachineDeployment.SetNamespace(OrganizationNamespaceFromName(namespace))
+	crs.MachineDeployment.Spec.Template.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(namespace)
+	crs.AWSMachineDeployment.SetNamespace(OrganizationNamespaceFromName(namespace))
+	return crs
 }

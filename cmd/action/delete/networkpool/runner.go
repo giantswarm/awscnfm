@@ -13,6 +13,7 @@ import (
 
 	pkgclient "github.com/giantswarm/awscnfm/v15/pkg/client"
 	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
 )
 
 type runner struct {
@@ -56,7 +57,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	{
 		np := &v1alpha3.NetworkPool{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: metav1.NamespaceDefault,
+				Namespace: key.OrganizationNamespaceFromName(key.Organization),
 				Name:      "custom",
 			},
 		}

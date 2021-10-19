@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
 - Verify running apps.
+
+### Changed
+
+- Use org namespace when using release v16.0.0 and higher.
 
 ## [15.2.1] - 2021-08-16
 
