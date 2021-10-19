@@ -8,11 +8,11 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
-	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 
 	"github.com/giantswarm/awscnfm/v15/pkg/client"
 	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
 )
 
 type runner struct {
@@ -57,7 +57,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	{
 		err = cpClients.CtrlClient().Get(
 			ctx,
-			types.NamespacedName{Name: r.flag.TenantCluster, Namespace: v1.NamespaceDefault},
+			types.NamespacedName{Name: r.flag.TenantCluster, Namespace: key.OrganizationNamespaceFromName(key.Organization)},
 			&cl,
 		)
 		if err != nil {

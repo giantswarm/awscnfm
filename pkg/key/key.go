@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/blang/semver"
+	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/microerror"
 	valuemodifierpath "github.com/giantswarm/valuemodifier/path"
 	apiv1 "k8s.io/api/core/v1"
@@ -16,9 +17,6 @@ import (
 )
 
 const (
-	// Credential is the default credential we use for most of our conformance
-	// test clusters. These credentials define which AWS Account to use.
-	Credential = "credential-default"
 	// Organization is the Giant Swarm specific organization we create our
 	// conformance test clusters in.
 	Organization = "conformance-testing"
@@ -156,4 +154,21 @@ func IsOrgNamespaceVersion(version string) bool {
 	OrgNamespaceVersion, _ := semver.New(FirstAWSOrgNamespaceRelease)
 	releaseVersion, _ := semver.New(version)
 	return releaseVersion.GE(*OrgNamespaceVersion)
+}
+
+func MoveClusterCRsToOrgNamespace(crs v1alpha3.ClusterCRs, organization string) v1alpha3.ClusterCRs {
+	crs.Cluster.SetNamespace(OrganizationNamespaceFromName(organization))
+	crs.Cluster.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(organization)
+	crs.AWSCluster.SetNamespace(OrganizationNamespaceFromName(organization))
+	crs.G8sControlPlane.SetNamespace(OrganizationNamespaceFromName(organization))
+	crs.G8sControlPlane.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(organization)
+	crs.AWSControlPlane.SetNamespace(OrganizationNamespaceFromName(organization))
+	return crs
+}
+
+func MoveNodePoolCRsToOrgNamespace(crs v1alpha3.NodePoolCRs, namespace string) v1alpha3.NodePoolCRs {
+	crs.MachineDeployment.SetNamespace(OrganizationNamespaceFromName(namespace))
+	crs.MachineDeployment.Spec.Template.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(namespace)
+	crs.AWSMachineDeployment.SetNamespace(OrganizationNamespaceFromName(namespace))
+	return crs
 }

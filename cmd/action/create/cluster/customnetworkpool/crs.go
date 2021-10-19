@@ -29,7 +29,6 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Clus
 	{
 		c := v1alpha3.ClusterCRsConfig{
 			ClusterID:         r.flag.TenantCluster,
-			Credential:        key.Credential,
 			Domain:            key.DomainFromHost(host),
 			Description:       "awscnfm action create cluster onenodepool",
 			Owner:             key.Organization,
@@ -46,7 +45,7 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Clus
 		}
 
 		if key.IsOrgNamespaceVersion(c.ReleaseVersion) {
-			crs = moveCRsToOrgNamespace(crs, key.Organization)
+			crs = key.MoveClusterCRsToOrgNamespace(crs, key.Organization)
 		}
 
 	}
@@ -64,14 +63,4 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Clus
 	}
 
 	return crs, npcrs, nil
-}
-
-func moveCRsToOrgNamespace(crs v1alpha3.ClusterCRs, organization string) v1alpha3.ClusterCRs {
-	crs.Cluster.SetNamespace(key.OrganizationNamespaceFromName(organization))
-	crs.Cluster.Spec.InfrastructureRef.Namespace = key.OrganizationNamespaceFromName(organization)
-	crs.AWSCluster.SetNamespace(key.OrganizationNamespaceFromName(organization))
-	crs.G8sControlPlane.SetNamespace(key.OrganizationNamespaceFromName(organization))
-	crs.G8sControlPlane.Spec.InfrastructureRef.Namespace = key.OrganizationNamespaceFromName(organization)
-	crs.AWSControlPlane.SetNamespace(key.OrganizationNamespaceFromName(organization))
-	return crs
 }

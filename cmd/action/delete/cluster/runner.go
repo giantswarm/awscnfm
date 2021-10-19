@@ -13,6 +13,7 @@ import (
 
 	pkgclient "github.com/giantswarm/awscnfm/v15/pkg/client"
 	"github.com/giantswarm/awscnfm/v15/pkg/env"
+	"github.com/giantswarm/awscnfm/v15/pkg/key"
 	"github.com/giantswarm/awscnfm/v15/pkg/label"
 )
 
@@ -58,7 +59,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 		err := cpClients.CtrlClient().DeleteAllOf(
 			ctx,
 			&apiv1alpha3.Cluster{},
-			client.InNamespace("org-conformance-testing"),
+			client.InNamespace(key.OrganizationNamespaceFromName(key.Organization)),
 			client.MatchingLabels{label.Cluster: r.flag.TenantCluster},
 		)
 		if errors.IsNotFound(err) {
