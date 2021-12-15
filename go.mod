@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/blang/semver/v4 v4.0.0
-	github.com/fatih/color v1.12.0
+	github.com/fatih/color v1.13.0
 	github.com/giantswarm/apiextensions/v3 v3.35.0
 	github.com/giantswarm/backoff v0.2.0
 	github.com/giantswarm/certs/v3 v3.1.1
@@ -17,8 +17,8 @@ require (
 	github.com/google/go-cmp v0.5.6
 	github.com/jsonmaur/aws-regions/v2 v2.2.1
 	github.com/prometheus/client_golang v1.7.1 // indirect
-	github.com/spf13/cobra v1.2.1
-	golang.org/x/net v0.0.0-20210916014120-12bc252f5db8
+	github.com/spf13/cobra v1.3.0
+	golang.org/x/net v0.0.0-20211209124913-491a49abca63
 	k8s.io/api v0.18.19
 	k8s.io/apimachinery v0.18.19
 	k8s.io/client-go v0.18.19
