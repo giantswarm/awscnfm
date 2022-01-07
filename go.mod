@@ -6,7 +6,7 @@ require (
 	github.com/blang/semver/v4 v4.0.0
 	github.com/fatih/color v1.13.0
 	github.com/giantswarm/apiextensions/v3 v3.39.0
-	github.com/giantswarm/backoff v0.2.0
+	github.com/giantswarm/backoff v1.0.0
 	github.com/giantswarm/certs/v3 v3.1.1
 	github.com/giantswarm/columnize v2.0.2+incompatible
 	github.com/giantswarm/k8sclient/v5 v5.12.0
