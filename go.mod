@@ -14,11 +14,11 @@ require (
 	github.com/giantswarm/micrologger v0.6.0
 	github.com/giantswarm/tenantcluster/v4 v4.1.0
 	github.com/giantswarm/valuemodifier v0.4.0
-	github.com/google/go-cmp v0.5.6
+	github.com/google/go-cmp v0.5.7
 	github.com/jsonmaur/aws-regions/v2 v2.3.1
 	github.com/prometheus/client_golang v1.7.1 // indirect
 	github.com/spf13/cobra v1.3.0
-	golang.org/x/net v0.0.0-20220107192237-5cfca573fb4d
+	golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d
 	k8s.io/api v0.18.19
 	k8s.io/apimachinery v0.18.19
 	k8s.io/client-go v0.18.19
