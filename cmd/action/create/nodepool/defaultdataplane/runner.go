@@ -3,10 +3,10 @@ package defaultdataplane
 import (
 	"context"
 
-	"github.com/giantswarm/apiextensions/v3/pkg/apis/release/v1alpha1"
-	"github.com/giantswarm/k8sclient/v5/pkg/k8sclient"
+	"github.com/giantswarm/k8sclient/v7/pkg/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+	"github.com/giantswarm/release-operator/v3/api/v1alpha1"
 	"github.com/spf13/cobra"
 
 	"github.com/giantswarm/awscnfm/v15/pkg/client"

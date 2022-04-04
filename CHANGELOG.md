@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade `github.com/giantswarm/apiextensions` to `v6.0.0`.
+- Upgrade `github.com/giantswarm/k8sclient` to `v7.0.1`.
+- Upgrade `github.com/giantswarm/tenantcluster` to `v6.0.0`.
+- Upgrade `sigs.k8s.io/cluster-api` to `v1.0.4`.
+- Upgrade k8s dependencies to `v0.22.2`.
+
 ## [16.0.0] - 2021-10-19
 
 ### Added

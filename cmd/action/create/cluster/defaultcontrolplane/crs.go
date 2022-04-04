@@ -1,9 +1,9 @@
 package defaultcontrolplane
 
 import (
-	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
-	"github.com/giantswarm/apiextensions/v3/pkg/apis/release/v1alpha1"
+	"github.com/giantswarm/apiextensions/v6/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/release-operator/v3/api/v1alpha1"
 
 	"github.com/giantswarm/awscnfm/v15/pkg/key"
 	"github.com/giantswarm/awscnfm/v15/pkg/release"
