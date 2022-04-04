@@ -1,15 +1,15 @@
 package defaultcontrolplane
 
 import (
-	"github.com/giantswarm/apiextensions/v6/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/release-operator/v3/api/v1alpha1"
 
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create/cluster/util"
 	"github.com/giantswarm/awscnfm/v15/pkg/key"
 	"github.com/giantswarm/awscnfm/v15/pkg/release"
 )
 
-func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.ClusterCRs, error) {
+func (r *runner) newCRs(releases []v1alpha1.Release, host string) (util.ClusterCRs, error) {
 	var err error
 
 	var re *release.Release
@@ -21,13 +21,13 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Clus
 
 		re, err = release.New(c)
 		if err != nil {
-			return v1alpha3.ClusterCRs{}, microerror.Mask(err)
+			return util.ClusterCRs{}, microerror.Mask(err)
 		}
 	}
 
-	var crs v1alpha3.ClusterCRs
+	var crs util.ClusterCRs
 	{
-		c := v1alpha3.ClusterCRsConfig{
+		c := util.ClusterCRsConfig{
 			ClusterID:         r.flag.TenantCluster,
 			Domain:            key.DomainFromHost(host),
 			Description:       "awscnfm action create cluster onenodepool",
@@ -37,9 +37,9 @@ func (r *runner) newCRs(releases []v1alpha1.Release, host string) (v1alpha3.Clus
 			ReleaseVersion:    re.Version(),
 		}
 
-		crs, err = v1alpha3.NewClusterCRs(c)
+		crs, err = util.NewClusterCRs(c)
 		if err != nil {
-			return v1alpha3.ClusterCRs{}, microerror.Mask(err)
+			return util.ClusterCRs{}, microerror.Mask(err)
 		}
 
 		if key.IsOrgNamespaceVersion(c.ReleaseVersion) {
