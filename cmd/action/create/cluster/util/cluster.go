@@ -33,6 +33,7 @@ const (
 // +k8s:deepcopy-gen=false
 
 type ClusterCRsConfig struct {
+	ClusterID         string
 	ClusterName       string
 	ControlPlaneName  string
 	Credential        string
@@ -41,6 +42,7 @@ type ClusterCRsConfig struct {
 	ExternalSNAT      bool
 	ControlPlaneAZ    []string
 	Description       string
+	MasterAZ          []string
 	PodsCIDR          string
 	Owner             string
 	Region            string
