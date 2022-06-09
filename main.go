@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/cobra"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"github.com/giantswarm/awscnfm/v15/cmd"
 	"github.com/giantswarm/awscnfm/v15/pkg/project"
@@ -19,7 +20,7 @@ func main() {
 	if err != nil {
 		mErr, ok := microerror.Cause(err).(*microerror.Error)
 		if ok && mErr.Desc != "" {
-			fmt.Println(strings.Title(err.Error()))
+			fmt.Println(cases.Title(language.Und, cases.NoLower).String(err.Error()))
 			fmt.Println()
 			fmt.Println("    " + mErr.Desc)
 			fmt.Println()
