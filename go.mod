@@ -15,11 +15,15 @@ require (
 	github.com/giantswarm/tenantcluster/v4 v4.1.0
 	github.com/giantswarm/valuemodifier v0.4.0
 	github.com/google/go-cmp v0.5.7
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/jsonmaur/aws-regions/v2 v2.3.1
-	github.com/prometheus/client_golang v1.7.1 // indirect
+	github.com/prometheus/client_golang v1.12.2 // indirect
 	github.com/spf13/cobra v1.3.0
-	golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d
+	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
+	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
+	golang.org/x/sys v0.0.0-20220608164250-635b8c9b7f68 // indirect
 	golang.org/x/text v0.3.7
+	golang.org/x/time v0.0.0-20220411224347-583f2d630306 // indirect
 	k8s.io/api v0.18.19
 	k8s.io/apimachinery v0.18.19
 	k8s.io/client-go v0.18.19
