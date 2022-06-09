@@ -21,6 +21,7 @@ require (
 	github.com/jsonmaur/aws-regions/v2 v2.3.1
 	github.com/spf13/cobra v1.3.0
 	golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d
+  golang.org/x/text v0.3.7
 	k8s.io/api v0.22.2
 	k8s.io/apimachinery v0.22.2
 	k8s.io/client-go v0.22.2
