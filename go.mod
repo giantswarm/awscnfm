@@ -11,7 +11,7 @@ require (
 	github.com/giantswarm/columnize v2.0.2+incompatible
 	github.com/giantswarm/k8sclient/v5 v5.12.0
 	github.com/giantswarm/microerror v0.4.0
-	github.com/giantswarm/micrologger v0.6.0
+	github.com/giantswarm/micrologger v1.0.0
 	github.com/giantswarm/tenantcluster/v4 v4.1.0
 	github.com/giantswarm/valuemodifier v0.4.0
 	github.com/google/go-cmp v0.5.7
