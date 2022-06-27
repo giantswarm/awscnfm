@@ -6,12 +6,12 @@ import (
 	"strings"
 
 	"github.com/blang/semver/v4"
-	"github.com/giantswarm/apiextensions/v3/pkg/apis/infrastructure/v1alpha3"
 	"github.com/giantswarm/microerror"
 	valuemodifierpath "github.com/giantswarm/valuemodifier/path"
 	apiv1 "k8s.io/api/core/v1"
 	k8sruntimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/giantswarm/awscnfm/v15/cmd/action/create/cluster/util"
 	"github.com/giantswarm/awscnfm/v15/pkg/normalize"
 	"github.com/giantswarm/awscnfm/v15/pkg/project"
 )
@@ -156,7 +156,7 @@ func IsOrgNamespaceVersion(version string) bool {
 	return releaseVersion.GE(*OrgNamespaceVersion)
 }
 
-func MoveClusterCRsToOrgNamespace(crs v1alpha3.ClusterCRs, organization string) v1alpha3.ClusterCRs {
+func MoveClusterCRsToOrgNamespace(crs util.ClusterCRs, organization string) util.ClusterCRs {
 	crs.Cluster.SetNamespace(OrganizationNamespaceFromName(organization))
 	crs.Cluster.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(organization)
 	crs.AWSCluster.SetNamespace(OrganizationNamespaceFromName(organization))
@@ -166,7 +166,7 @@ func MoveClusterCRsToOrgNamespace(crs v1alpha3.ClusterCRs, organization string) 
 	return crs
 }
 
-func MoveNodePoolCRsToOrgNamespace(crs v1alpha3.NodePoolCRs, namespace string) v1alpha3.NodePoolCRs {
+func MoveNodePoolCRsToOrgNamespace(crs util.NodePoolCRs, namespace string) util.NodePoolCRs {
 	crs.MachineDeployment.SetNamespace(OrganizationNamespaceFromName(namespace))
 	crs.MachineDeployment.Spec.Template.Spec.InfrastructureRef.Namespace = OrganizationNamespaceFromName(namespace)
 	crs.AWSMachineDeployment.SetNamespace(OrganizationNamespaceFromName(namespace))
