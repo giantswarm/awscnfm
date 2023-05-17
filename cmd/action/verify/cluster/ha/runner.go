@@ -81,8 +81,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 
 	var masterNodesReady int
 	for _, node := range list.Items {
-		_, ok := node.Labels[label.MasterNodeRole]
-		if !ok {
+		if !label.IsMaster(node) {
 			continue
 		}
 
