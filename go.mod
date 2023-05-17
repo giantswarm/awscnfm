@@ -17,11 +17,11 @@ require (
 	github.com/giantswarm/release-operator/v3 v3.2.0
 	github.com/giantswarm/tenantcluster/v6 v6.0.0
 	github.com/giantswarm/valuemodifier v0.4.0
-	github.com/google/go-cmp v0.5.7
+	github.com/google/go-cmp v0.5.9
 	github.com/jsonmaur/aws-regions/v2 v2.3.1
 	github.com/spf13/cobra v1.3.0
-	golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d
-	golang.org/x/text v0.3.7
+	golang.org/x/net v0.10.0
+	golang.org/x/text v0.9.0
 	k8s.io/api v0.22.2
 	k8s.io/apimachinery v0.22.2
 	k8s.io/client-go v0.22.2
@@ -35,5 +35,13 @@ replace (
 	github.com/dgrijalva/jwt-go => github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	github.com/gogo/protobuf v1.3.1 => github.com/gogo/protobuf v1.3.2
 	github.com/gorilla/websocket => github.com/gorilla/websocket v1.4.2
+	github.com/hashicorp/consul/api => github.com/hashicorp/consul/api v1.20.0
+	github.com/hashicorp/consul/sdk => github.com/hashicorp/consul/sdk v0.13.1
+	github.com/hashicorp/vault/api => github.com/hashicorp/vault/api v1.9.1
+	github.com/hashicorp/vault/sdk => github.com/hashicorp/vault/sdk v0.9.0
+	github.com/labstack/echo/v4 => github.com/labstack/echo/v4 v4.10.2
+	github.com/microcosm-cc/bluemonday => github.com/microcosm-cc/bluemonday v1.0.23
+	github.com/nats-io/nats-server/v2 => github.com/nats-io/nats-server/v2 v2.9.16
 	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.0.4
+
 )
