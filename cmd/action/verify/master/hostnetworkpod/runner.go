@@ -84,8 +84,7 @@ func (r *runner) run(ctx context.Context, cmd *cobra.Command, args []string) err
 	var masterNode corev1.Node
 	{
 		for _, node := range nodeList.Items {
-			_, ok := node.Labels[label.MasterNodeRole]
-			if ok {
+			if label.IsMaster(node) {
 				masterNode = node
 				break
 			}
