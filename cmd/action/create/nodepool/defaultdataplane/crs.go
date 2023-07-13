@@ -2,7 +2,7 @@ package defaultdataplane
 
 import (
 	"github.com/giantswarm/microerror"
-	"github.com/giantswarm/release-operator/v3/api/v1alpha1"
+	"github.com/giantswarm/release-operator/v4/api/v1alpha1"
 	regions "github.com/jsonmaur/aws-regions/v2"
 
 	"github.com/giantswarm/awscnfm/v15/cmd/action/create/cluster/util"
