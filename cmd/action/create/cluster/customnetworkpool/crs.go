@@ -2,7 +2,7 @@ package customnetworkpool
 
 import (
 	"github.com/giantswarm/microerror"
-	"github.com/giantswarm/release-operator/v3/api/v1alpha1"
+	"github.com/giantswarm/release-operator/v4/api/v1alpha1"
 
 	"github.com/giantswarm/awscnfm/v15/cmd/action/create/cluster/util"
 	"github.com/giantswarm/awscnfm/v15/pkg/key"
