@@ -6,27 +6,27 @@ require (
 	github.com/blang/semver/v4 v4.0.0
 	github.com/fatih/color v1.13.0
 	github.com/giantswarm/apiextensions-application v0.3.1
-	github.com/giantswarm/apiextensions/v6 v6.0.0
+	github.com/giantswarm/apiextensions/v6 v6.6.0
 	github.com/giantswarm/backoff v1.0.0
 	github.com/giantswarm/certs/v4 v4.0.0
 	github.com/giantswarm/columnize v2.0.2+incompatible
 	github.com/giantswarm/k8sclient/v7 v7.0.1
-	github.com/giantswarm/k8smetadata v0.10.1
+	github.com/giantswarm/k8smetadata v0.23.0
 	github.com/giantswarm/microerror v0.4.0
 	github.com/giantswarm/micrologger v0.6.0
 	github.com/giantswarm/release-operator/v3 v3.2.0
 	github.com/giantswarm/tenantcluster/v6 v6.0.0
-	github.com/giantswarm/valuemodifier v0.4.0
-	github.com/google/go-cmp v0.5.7
+	github.com/giantswarm/valuemodifier v0.5.2
+	github.com/google/go-cmp v0.5.8
 	github.com/jsonmaur/aws-regions/v2 v2.3.1
-	github.com/spf13/cobra v1.3.0
-	golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d
+	github.com/spf13/cobra v1.4.0
+	golang.org/x/net v0.0.0-20220708220712-1185a9018129
 	golang.org/x/text v0.3.7
-	k8s.io/api v0.22.2
-	k8s.io/apimachinery v0.22.2
-	k8s.io/client-go v0.22.2
-	sigs.k8s.io/cluster-api v1.0.4
-	sigs.k8s.io/controller-runtime v0.10.3
+	k8s.io/api v0.24.1
+	k8s.io/apimachinery v0.24.1
+	k8s.io/client-go v0.24.1
+	sigs.k8s.io/cluster-api v1.1.4
+	sigs.k8s.io/controller-runtime v0.12.1
 )
 
 replace (
